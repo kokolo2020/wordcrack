@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<meta name="description" content="WordCrack Hangman — Classic hangman with solo and live multiplayer rooms."/>
+<meta name="description" content="WordCrack Hangman — Classic hangman with Easy, Hard and Pro difficulty levels and leaderboard."/>
 <title>WordCrack — Hangman</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
@@ -53,8 +53,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .letter-box{display:flex;flex-direction:column;align-items:center;gap:3px}
 .letter-char{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text);min-width:24px;text-align:center;height:28px;line-height:28px}
 .letter-line{width:24px;height:2.5px;background:var(--accent);border-radius:2px}
-.letter-char.wrong-guess{color:var(--red);animation:shake .3s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
 /* HINT */
 .hint-chip{display:inline-flex;align-items:center;gap:5px;background:var(--chip);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:10px}
@@ -81,8 +79,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .result-banner.win{background:#dcfce7;border:1.5px solid #86efac}
 .result-banner.lose{background:#fee2e2;border:1.5px solid #fca5a5}
 .result-title{font-size:20px;font-weight:800;margin-bottom:4px}
-.result-word{font-family:var(--mono);font-size:14px;color:var(--muted)}
-.play-again-btn{margin-top:10px;padding:10px 24px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
+.result-word{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:10px}
+.play-again-btn{padding:10px 24px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
+
+/* SCORE SUBMIT */
+.score-form{margin-top:10px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.score-input{padding:8px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--text);outline:none;width:140px;text-align:center}
+.score-input:focus{border-color:var(--accent)}
+.score-submit-btn{padding:8px 16px;background:var(--accent3);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer}
+.score-submitted{font-size:12px;color:var(--green);font-weight:700;margin-top:6px}
 
 /* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -90,73 +95,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .stat-num{font-size:22px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:2px}
 .stat-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 
-/* ADVERT */
+/* LEADERBOARD */
+.lb-diff-row{display:flex;gap:6px;margin-bottom:12px}
+.lb-diff-btn{flex:1;padding:7px;border:1.5px solid var(--border);border-radius:9px;background:var(--surface);font-family:var(--font);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;text-align:center;transition:all .15s}
+.lb-diff-btn.active{border-color:var(--accent);background:var(--chip);color:var(--accent)}
+.lb-table{width:100%;border-collapse:collapse}
+.lb-table th{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;text-align:left;border-bottom:1.5px solid var(--border)}
+.lb-table td{padding:8px;font-size:13px;border-bottom:1px solid var(--border)}
+.lb-rank{font-family:var(--mono);font-weight:700;color:var(--muted);font-size:12px}
+.lb-rank.gold{color:#f59e0b}
+.lb-rank.silver{color:#9ca3af}
+.lb-rank.bronze{color:#b45309}
+.lb-name{font-weight:700;color:var(--text)}
+.lb-score{font-family:var(--mono);font-weight:700;color:var(--accent);text-align:right}
+.lb-date{font-size:11px;color:var(--muted)}
+.lb-empty{text-align:center;padding:20px;color:var(--muted);font-size:13px}
+.lb-loading{text-align:center;padding:16px;color:var(--muted);font-size:12px}
+
+/* AD */
 .ad-wrap{margin:10px 0;min-height:60px;display:flex;align-items:center;justify-content:center}
 
-/* ============ MULTIPLAYER ============ */
-.rooms-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.rooms-title{font-size:16px;font-weight:800;color:var(--text)}
-.create-room-btn{padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer}
-
-.room-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
-.room-card:hover{border-color:var(--accent)}
-.room-num{width:36px;height:36px;background:var(--chip);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);flex-shrink:0}
-.room-info{flex:1;min-width:0}
-.room-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
-.room-meta{font-size:11px;color:var(--muted)}
-.room-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;flex-shrink:0}
-.room-status.waiting{background:#dcfce7;color:#16a34a}
-.room-status.playing{background:#fef3c7;color:#d97706}
-.room-status.full{background:#fee2e2;color:#ef4444}
-.join-room-btn{padding:6px 12px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);border-radius:8px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0}
-.join-room-btn:disabled{opacity:.4;cursor:default}
-.spectate-btn{padding:6px 12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0}
-
-/* MULTIPLAYER GAME */
-.mp-game{display:none}
-.mp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.mp-room-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.mp-role-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.mp-role-badge.host{background:#ede9fe;color:var(--accent)}
-.mp-role-badge.guesser{background:#dcfce7;color:#16a34a}
-.mp-role-badge.spectator{background:#f1f5f9;color:#64748b}
-.leave-btn{padding:6px 12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer}
-
-/* WAITING ROOM */
-.waiting-card{text-align:center;padding:24px 16px}
-.waiting-icon{font-size:40px;margin-bottom:12px;animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.waiting-msg{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
-.waiting-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.word-input-wrap{margin-bottom:12px}
-.word-input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-family:var(--mono);font-size:18px;text-align:center;letter-spacing:.2em;text-transform:uppercase;color:var(--text);outline:none;transition:border-color .15s}
-.word-input:focus{border-color:var(--accent)}
-.word-hint-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font);font-size:13px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color .15s}
-.word-hint-input:focus{border-color:var(--accent)}
-.start-game-btn{padding:11px 28px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
-.start-game-btn:disabled{opacity:.5;cursor:default}
-
-/* PLAYERS LIST */
-.players-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.player-chip{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600}
-.player-chip.host-chip{background:#ede9fe;color:var(--accent)}
-.player-chip.guesser-chip{background:#dcfce7;color:#16a34a}
-.player-chip.spectator-chip{background:#f1f5f9;color:#64748b}
-.player-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
-
-/* CHAT / GUESSES */
-.guesses-list{max-height:120px;overflow-y:auto;border:1.5px solid var(--border);border-radius:10px;padding:8px;margin-bottom:8px;display:flex;flex-direction:column;gap:4px}
-.guess-item{font-size:12px;display:flex;gap:6px;align-items:center}
-.guess-item .gname{font-weight:700;color:var(--accent)}
-.guess-item .gletter{font-family:var(--mono);font-weight:700;font-size:13px}
-.guess-item.correct .gletter{color:var(--green)}
-.guess-item.wrong .gletter{color:var(--red)}
-
-/* LOADING / ERROR */
-.loader{text-align:center;padding:24px;color:var(--muted);font-size:13px}
-.error-msg{background:#fee2e2;border:1.5px solid #fca5a5;border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:10px;font-weight:600}
-
-/* RESPONSIVE */
 @media(max-width:360px){.kbd-key{width:28px;height:34px;font-size:11px}}
 </style>
 </head>
@@ -166,182 +124,97 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <h1 class="page-title">Hang<span>man</span></h1>
   <p class="page-sub">Guess the word before the man drops!</p>
 
-  <!-- NAV -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">🔤 WordCrack</a>
     <a href="hangman.html" class="nav-link active">🪢 Hangman</a>
   </nav>
 
-  <!-- AD TOP -->
   <div class="ad-wrap">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-9700227474442026" data-ad-slot="AUTO"></ins>
   </div>
 
   <!-- TABS -->
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('solo')">🎮 Solo</button>
-    <button class="tab-btn" onclick="switchTab('multi')">👥 Multiplayer</button>
+    <button class="tab-btn active" onclick="switchTab('game')">🎮 Play</button>
+    <button class="tab-btn" onclick="switchTab('lb')">🏆 Leaderboard</button>
   </div>
 
-  <!-- ========== SOLO TAB ========== -->
-  <div id="solo-tab">
-    <!-- Difficulty -->
+  <!-- ===== GAME TAB ===== -->
+  <div id="game-tab">
     <div class="diff-row">
       <button class="diff-btn active" onclick="setDiff('easy',this)">😊 Easy<br><small>3–5 letters</small></button>
       <button class="diff-btn" onclick="setDiff('hard',this)">😤 Hard<br><small>6–7 letters</small></button>
       <button class="diff-btn" onclick="setDiff('pro',this)">💀 Pro<br><small>8–14 letters</small></button>
     </div>
 
-    <!-- GAME AREA -->
     <div class="card" id="game-card">
-      <!-- Gallows SVG -->
       <div class="gallows-wrap">
         <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Gallows structure (always visible) -->
           <line x1="20" y1="150" x2="140" y2="150" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
           <line x1="60" y1="150" x2="60" y2="10" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
           <line x1="60" y1="10" x2="110" y2="10" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
           <line x1="110" y1="10" x2="110" y2="28" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
-          <!-- Body parts (id-driven) -->
-          <circle id="g-head" cx="110" cy="38" r="10" stroke="#f0544f" stroke-width="2.5" class="g-part" style="display:none"/>
-          <line id="g-body" x1="110" y1="48" x2="110" y2="90" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-          <line id="g-larm" x1="110" y1="60" x2="90" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-          <line id="g-rarm" x1="110" y1="60" x2="130" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-          <line id="g-lleg" x1="110" y1="90" x2="92" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-          <line id="g-rleg" x1="110" y1="90" x2="128" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
+          <circle id="g-head" cx="110" cy="38" r="10" stroke="#f0544f" stroke-width="2.5" style="display:none"/>
+          <line id="g-body" x1="110" y1="48" x2="110" y2="90" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" style="display:none"/>
+          <line id="g-larm" x1="110" y1="60" x2="90" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" style="display:none"/>
+          <line id="g-rarm" x1="110" y1="60" x2="130" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" style="display:none"/>
+          <line id="g-lleg" x1="110" y1="90" x2="92" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" style="display:none"/>
+          <line id="g-rleg" x1="110" y1="90" x2="128" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" style="display:none"/>
         </svg>
       </div>
 
-      <!-- Status row -->
       <div class="status-row">
         <div class="lives-row" id="hearts-row"></div>
         <div class="wrong-letters" id="wrong-display"></div>
       </div>
 
-      <!-- Hint chip -->
       <div style="text-align:center;margin-bottom:8px">
         <span class="hint-chip" id="hint-chip">🎯 Category</span>
       </div>
 
-      <!-- Word display -->
       <div class="word-row" id="word-display"></div>
-
-      <!-- Result banner (hidden until win/lose) -->
       <div id="result-banner" style="display:none"></div>
-
-      <!-- Keyboard -->
       <div class="kbd" id="keyboard"></div>
 
-      <!-- New game btn (hidden at start) -->
       <div style="text-align:center">
-        <button id="new-game-btn" class="play-again-btn" onclick="startSoloGame()" style="display:none">🔁 New Word</button>
+        <button id="new-game-btn" class="play-again-btn" onclick="startGame()" style="display:none">🔁 New Word</button>
       </div>
     </div>
 
-    <!-- AD MID -->
     <div class="ad-wrap">
       <ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px" data-ad-client="ca-pub-9700227474442026" data-ad-slot="AUTO"></ins>
     </div>
 
-    <!-- STATS -->
     <div class="card">
       <p style="font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Your Stats</p>
       <div class="stats-grid">
         <div class="stat-box"><div class="stat-num" id="s-played">0</div><div class="stat-label">Played</div></div>
         <div class="stat-box"><div class="stat-num" id="s-wins">0</div><div class="stat-label">Wins</div></div>
-        <div class="stat-box"><div class="stat-num" id="s-streak">0</div><div class="stat-label">Streak</div></div>
+        <div class="stat-box"><div class="stat-num" id="s-streak">0</div><div class="stat-label">Best Streak</div></div>
       </div>
     </div>
-  </div><!-- /solo tab -->
+  </div>
 
-  <!-- ========== MULTIPLAYER TAB ========== -->
-  <div id="multi-tab" style="display:none">
-
-    <!-- LOBBY VIEW -->
-    <div id="lobby-view">
-      <div class="rooms-header">
-        <span class="rooms-title">🏠 Live Rooms</span>
-        <button class="create-room-btn" onclick="createRoom()">+ Create Room</button>
-      </div>
-      <div id="error-msg" class="error-msg" style="display:none"></div>
-      <div id="rooms-list"><div class="loader">⏳ Loading rooms…</div></div>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">
-        5 public rooms · 2 players + unlimited spectators per room
-      </p>
+  <!-- ===== LEADERBOARD TAB ===== -->
+  <div id="lb-tab" style="display:none">
+    <div class="lb-diff-row">
+      <button class="lb-diff-btn active" onclick="setLbDiff('easy',this)">😊 Easy</button>
+      <button class="lb-diff-btn" onclick="setLbDiff('hard',this)">😤 Hard</button>
+      <button class="lb-diff-btn" onclick="setLbDiff('pro',this)">💀 Pro</button>
     </div>
+    <div class="card">
+      <div id="lb-content"><div class="lb-loading">⏳ Loading…</div></div>
+    </div>
+  </div>
 
-    <!-- GAME VIEW (in-room) -->
-    <div id="room-view" style="display:none">
-      <div class="mp-header">
-        <span class="mp-room-label" id="mp-room-label">Room #1</span>
-        <span class="mp-role-badge host" id="mp-role-badge">Host</span>
-        <button class="leave-btn" onclick="leaveRoom()">✕ Leave</button>
-      </div>
-
-      <!-- Players row -->
-      <div class="players-row" id="mp-players-row"></div>
-
-      <!-- Waiting (host enters word) -->
-      <div id="mp-waiting" class="card waiting-card" style="display:none">
-        <div class="waiting-icon" id="waiting-icon">⏳</div>
-        <div class="waiting-msg" id="waiting-msg">Waiting for host…</div>
-        <div class="waiting-sub" id="waiting-sub">The host is choosing a word</div>
-        <!-- Host word input (only shown to host) -->
-        <div id="host-word-area" style="display:none">
-          <input type="text" class="word-input" id="host-word-input" maxlength="14" placeholder="TYPE WORD" autocomplete="off" autocorrect="off" spellcheck="false"/>
-          <input type="text" class="word-hint-input" id="host-hint-input" maxlength="30" placeholder="Category hint (e.g. Animal, Food…)" autocomplete="off"/>
-          <button class="start-game-btn" id="start-game-btn" onclick="hostStartGame()">▶ Start Game</button>
-        </div>
-      </div>
-
-      <!-- MP Game board -->
-      <div id="mp-game" class="mp-game">
-        <div class="card" style="padding:12px">
-          <!-- Gallows -->
-          <div class="gallows-wrap">
-            <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="20" y1="150" x2="140" y2="150" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
-              <line x1="60" y1="150" x2="60" y2="10" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
-              <line x1="60" y1="10" x2="110" y2="10" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
-              <line x1="110" y1="10" x2="110" y2="28" stroke="#7c75b0" stroke-width="3" stroke-linecap="round"/>
-              <circle id="mg-head" cx="110" cy="38" r="10" stroke="#f0544f" stroke-width="2.5" class="g-part" style="display:none"/>
-              <line id="mg-body" x1="110" y1="48" x2="110" y2="90" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-              <line id="mg-larm" x1="110" y1="60" x2="90" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-              <line id="mg-rarm" x1="110" y1="60" x2="130" y2="78" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-              <line id="mg-lleg" x1="110" y1="90" x2="92" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-              <line id="mg-rleg" x1="110" y1="90" x2="128" y2="114" stroke="#f0544f" stroke-width="2.5" stroke-linecap="round" class="g-part" style="display:none"/>
-            </svg>
-          </div>
-          <div class="status-row">
-            <div class="lives-row" id="mp-hearts-row"></div>
-            <div class="wrong-letters" id="mp-wrong-display"></div>
-          </div>
-          <div style="text-align:center;margin-bottom:8px">
-            <span class="hint-chip" id="mp-hint-chip">🎯 Category</span>
-          </div>
-          <div class="word-row" id="mp-word-display"></div>
-          <div id="mp-result-banner" style="display:none"></div>
-          <div class="kbd" id="mp-keyboard"></div>
-        </div>
-        <!-- Guesses log -->
-        <div class="card" style="padding:10px">
-          <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Guesses</p>
-          <div class="guesses-list" id="guesses-list"></div>
-        </div>
-      </div>
-
-    </div><!-- /room-view -->
-  </div><!-- /multi-tab -->
-
-  <!-- AD BOTTOM -->
-  <div class="ad-wrap" style="margin-top:8px">
+  <div class="ad-wrap">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-9700227474442026" data-ad-slot="AUTO"></ins>
   </div>
-</div><!-- /app -->
+</div>
 
 <script>
 // ============================================================
-// CONFIG — update these
+// CONFIG
 // ============================================================
 const SUPABASE_URL = 'https://mjnigheggxtythytsqle.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
@@ -363,10 +236,10 @@ const WORDS = {
     {w:'GUITAR',h:'🎸 Music'},{w:'JUNGLE',h:'🌿 Nature'},{w:'LIZARD',h:'🦎 Animal'},
     {w:'MIRROR',h:'🪞 Object'},{w:'NECTAR',h:'🍯 Nature'},{w:'OYSTER',h:'🦪 Seafood'},
     {w:'PURPLE',h:'🎨 Color'},{w:'RABBIT',h:'🐰 Animal'},{w:'SILVER',h:'🥈 Metal'},
-    {w:'TEMPLE',h:'⛩️ Building'},{w:'UNFAIR',h:'⚖️ Concept'},{w:'VELVET',h:'🧶 Fabric'},
-    {w:'WALRUS',h:'🦭 Animal'},{w:'YELLOW',h:'🌼 Color'},{w:'ZIPPER',h:'👕 Object'},
-    {w:'ANCHOR',h:'⚓ Nautical'},{w:'BUBBLE',h:'💬 Thing'},{w:'CANVAS',h:'🎨 Art'},
-    {w:'DANGER',h:'⚠️ Concept'},{w:'ELEVEN',h:'🔢 Number'},{w:'FALCON',h:'🦅 Bird'},
+    {w:'TEMPLE',h:'⛩️ Building'},{w:'VELVET',h:'🧶 Fabric'},{w:'WALRUS',h:'🦭 Animal'},
+    {w:'YELLOW',h:'🌼 Color'},{w:'ZIPPER',h:'👕 Object'},{w:'ANCHOR',h:'⚓ Nautical'},
+    {w:'BUBBLE',h:'💬 Thing'},{w:'CANVAS',h:'🎨 Art'},{w:'DANGER',h:'⚠️ Concept'},
+    {w:'FALCON',h:'🦅 Bird'},{w:'ELEVEN',h:'🔢 Number'},{w:'UNFAIR',h:'⚖️ Concept'},
   ],
   pro: [
     {w:'ADVENTURE',h:'🗺️ Concept'},{w:'BEAUTIFUL',h:'✨ Concept'},{w:'CHOCOLATE',h:'🍫 Food'},
@@ -376,403 +249,207 @@ const WORDS = {
     {w:'MUSHROOMS',h:'🍄 Food'},{w:'NIGHTMARE',h:'😱 Dream'},{w:'ORCHESTRA',h:'🎼 Music'},
     {w:'PORCUPINE',h:'🦔 Animal'},{w:'QUICKSAND',h:'🏜️ Nature'},{w:'RASPBERRY',h:'🍇 Fruit'},
     {w:'SANCTUARY',h:'🕊️ Place'},{w:'TELESCOPE',h:'🔭 Tool'},{w:'UNANIMOUS',h:'🤝 Concept'},
-    {w:'CHRYSANTHEMUM',h:'🌸 Flower'},{w:'ARCHAEOLOGICAL',h:'🏺 Study'},{w:'EXTRAORDINARY',h:'✨ Concept'},
+    {w:'CHRYSANTHEMUM',h:'🌸 Flower'},{w:'EXTRAORDINARY',h:'✨ Concept'},{w:'CATASTROPHE',h:'💥 Event'},
   ]
 };
 
 const BODY_PARTS = ['g-head','g-body','g-larm','g-rarm','g-lleg','g-rleg'];
-const MB_PARTS   = ['mg-head','mg-body','mg-larm','mg-rarm','mg-lleg','mg-rleg'];
-const MAX_WRONG  = 6;
+const MAX_WRONG = 6;
 
 // ============================================================
-// SOLO STATE
+// GAME STATE
 // ============================================================
-let soloState = {
-  word:'', hint:'', guessed:new Set(), wrongCount:0, diff:'easy', gameOver:false
-};
-let stats = JSON.parse(localStorage.getItem('hangman_stats')||'{"played":0,"wins":0,"streak":0}');
+let state = { word:'', hint:'', guessed:new Set(), wrongCount:0, diff:'easy', gameOver:false };
+let stats = JSON.parse(localStorage.getItem('hangman_stats')||'{"played":0,"wins":0,"streak":0,"bestStreak":0}');
+let currentStreak = 0;
+let scoreSubmitted = false;
 
 function setDiff(d, el) {
-  soloState.diff = d;
+  state.diff = d;
   document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  startSoloGame();
+  startGame();
 }
 
-function startSoloGame() {
-  const pool = WORDS[soloState.diff];
+function startGame() {
+  const pool = WORDS[state.diff];
   const pick = pool[Math.floor(Math.random()*pool.length)];
-  soloState.word = pick.w;
-  soloState.hint = pick.h;
-  soloState.guessed = new Set();
-  soloState.wrongCount = 0;
-  soloState.gameOver = false;
-  renderSolo();
-  document.getElementById('new-game-btn').style.display = 'none';
+  state.word = pick.w;
+  state.hint = pick.h;
+  state.guessed = new Set();
+  state.wrongCount = 0;
+  state.gameOver = false;
+  scoreSubmitted = false;
   document.getElementById('result-banner').style.display = 'none';
-  updateStats();
+  document.getElementById('new-game-btn').style.display = 'none';
+  render();
+  updateStatsUI();
 }
 
-function renderSolo() {
+function render() {
   // Gallows
-  BODY_PARTS.forEach((id,i)=>{
-    document.getElementById(id).style.display = i < soloState.wrongCount ? '' : 'none';
-  });
+  BODY_PARTS.forEach((id,i)=>{ document.getElementById(id).style.display = i < state.wrongCount ? '' : 'none'; });
   // Hearts
-  const hearts = document.getElementById('hearts-row');
-  hearts.innerHTML = Array.from({length:MAX_WRONG},(_,i)=>`<span class="heart${i>=MAX_WRONG-soloState.wrongCount?' lost':''}">❤️</span>`).join('');
+  document.getElementById('hearts-row').innerHTML =
+    Array.from({length:MAX_WRONG},(_,i)=>`<span class="heart${i>=MAX_WRONG-state.wrongCount?' lost':''}">❤️</span>`).join('');
   // Wrong letters
-  const wrongLetters = [...soloState.guessed].filter(l=>!soloState.word.includes(l));
-  document.getElementById('wrong-display').textContent = wrongLetters.length ? wrongLetters.join(' ') : '';
+  const wrong = [...state.guessed].filter(l=>!state.word.includes(l));
+  document.getElementById('wrong-display').textContent = wrong.length ? wrong.join(' ') : '';
   // Hint
-  document.getElementById('hint-chip').textContent = soloState.hint;
+  document.getElementById('hint-chip').textContent = state.hint;
   // Word
-  const wd = document.getElementById('word-display');
-  wd.innerHTML = soloState.word.split('').map(l=>{
-    const show = soloState.guessed.has(l) || soloState.gameOver;
+  document.getElementById('word-display').innerHTML = state.word.split('').map(l=>{
+    const show = state.guessed.has(l) || state.gameOver;
     return `<div class="letter-box"><div class="letter-char">${show?l:'&nbsp;'}</div><div class="letter-line"></div></div>`;
   }).join('');
   // Keyboard
-  buildKbd('keyboard', soloState.word, soloState.guessed, (l)=>soloGuess(l));
+  buildKbd();
 }
 
-function soloGuess(letter) {
-  if(soloState.gameOver || soloState.guessed.has(letter)) return;
-  soloState.guessed.add(letter);
-  if(!soloState.word.includes(letter)) soloState.wrongCount++;
-  const won = soloState.word.split('').every(l=>soloState.guessed.has(l));
-  const lost = soloState.wrongCount >= MAX_WRONG;
-  if(won||lost){
-    soloState.gameOver = true;
+function guess(letter) {
+  if(state.gameOver || state.guessed.has(letter)) return;
+  state.guessed.add(letter);
+  if(!state.word.includes(letter)) state.wrongCount++;
+  const won = state.word.split('').every(l=>state.guessed.has(l));
+  const lost = state.wrongCount >= MAX_WRONG;
+  if(won || lost) {
+    state.gameOver = true;
     stats.played++;
-    if(won){stats.wins++;stats.streak++}else{stats.streak=0}
+    if(won) {
+      currentStreak++;
+      stats.wins++;
+      if(currentStreak > stats.bestStreak) stats.bestStreak = currentStreak;
+    } else {
+      currentStreak = 0;
+    }
+    stats.streak = currentStreak;
     localStorage.setItem('hangman_stats', JSON.stringify(stats));
-    showResult(won, 'result-banner', soloState.word);
+    showResult(won);
     document.getElementById('new-game-btn').style.display = '';
-    updateStats();
+    updateStatsUI();
   }
-  renderSolo();
+  render();
 }
 
-function showResult(won, id, word) {
-  const el = document.getElementById(id);
+function showResult(won) {
+  const el = document.getElementById('result-banner');
   el.className = `result-banner ${won?'win':'lose'}`;
   el.style.display = '';
-  el.innerHTML = `<div class="result-title">${won?'🎉 You Won!':'💀 Game Over'}</div><div class="result-word">The word was: <b>${word}</b></div>`;
+  const streakMsg = won && currentStreak > 1 ? `🔥 ${currentStreak} streak!` : '';
+  el.innerHTML = `
+    <div class="result-title">${won?'🎉 You Won!':'💀 Game Over'}</div>
+    <div class="result-word">Word: <b>${state.word}</b> ${streakMsg}</div>
+    ${won ? `
+      <div class="score-form" id="score-form">
+        <input type="text" class="score-input" id="score-name" maxlength="16" placeholder="Your name" autocomplete="off"/>
+        <button class="score-submit-btn" onclick="submitScore()">📊 Submit</button>
+      </div>
+    ` : ''}
+  `;
 }
 
-function updateStats(){
-  document.getElementById('s-played').textContent = stats.played;
-  document.getElementById('s-wins').textContent = stats.wins;
-  document.getElementById('s-streak').textContent = stats.streak;
+async function submitScore() {
+  if(scoreSubmitted) return;
+  const name = document.getElementById('score-name').value.trim() || 'Anonymous';
+  const score = currentStreak;
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/hangman_scores`, {
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify({name, difficulty:state.diff, streak:score, word:state.word})
+    });
+    scoreSubmitted = true;
+    document.getElementById('score-form').innerHTML = `<div class="score-submitted">✅ Score submitted!</div>`;
+  } catch(e) {
+    document.getElementById('score-form').innerHTML = `<div class="score-submitted" style="color:var(--red)">❌ Failed to submit</div>`;
+  }
 }
 
-function buildKbd(containerId, word, guessedSet, onGuess) {
+function buildKbd() {
   const rows = [['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['Z','X','C','V','B','N','M']];
-  const el = document.getElementById(containerId);
-  el.innerHTML = rows.map(row=>`<div class="kbd-row">${row.map(l=>{
-    const used = guessedSet.has(l);
-    const correct = used && word.includes(l);
+  document.getElementById('keyboard').innerHTML = rows.map(row=>`<div class="kbd-row">${row.map(l=>{
+    const used = state.guessed.has(l);
+    const correct = used && state.word.includes(l);
     const cls = used ? (correct?'used-correct':'used-wrong') : '';
-    return `<button class="kbd-key ${cls}" ${used?'disabled':''} onclick="(${onGuess.toString()})('${l}')">${l}</button>`;
+    return `<button class="kbd-key ${cls}" ${used||state.gameOver?'disabled':''} onclick="guess('${l}')">${l}</button>`;
   }).join('')}</div>`).join('');
 }
 
-// Keyboard support
+function updateStatsUI() {
+  document.getElementById('s-played').textContent = stats.played;
+  document.getElementById('s-wins').textContent = stats.wins;
+  document.getElementById('s-streak').textContent = stats.bestStreak;
+}
+
 document.addEventListener('keydown', e=>{
-  if(document.getElementById('solo-tab').style.display==='none') return;
+  if(document.getElementById('game-tab').style.display==='none') return;
+  if(document.activeElement.tagName==='INPUT') return;
   const l = e.key.toUpperCase();
-  if(/^[A-Z]$/.test(l) && !soloState.gameOver) soloGuess(l);
+  if(/^[A-Z]$/.test(l)) guess(l);
 });
+
+// ============================================================
+// LEADERBOARD
+// ============================================================
+let lbDiff = 'easy';
+
+function setLbDiff(d, el) {
+  lbDiff = d;
+  document.querySelectorAll('.lb-diff-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  loadLeaderboard();
+}
+
+async function loadLeaderboard() {
+  document.getElementById('lb-content').innerHTML = '<div class="lb-loading">⏳ Loading…</div>';
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/hangman_scores?difficulty=eq.${lbDiff}&order=streak.desc,created_at.asc&limit=20`, {
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const rows = await r.json();
+    if(!rows.length) {
+      document.getElementById('lb-content').innerHTML = '<div class="lb-empty">No scores yet — be the first! 🏆</div>';
+      return;
+    }
+    const medals = ['🥇','🥈','🥉'];
+    const rankClass = ['gold','silver','bronze'];
+    document.getElementById('lb-content').innerHTML = `
+      <table class="lb-table">
+        <thead><tr><th>#</th><th>Name</th><th style="text-align:right">Streak</th><th>Date</th></tr></thead>
+        <tbody>${rows.map((r,i)=>`
+          <tr>
+            <td><span class="lb-rank ${rankClass[i]||''}">${medals[i]||'#'+(i+1)}</span></td>
+            <td><span class="lb-name">${escHtml(r.name)}</span></td>
+            <td class="lb-score">${r.streak}</td>
+            <td class="lb-date">${new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('lb-content').innerHTML = '<div class="lb-empty">⚠️ Could not load leaderboard</div>';
+  }
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // ============================================================
 // TABS
 // ============================================================
 function switchTab(tab) {
-  document.getElementById('solo-tab').style.display = tab==='solo' ? '' : 'none';
-  document.getElementById('multi-tab').style.display = tab==='multi' ? '' : 'none';
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active', (i===0&&tab==='solo')||(i===1&&tab==='multi')));
-  if(tab==='multi') loadRooms();
-}
-
-// ============================================================
-// MULTIPLAYER — Supabase REST + Realtime polling
-// ============================================================
-let myName = 'Player_'+Math.floor(Math.random()*9000+1000);
-let currentRoom = null;
-let myRole = null; // 'host','guesser','spectator'
-let mpState = { word:'', hint:'', guessed:new Set(), wrongCount:0, gameOver:false };
-let pollTimer = null;
-
-const SB = {
-  async req(method, path, body){
-    const r = await fetch(SUPABASE_URL+'/rest/v1/'+path, {
-      method, headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-      body: body ? JSON.stringify(body) : undefined
-    });
-    if(!r.ok){ const t=await r.text(); throw new Error(t); }
-    const txt = await r.text();
-    return txt ? JSON.parse(txt) : null;
-  },
-  get(path){ return this.req('GET',path) },
-  post(path,body){ return this.req('POST',path,body) },
-  patch(path,body){ return this.req('PATCH',path,body) },
-};
-
-async function loadRooms() {
-  try {
-    const rows = await SB.get('hangman_rooms?select=*&order=room_number.asc');
-    renderRooms(rows || []);
-  } catch(e) {
-    showError('Cannot load rooms. Check Supabase config.');
-  }
-}
-
-function renderRooms(rooms) {
-  const el = document.getElementById('rooms-list');
-  if(!rooms.length){ el.innerHTML='<div class="loader">No rooms yet. Create one!</div>'; return; }
-  el.innerHTML = rooms.map(r=>{
-    const players = JSON.parse(r.players||'[]');
-    const spectators = JSON.parse(r.spectators||'[]');
-    const isFull = players.length >= 2;
-    const statusLabel = r.status==='playing' ? 'Playing' : isFull ? 'Full' : 'Waiting';
-    const statusClass = r.status==='playing' ? 'playing' : isFull ? 'full' : 'waiting';
-    const canJoin = !isFull && r.status!=='playing';
-    return `<div class="room-card">
-      <div class="room-num">#${r.room_number}</div>
-      <div class="room-info">
-        <div class="room-name">Room ${r.room_number}</div>
-        <div class="room-meta">${players.length}/2 players · ${spectators.length} watching</div>
-      </div>
-      <span class="room-status ${statusClass}">${statusLabel}</span>
-      ${canJoin?`<button class="join-room-btn" onclick="joinRoom(${r.room_number},'player')">Join</button>`:''}
-      <button class="spectate-btn" onclick="joinRoom(${r.room_number},'spectator')">👁 Watch</button>
-    </div>`;
-  }).join('');
-}
-
-async function createRoom() {
-  showError('');
-  try {
-    // Find empty slot (rooms 1-5)
-    const rows = await SB.get('hangman_rooms?select=room_number');
-    const existing = (rows||[]).map(r=>r.room_number);
-    let slot = null;
-    for(let i=1;i<=5;i++){ if(!existing.includes(i)){slot=i;break;} }
-    if(slot===null){ showError('All 5 rooms are active. Try joining one!'); return; }
-    await SB.post('hangman_rooms', {
-      room_number: slot, status:'waiting', word:'', hint:'',
-      guessed_letters:'', wrong_count:0,
-      players: JSON.stringify([myName]),
-      spectators: JSON.stringify([])
-    });
-    await enterRoom(slot, 'host');
-  } catch(e){ showError('Error creating room: '+e.message); }
-}
-
-async function joinRoom(num, asRole) {
-  showError('');
-  try {
-    const rows = await SB.get(`hangman_rooms?room_number=eq.${num}&select=*`);
-    if(!rows||!rows.length){ showError('Room not found.'); return; }
-    const room = rows[0];
-    const players = JSON.parse(room.players||'[]');
-    const spectators = JSON.parse(room.spectators||'[]');
-
-    if(asRole==='player') {
-      if(players.length>=2){ showError('Room is full!'); return; }
-      players.push(myName);
-      await SB.patch(`hangman_rooms?room_number=eq.${num}`, { players: JSON.stringify(players) });
-      const role = players.indexOf(myName)===0 ? 'host' : 'guesser';
-      await enterRoom(num, role);
-    } else {
-      spectators.push(myName);
-      await SB.patch(`hangman_rooms?room_number=eq.${num}`, { spectators: JSON.stringify(spectators) });
-      await enterRoom(num, 'spectator');
-    }
-  } catch(e){ showError('Error joining: '+e.message); }
-}
-
-async function enterRoom(num, role) {
-  currentRoom = num;
-  myRole = role;
-  document.getElementById('lobby-view').style.display = 'none';
-  document.getElementById('room-view').style.display = '';
-  document.getElementById('mp-room-label').textContent = `Room #${num}`;
-  const badge = document.getElementById('mp-role-badge');
-  badge.textContent = role==='host'?'👑 Host': role==='guesser'?'🎮 Guesser':'👁 Spectator';
-  badge.className = `mp-role-badge ${role}`;
-  await refreshRoomState();
-  pollTimer = setInterval(refreshRoomState, 2000);
-}
-
-async function refreshRoomState() {
-  try {
-    const rows = await SB.get(`hangman_rooms?room_number=eq.${currentRoom}&select=*`);
-    if(!rows||!rows.length){ leaveRoom(); return; }
-    const room = rows[0];
-    renderRoomState(room);
-  } catch(e){ /* silent */ }
-}
-
-function renderRoomState(room) {
-  const players = JSON.parse(room.players||'[]');
-  const spectators = JSON.parse(room.spectators||'[]');
-
-  // Players row
-  const pr = document.getElementById('mp-players-row');
-  pr.innerHTML = players.map((p,i)=>`<span class="player-chip ${i===0?'host-chip':'guesser-chip'}"><span class="player-dot"></span>${p}${i===0?' 👑':' 🎮'}</span>`).join('')
-    + spectators.map(s=>`<span class="player-chip spectator-chip"><span class="player-dot"></span>${s} 👁</span>`).join('');
-
-  if(room.status==='waiting') {
-    document.getElementById('mp-waiting').style.display = '';
-    document.getElementById('mp-game').style.display = 'none';
-    // Show host word area only to host
-    const hostArea = document.getElementById('host-word-area');
-    if(myRole==='host') {
-      hostArea.style.display = '';
-      document.getElementById('waiting-msg').textContent = 'Enter the secret word below';
-      document.getElementById('waiting-sub').textContent = 'Guesser is waiting for you!';
-      document.getElementById('waiting-icon').textContent = '✏️';
-    } else {
-      hostArea.style.display = 'none';
-      document.getElementById('waiting-msg').textContent = players.length<2 ? 'Waiting for a second player…' : 'Waiting for host to start…';
-      document.getElementById('waiting-sub').textContent = players.length<2 ? 'Share this room number with a friend' : 'Host is choosing the secret word';
-    }
-  } else {
-    // Game is on
-    document.getElementById('mp-waiting').style.display = 'none';
-    document.getElementById('mp-game').style.display = '';
-    const guessed = new Set((room.guessed_letters||'').split('').filter(Boolean));
-    mpState = { word:room.word, hint:room.hint||'🎯 Category', guessed, wrongCount:room.wrong_count||0, gameOver:room.status==='done' };
-    renderMPBoard(room);
-  }
-}
-
-function renderMPBoard(room) {
-  const word = room.word;
-  const guessed = mpState.guessed;
-  const wrongCount = mpState.wrongCount;
-  const gameOver = mpState.gameOver;
-
-  // Gallows
-  MB_PARTS.forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.style.display = i<wrongCount?'':'none'; });
-  // Hearts
-  const mh = document.getElementById('mp-hearts-row');
-  mh.innerHTML = Array.from({length:MAX_WRONG},(_,i)=>`<span class="heart${i>=MAX_WRONG-wrongCount?' lost':''}">❤️</span>`).join('');
-  // Wrong letters
-  const wrongL = [...guessed].filter(l=>!word.includes(l));
-  document.getElementById('mp-wrong-display').textContent = wrongL.length ? wrongL.join(' ') : '';
-  // Hint
-  document.getElementById('mp-hint-chip').textContent = room.hint||'🎯 Category';
-  // Word display
-  const wd = document.getElementById('mp-word-display');
-  wd.innerHTML = word.split('').map(l=>{
-    const show = guessed.has(l)||gameOver;
-    return `<div class="letter-box"><div class="letter-char">${show?l:'&nbsp;'}</div><div class="letter-line"></div></div>`;
-  }).join('');
-  // Result
-  const won = word.length>0 && word.split('').every(l=>guessed.has(l));
-  const lost = wrongCount>=MAX_WRONG;
-  if((won||lost||gameOver) && room.status!=='waiting') {
-    showResult(won||(room.status==='won'), 'mp-result-banner', word);
-  } else {
-    document.getElementById('mp-result-banner').style.display='none';
-  }
-  // Keyboard (only guesser can interact, spectator/host read-only)
-  const canGuess = myRole==='guesser' && !gameOver && !won && !lost;
-  buildMPKbd(word, guessed, canGuess);
-  // Guesses log
-  renderGuessesLog(room);
-}
-
-function buildMPKbd(word, guessedSet, active) {
-  const rows = [['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['Z','X','C','V','B','N','M']];
-  const el = document.getElementById('mp-keyboard');
-  el.innerHTML = rows.map(row=>`<div class="kbd-row">${row.map(l=>{
-    const used = guessedSet.has(l);
-    const correct = used && word.includes(l);
-    const cls = used ? (correct?'used-correct':'used-wrong') : '';
-    const disabled = used || !active ? 'disabled' : '';
-    return `<button class="kbd-key ${cls}" ${disabled} onclick="mpGuess('${l}')">${l}</button>`;
-  }).join('')}</div>`).join('');
-}
-
-async function mpGuess(letter) {
-  if(myRole!=='guesser' || mpState.gameOver) return;
-  if(mpState.guessed.has(letter)) return;
-  const newGuessed = new Set([...mpState.guessed, letter]);
-  const newGuessedStr = [...newGuessed].join('');
-  const wrong = [...newGuessed].filter(l=>!mpState.word.includes(l)).length;
-  const won = mpState.word.split('').every(l=>newGuessed.has(l));
-  const lost = wrong >= MAX_WRONG;
-  const newStatus = won?'won': lost?'lost': 'playing';
-  try {
-    await SB.patch(`hangman_rooms?room_number=eq.${currentRoom}`, {
-      guessed_letters: newGuessedStr,
-      wrong_count: wrong,
-      status: (won||lost) ? 'done' : 'playing',
-      last_guess: JSON.stringify({player:myName, letter, correct:mpState.word.includes(letter)})
-    });
-  } catch(e){ /* silent */ }
-}
-
-function renderGuessesLog(room) {
-  const gl = document.getElementById('guesses-list');
-  const entries = JSON.parse(room.guess_log||'[]');
-  if(!entries.length){ gl.innerHTML='<div style="font-size:11px;color:var(--muted)">No guesses yet…</div>'; return; }
-  gl.innerHTML = entries.slice(-20).reverse().map(g=>`<div class="guess-item ${g.correct?'correct':'wrong'}"><span class="gname">${g.player}</span> guessed <span class="gletter">${g.letter}</span> ${g.correct?'✅':'❌'}</div>`).join('');
-}
-
-async function hostStartGame() {
-  const word = document.getElementById('host-word-input').value.trim().toUpperCase().replace(/[^A-Z]/g,'');
-  const hint = document.getElementById('host-hint-input').value.trim() || '🎯 Category';
-  if(word.length<2){ alert('Word must be at least 2 letters!'); return; }
-  try {
-    await SB.patch(`hangman_rooms?room_number=eq.${currentRoom}`, {
-      word, hint, status:'playing', guessed_letters:'', wrong_count:0, guess_log:'[]'
-    });
-  } catch(e){ showError('Error starting game: '+e.message); }
-}
-
-async function leaveRoom() {
-  clearInterval(pollTimer);
-  try {
-    const rows = await SB.get(`hangman_rooms?room_number=eq.${currentRoom}&select=*`);
-    if(rows&&rows.length){
-      const room = rows[0];
-      const players = JSON.parse(room.players||'[]').filter(p=>p!==myName);
-      const spectators = JSON.parse(room.spectators||'[]').filter(p=>p!==myName);
-      if(players.length===0 && spectators.length===0) {
-        // Delete room if empty
-        await fetch(SUPABASE_URL+'/rest/v1/hangman_rooms?room_number=eq.'+currentRoom, {
-          method:'DELETE', headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-        });
-      } else {
-        await SB.patch(`hangman_rooms?room_number=eq.${currentRoom}`, {
-          players:JSON.stringify(players), spectators:JSON.stringify(spectators)
-        });
-      }
-    }
-  } catch(e){}
-  currentRoom = null; myRole = null;
-  document.getElementById('room-view').style.display = 'none';
-  document.getElementById('lobby-view').style.display = '';
-  loadRooms();
-}
-
-function showError(msg) {
-  const el = document.getElementById('error-msg');
-  el.style.display = msg ? '' : 'none';
-  el.textContent = msg;
+  document.getElementById('game-tab').style.display = tab==='game' ? '' : 'none';
+  document.getElementById('lb-tab').style.display = tab==='lb' ? '' : 'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='game')||(i===1&&tab==='lb')));
+  if(tab==='lb') loadLeaderboard();
 }
 
 // ============================================================
 // INIT
 // ============================================================
-startSoloGame();
-updateStats();
-try{ (adsbygoogle=window.adsbygoogle||[]).push({}) }catch(e){}
+startGame();
+updateStatsUI();
+try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
 </script>
 </body>
 </html>
