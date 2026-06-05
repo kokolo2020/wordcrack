@@ -17,22 +17,22 @@
   --radius:14px;--shadow:0 2px 16px rgba(91,79,207,.10);
 }
 html{font-size:16px}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
-.app{max-width:480px;margin:0 auto;padding:20px 16px 16px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
+.app{max-width:480px;margin:0 auto;padding:12px 16px 16px}
 
 /* NAV */
-.nav-bar{display:flex;gap:7px;margin-bottom:20px}
-.nav-link{flex:1;padding:9px 4px;text-align:center;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;border:1.5px solid var(--border);color:var(--muted);background:var(--surface);letter-spacing:.02em}
+.nav-bar{display:flex;gap:7px;margin-bottom:10px}
+.nav-link{flex:1;padding:8px 4px;text-align:center;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;border:1.5px solid var(--border);color:var(--muted);background:var(--surface);letter-spacing:.02em}
 .nav-link.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* HEADER */
-.page-logo{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
-.page-title{font-size:clamp(30px,8vw,42px);font-weight:900;color:var(--text);line-height:1;letter-spacing:-1.5px;margin-bottom:4px}
+.page-logo{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.page-title{font-size:clamp(26px,7vw,36px);font-weight:900;color:var(--text);line-height:1;letter-spacing:-1.5px;margin-bottom:2px}
 .page-title span{color:var(--accent)}
-.page-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.page-sub{font-size:12px;color:var(--muted);margin-bottom:10px}
 
 /* TABS */
-.tab-bar{display:flex;gap:6px;margin-bottom:20px;background:var(--chip);border-radius:12px;padding:4px}
+.tab-bar{display:flex;gap:6px;margin-bottom:10px;background:var(--chip);border-radius:12px;padding:4px}
 .tab-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .18s}
 .tab-btn.active{background:var(--surface);color:var(--accent);box-shadow:var(--shadow)}
 
@@ -40,13 +40,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .card{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
 
 /* DIFFICULTY */
-.diff-row{display:flex;gap:7px;margin-bottom:16px}
+.diff-row{display:flex;gap:7px;margin-bottom:10px}
 .diff-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);font-family:var(--font);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;text-align:center;transition:all .15s}
 .diff-btn.active{border-color:var(--accent);background:var(--chip);color:var(--accent)}
 
 /* GALLOWS */
-.gallows-wrap{display:flex;justify-content:center;margin-bottom:12px}
-.gallows-wrap svg{width:160px;height:160px}
+.gallows-wrap{display:flex;justify-content:center;margin-bottom:8px}
+.gallows-wrap svg{width:130px;height:130px}
 
 /* WORD DISPLAY */
 .word-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:14px;min-height:52px;align-items:flex-end}
@@ -113,7 +113,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .lb-loading{text-align:center;padding:16px;color:var(--muted);font-size:12px}
 
 /* AD */
-.ad-wrap{margin:10px 0;min-height:60px;display:flex;align-items:center;justify-content:center}
+.ad-wrap{margin:8px 0;min-height:52px;display:flex;align-items:center;justify-content:center}
+
+/* EMOJI BURST */
+.emoji-burst{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
+.burst-emoji{position:absolute;font-size:32px;animation:burstFall 1.8s ease-in forwards}
+@keyframes burstFall{
+  0%{transform:translateY(-10px) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
 
 @media(max-width:360px){.kbd-key{width:28px;height:34px;font-size:11px}}
 </style>
@@ -128,10 +136,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <a href="/" class="nav-link">🔤 WordCrack</a>
     <a href="hangman.html" class="nav-link active">🪢 Hangman</a>
   </nav>
-
-  <div class="ad-wrap">
-    <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-9700227474442026" data-ad-slot="AUTO"></ins>
-  </div>
 
   <!-- TABS -->
   <div class="tab-bar">
@@ -346,6 +350,26 @@ function showResult(won) {
       </div>
     ` : ''}
   `;
+  emojiBurst(won);
+}
+
+function emojiBurst(won) {
+  const emojis = won
+    ? ['👏','👏','🎉','🎊','✨','🏆','👏','🥳','👏','🎉']
+    : ['😢','😭','💀','😞','😓','😢','💔','😭','😢','😞'];
+  const burst = document.createElement('div');
+  burst.className = 'emoji-burst';
+  document.body.appendChild(burst);
+  emojis.forEach((em, i) => {
+    const span = document.createElement('span');
+    span.className = 'burst-emoji';
+    span.textContent = em;
+    span.style.left = (10 + Math.random() * 80) + '%';
+    span.style.animationDelay = (i * 0.12) + 's';
+    span.style.fontSize = (24 + Math.random() * 20) + 'px';
+    burst.appendChild(span);
+  });
+  setTimeout(() => burst.remove(), 2500);
 }
 
 async function submitScore() {
