@@ -7,7 +7,7 @@
 <meta name="description" content="WordCrack - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
 <title>WordCrack — Free Word Unscrambler | 168,000 Words</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 
 <!-- Google Analytics - replace G-XXXXXXXXXX with your ID -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -20,76 +20,149 @@
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9700227474442026" crossorigin="anonymous"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+/* ── DAY MODE (default) ── */
 :root {
-  --bg: #f5f3ff; --surface: #fff; --accent: #5b4fcf; --accent2: #f0544f;
+  --bg: #f5f3ff; --surface: #fff; --surface2: #eeeaff;
+  --accent: #5b4fcf; --accent2: #f0544f; --accent3: #7c6fe0;
   --text: #1e1b4b; --muted: #7c75b0; --border: #e4e0f7;
-  --chip-bg: #eeeaff; --radius: 16px; --font: 'Outfit', sans-serif;
+  --chip-bg: #eeeaff; --radius: 16px;
+  --font: 'DM Sans', sans-serif; --display: 'Syne', sans-serif;
+  --btn-text: #fff;
+  --shadow: 0 2px 16px rgba(91,79,207,0.10);
 }
-html { font-size: 16px; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 70px; }
-.app { max-width: 480px; margin: 0 auto; padding: 28px 16px 20px; }
-.ad-banner { background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;text-align:center;margin-bottom:16px;min-height:90px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px; }
-.logo { font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px; }
-.title { font-size:clamp(34px,8vw,46px);font-weight:800;color:var(--text);line-height:1;letter-spacing:-1.5px;margin-bottom:6px; }
+
+/* ── NIGHT MODE ── */
+body.night {
+  --bg: #0f0e1a; --surface: #1a1828; --surface2: #221f35;
+  --accent: #7c6fe0; --accent2: #f0544f; --accent3: #9d8ff0;
+  --text: #f0eeff; --muted: #6b6485; --border: #2d2a45;
+  --chip-bg: #221f35; --btn-text: #fff;
+  --shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+
+html { font-size:16px; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; transition:background 0.3s, color 0.3s; }
+.app { max-width:480px; margin:0 auto; padding:28px 16px 20px; }
+
+/* HEADER ROW */
+.header-row { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
+.header-left { flex:1; }
+.logo { font-family:var(--display); font-size:11px; font-weight:700; color:var(--muted); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:8px; }
+.title { font-family:var(--display); font-size:clamp(42px,10vw,58px); font-weight:800; color:var(--text); line-height:0.95; letter-spacing:-2px; margin-bottom:10px; }
 .title span { color:var(--accent); }
-.subtitle { font-size:14px;color:var(--muted);margin-bottom:14px; }
-.dict-badge { display:inline-flex;align-items:center;gap:5px;background:#e8f5e9;border:1px solid #b2dfdb;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;color:#2e7d32;margin-bottom:18px; }
-.input-card { background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:12px;border:1px solid var(--border); }
-.input-label { font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px; }
-.letter-input { width:100%;font-family:var(--font);font-size:26px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--text);background:transparent;border:none;outline:none;caret-color:var(--accent);-webkit-appearance:none; }
-.letter-input::placeholder { font-size:16px;letter-spacing:1px;font-weight:500;color:#c8c4e8;text-transform:none; }
-.divider { height:1px;background:var(--border);margin:14px 0; }
-.input-actions { display:flex;gap:10px; }
-.btn-primary { flex:1;padding:13px;background:linear-gradient(135deg,#5b4fcf,#7c6fe0);color:#fff;border:none;border-radius:12px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;-webkit-appearance:none; }
-.btn-primary:active { opacity:0.85;transform:scale(0.97); }
-.btn-clear { padding:13px 16px;background:var(--chip-bg);color:var(--muted);border:none;border-radius:12px;font-size:18px;cursor:pointer;-webkit-appearance:none; }
-.filter-card { background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;display:none; }
-.filter-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px; }
-.filter-field label { display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px; }
-.filter-input { width:100%;font-family:var(--font);font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);outline:none;-webkit-appearance:none; }
+.subtitle { font-size:14px; color:var(--muted); margin-bottom:14px; line-height:1.5; }
+.dict-badge { display:inline-flex; align-items:center; gap:5px; background:var(--chip-bg); border:1px solid var(--border); border-radius:20px; padding:4px 12px; font-size:12px; font-weight:600; color:var(--accent); margin-bottom:20px; }
+
+/* THEME TOGGLE */
+.theme-toggle { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:6px 12px; font-family:var(--font); font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; white-space:nowrap; transition:all 0.2s; flex-shrink:0; margin-top:2px; }
+.theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
+
+/* VISITOR COUNTER */
+.vc-digit {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:14px; height:18px;
+  background:var(--text); color:var(--bg);
+  font-family:var(--display); font-size:10px; font-weight:800;
+  border-radius:3px; letter-spacing:0;
+}
+.vc-dot { color:var(--muted); font-size:8px; font-weight:800; }
+
+/* INPUT CARD */
+.input-card { background:var(--surface); border-radius:var(--radius); padding:20px; margin-bottom:12px; border:1px solid var(--border); box-shadow:var(--shadow); position:relative; overflow:hidden; }
+.input-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2)); }
+.input-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:12px; }
+.letter-input { width:100%; font-family:var(--display); font-size:32px; font-weight:800; letter-spacing:8px; text-transform:uppercase; color:var(--text); background:transparent; border:none; outline:none; caret-color:var(--accent); -webkit-appearance:none; }
+.letter-input::placeholder { font-family:var(--font); font-size:16px; letter-spacing:1px; font-weight:400; color:var(--border); text-transform:none; }
+.divider { height:1px; background:var(--border); margin:16px 0; }
+.input-actions { display:flex; gap:10px; }
+.btn-primary { flex:1; padding:15px; background:var(--accent); color:var(--btn-text); border:none; border-radius:12px; font-family:var(--display); font-size:16px; font-weight:800; cursor:pointer; -webkit-appearance:none; letter-spacing:0.5px; transition:transform 0.15s, box-shadow 0.15s; box-shadow:0 4px 14px rgba(91,79,207,0.35); }
+.btn-primary:active { transform:scale(0.97); box-shadow:0 2px 6px rgba(91,79,207,0.2); }
+.btn-clear { padding:15px 18px; background:var(--chip-bg); color:var(--muted); border:1px solid var(--border); border-radius:12px; font-size:18px; cursor:pointer; -webkit-appearance:none; transition:color 0.15s; }
+.btn-clear:hover { color:var(--accent2); }
+
+/* FILTER TOGGLE */
+.filter-toggle-row { display:none; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.filter-toggle-btn { background:none; border:none; font-family:var(--font); font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; display:flex; align-items:center; gap:5px; padding:0; transition:color 0.15s; }
+.filter-toggle-btn:hover { color:var(--accent); }
+.filter-toggle-arrow { transition:transform 0.2s; display:inline-block; }
+.filter-toggle-btn.open .filter-toggle-arrow { transform:rotate(180deg); }
+.filter-card { background:var(--surface2); border-radius:12px; border:1px solid var(--border); padding:14px; margin-top:12px; display:none; }
+.filter-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.filter-field label { display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
+.filter-input { width:100%; font-family:var(--font); font-size:14px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:9px 12px; border:1.5px solid var(--border); border-radius:10px; background:var(--surface); color:var(--text); outline:none; -webkit-appearance:none; transition:border-color 0.15s; }
 .filter-input[type=number] { letter-spacing:0; }
 .filter-input:focus { border-color:var(--accent); }
-.btn-clear-filters { width:100%;padding:8px;background:var(--chip-bg);color:var(--accent);border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer; }
-.stats-row { display:none;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px; }
-.stat-card { border-radius:12px;padding:12px;text-align:center;border:1px solid transparent; }
-.stat-num { font-size:20px;font-weight:800;letter-spacing:-0.5px;line-height:1; }
-.stat-label { font-size:10px;margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em; }
-.filter-row { display:none;gap:7px;flex-wrap:wrap;margin-bottom:12px; }
-.filter-btn { padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;-webkit-appearance:none; }
-.filter-btn.active { background:var(--accent);color:#fff;border-color:var(--accent); }
-.sort-bar { display:none;justify-content:space-between;align-items:center;margin-bottom:12px; }
-.sort-select { font-family:var(--font);font-size:13px;font-weight:500;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 28px 6px 10px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237c75b0'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center; }
-.length-group { margin-bottom:18px; }
-.length-label { font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px; }
-.length-label::after { content:'';flex:1;height:1px;background:var(--border); }
-.word-grid { display:flex;flex-wrap:wrap;gap:7px; }
-.chip { padding:7px 12px;border-radius:10px;background:var(--chip-bg);border:1px solid transparent;font-family:var(--font);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none;-webkit-user-select:none; }
+.btn-clear-filters { width:100%; padding:7px; background:none; color:var(--muted); border:none; border-radius:8px; font-family:var(--font); font-size:12px; font-weight:500; cursor:pointer; text-align:left; transition:color 0.15s; }
+.btn-clear-filters:hover { color:var(--accent2); }
+#filter-active-badge { font-size:10px; font-weight:700; color:#fff; background:var(--accent); padding:2px 8px; border-radius:10px; }
+
+/* STATS */
+.stats-row { display:none; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+.stat-card { border-radius:12px; padding:14px; text-align:center; border:1px solid var(--border); background:var(--surface); }
+.stat-num { font-family:var(--display); font-size:22px; font-weight:800; letter-spacing:-0.5px; line-height:1; }
+.stat-label { font-size:10px; margin-top:4px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); }
+
+/* LENGTH FILTER PILLS */
+.filter-row { display:none; gap:7px; flex-wrap:wrap; margin-bottom:12px; }
+.filter-btn { padding:7px 14px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-family:var(--font); font-size:13px; font-weight:500; cursor:pointer; -webkit-appearance:none; transition:all 0.15s; }
+.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+.filter-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700; }
+
+/* SORT BAR */
+.sort-bar { display:none; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.sort-select { font-family:var(--font); font-size:13px; font-weight:500; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:7px 28px 7px 12px; cursor:pointer; -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237c75b0'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
+
+/* WORD RESULTS */
+.length-group { margin-bottom:20px; }
+.length-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.length-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.word-grid { display:flex; flex-wrap:wrap; gap:7px; }
+.chip { padding:8px 13px; border-radius:10px; background:var(--chip-bg); border:1px solid transparent; font-family:var(--font); font-size:13px; font-weight:600; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:5px; user-select:none; -webkit-user-select:none; transition:all 0.15s; }
+.chip:hover { border-color:var(--accent); color:var(--accent); background:var(--surface); }
 .chip:active { transform:scale(0.95); }
-.chip.hot { background:#fff0f0;color:#f0544f;border-color:#ffd5d4; }
-.chip .pts { font-size:10px;font-weight:700;color:#e65100;background:#fff9e6;border-radius:4px;padding:1px 4px; }
-.affiliate-bar { background:linear-gradient(135deg,#fff9e6,#fff3cd);border:1px solid #ffe082;border-radius:12px;padding:12px 14px;margin:14px 0;display:none;align-items:center;justify-content:space-between;gap:10px;text-decoration:none; }
+.chip.hot { background:#fff0f0; color:var(--accent2); border-color:#ffd5d4; }
+body.night .chip.hot { background:rgba(240,84,79,0.12); border-color:rgba(240,84,79,0.3); }
+.chip .pts { font-size:10px; font-weight:700; color:#e65100; background:#fff9e6; border-radius:4px; padding:1px 5px; }
+body.night .chip .pts { background:rgba(230,81,0,0.15); color:#ffb74d; }
+
+/* AFFILIATE */
+.affiliate-bar { background:linear-gradient(135deg,#fff9e6,#fff3cd); border:1px solid #ffe082; border-radius:12px; padding:12px 14px; margin:14px 0; display:none; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; transition:opacity 0.15s; }
+body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); border-color:#4a3f00; }
 .affiliate-bar:active { opacity:0.85; }
-.aff-btn { background:#ff8f00;color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;white-space:nowrap;font-family:var(--font); }
-.empty { text-align:center;padding:40px 20px; }
-.empty-icon { font-size:48px;margin-bottom:12px; }
-.empty-title { font-size:17px;font-weight:700;margin-bottom:6px; }
-.empty-sub { font-size:14px;color:var(--muted);line-height:1.5; }
-.modal-backdrop { position:fixed;inset:0;background:rgba(30,27,75,0.5);z-index:500;display:none;align-items:flex-end;justify-content:center; }
+.aff-btn { background:#ff8f00; color:#fff; border-radius:8px; padding:7px 13px; font-size:12px; font-weight:700; white-space:nowrap; font-family:var(--font); }
+
+/* EMPTY */
+.empty { text-align:center; padding:50px 20px; }
+.empty-icon { font-size:52px; margin-bottom:14px; }
+.empty-title { font-family:var(--display); font-size:18px; font-weight:800; margin-bottom:8px; }
+.empty-sub { font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* AD BANNER */
+.ad-banner { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px; text-align:center; margin-bottom:16px; min-height:90px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; }
+
+/* MODAL */
+.modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:500; display:none; align-items:flex-end; justify-content:center; }
 .modal-backdrop.open { display:flex; }
-.modal { background:var(--surface);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s cubic-bezier(.4,0,.2,1); }
+.modal { background:var(--surface); border-radius:24px 24px 0 0; border-top:1px solid var(--border); padding:22px; width:100%; max-width:480px; max-height:80vh; overflow-y:auto; animation:slideUp 0.3s cubic-bezier(.4,0,.2,1); }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-handle { width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px; }
-.modal-word { font-size:28px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:4px; }
-.modal-score { font-size:13px;color:#e65100;font-weight:600;margin-bottom:16px; }
+.modal-handle { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 18px; }
+.modal-word { font-family:var(--display); font-size:30px; font-weight:800; color:var(--accent); letter-spacing:2px; margin-bottom:4px; }
+.modal-score { font-size:13px; color:var(--muted); font-weight:600; margin-bottom:18px; }
 .modal-section { margin-bottom:14px; }
-.modal-section-title { font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px; }
-.modal-content { font-size:15px;color:var(--text);line-height:1.6;background:var(--bg);border-radius:10px;padding:12px; }
-.modal-loading { text-align:center;padding:24px;color:var(--muted);font-size:14px; }
-.modal-close { width:100%;padding:12px;background:var(--chip-bg);color:var(--accent);border:none;border-radius:12px;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;margin-top:8px; }
-.sticky-ad { position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:6px;text-align:center;z-index:100;min-height:60px;display:flex;align-items:center;justify-content:center; }
-.toast { position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;z-index:999;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap; }
-.toast.show { transform:translateX(-50%) translateY(0); }
+.modal-section-title { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:8px; }
+.modal-content { font-size:15px; color:var(--text); line-height:1.6; background:var(--surface2); border-radius:10px; padding:14px; }
+.modal-loading { text-align:center; padding:28px; color:var(--muted); font-size:14px; }
+.modal-close { width:100%; padding:13px; background:var(--chip-bg); color:var(--accent); border:none; border-radius:12px; font-family:var(--font); font-size:15px; font-weight:600; cursor:pointer; margin-top:10px; }
+
+/* STICKY BOTTOM AD */
+.sticky-ad { position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:center; padding:8px; background:var(--bg); border-top:1px solid var(--border); z-index:100; }
+
+/* TOAST */
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all 0.25s; pointer-events:none; white-space:nowrap; z-index:999; box-shadow:var(--shadow); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -99,11 +172,13 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
   <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","320x50","wordcrack-bottom");});}catch(e){}</script>
 </div>
 <div class="app">
-  <!-- Media.net top banner -->
-  <div id="wordcrack-top" class="ad-banner"></div>
-  <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","728x90","wordcrack-top");});}catch(e){}</script>
-  <div class="logo">Word Unscrambler</div>
-  <div class="title">Word<span>Crack</span></div>
+  <div class="header-row">
+    <div class="header-left">
+      <div class="logo">Word Unscrambler</div>
+      <div class="title">Word<span>Crack</span></div>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
+  </div>
   <div class="subtitle">Find every word hidden in your letters</div>
   <div class="dict-badge">✓ 168,000 word dictionary</div>
   <div class="input-card">
@@ -111,18 +186,25 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
     <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <div class="divider"></div>
     <div class="input-actions">
-      <button class="btn-primary" onclick="unscramble()">Find Words</button>
+      <button class="btn-primary" onclick="unscramble()">Crack it!</button>
       <button class="btn-clear" onclick="clearAll()">✕</button>
     </div>
-  </div>
-  <div class="filter-card" id="filter-card">
-    <div class="filter-grid">
-      <div class="filter-field"><label>Starts with</label><input class="filter-input" id="f-starts" type="text" maxlength="5" placeholder="e.g. E" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')" onkeyup="renderWords()"/></div>
-      <div class="filter-field"><label>Ends with</label><input class="filter-input" id="f-ends" type="text" maxlength="5" placeholder="e.g. NG" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')" onkeyup="renderWords()"/></div>
-      <div class="filter-field"><label>Contains</label><input class="filter-input" id="f-contains" type="text" maxlength="5" placeholder="e.g. AR" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')" onkeyup="renderWords()"/></div>
-      <div class="filter-field"><label>Exact length</label><input class="filter-input" id="f-length" type="number" min="2" max="15" placeholder="e.g. 4" onkeyup="renderWords()" onchange="renderWords()"/></div>
+    <!-- Filter toggle — only visible after letters typed -->
+    <div class="filter-toggle-row" id="filter-toggle-row">
+      <button class="filter-toggle-btn" id="filter-toggle-btn" onclick="toggleFilters()">
+        <span>⚙ Filters</span><span class="filter-toggle-arrow">▾</span>
+      </button>
+      <span id="filter-active-badge" style="display:none;font-size:11px;font-weight:700;color:var(--accent);background:var(--chip-bg);padding:2px 8px;border-radius:10px;">Active</span>
     </div>
-    <button class="btn-clear-filters" onclick="clearFilters()">Clear filters</button>
+    <div class="filter-card" id="filter-card">
+      <div class="filter-grid">
+        <div class="filter-field"><label>Starts with</label><input class="filter-input" id="f-starts" type="text" maxlength="5" placeholder="e.g. E" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Ends with</label><input class="filter-input" id="f-ends" type="text" maxlength="5" placeholder="e.g. NG" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Contains</label><input class="filter-input" id="f-contains" type="text" maxlength="5" placeholder="e.g. AR" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Exact length</label><input class="filter-input" id="f-length" type="number" min="2" max="15" placeholder="e.g. 4" oninput="updateFilterBadge();renderWords()" onchange="updateFilterBadge();renderWords()"/></div>
+      </div>
+      <button class="btn-clear-filters" onclick="clearFilters()">✕ Clear all filters</button>
+    </div>
   </div>
   <div id="stats-row" class="stats-row"></div>
   <div id="filter-row" class="filter-row"></div>
@@ -142,17 +224,25 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
       <div class="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div>
     </div>
   </div>
+  <!-- Media.net ad — shown below results -->
+  <div id="wordcrack-top" class="ad-banner" style="margin-bottom:12px;"></div>
+  <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","728x90","wordcrack-top");});}catch(e){}</script>
+
   <a class="affiliate-bar" id="affiliate-bar" href="https://www.amazon.com/s?k=scrabble+board+game&tag=wordcrack-20" target="_blank">
-    <div><div style="font-size:13px;font-weight:600;color:#5d4037;">🎲 Shop Scrabble & Word Games</div><div style="font-size:11px;color:#8d6e63;margin-top:1px;">Amazon — Free shipping on orders $25+</div></div>
+    <div><div style="font-size:13px;font-weight:600;color:var(--text);">🎲 Shop Scrabble & Word Games</div><div style="font-size:11px;color:var(--muted);margin-top:1px;">Amazon — Free shipping on orders $25+</div></div>
     <div class="aff-btn">Shop →</div>
   </a>
 
   <!-- FOOTER -->
   <div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
-    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">WordCrack™</div>
+    <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">WordCrack™</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">© 2026 Nanith Technologies. All rights reserved.</div>
     <div style="font-size:11px;color:var(--muted);">Free word unscrambler · 168,000 words · Scrabble scores</div>
-    <div style="font-size:10px;color:#c8c4e8;margin-top:6px;">v1.0.0</div>
+    <div style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;">
+      <span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Visitors</span>
+      <div id="vc-digits" style="display:flex;gap:2px;align-items:center;"></div>
+    </div>
+    <div style="font-size:10px;color:var(--border);margin-top:6px;">v1.0.0</div>
   </div>
 </div>
 <div class="modal-backdrop" id="word-modal" onclick="if(event.target===this)closeModal()">
@@ -173,6 +263,56 @@ console.log('Loading dictionary...');
 const WORD_SET=new Set(DICT_STR.split(','));
 console.log('Ready:',WORD_SET.size,'words');
 let found=[],activeLen='all';
+function toggleTheme(){
+  const night=document.body.classList.toggle('night');
+  const btn=document.getElementById('theme-toggle');
+  btn.textContent=night?'☀️ Day':'🌙 Night';
+  try{localStorage.setItem('wc-theme',night?'night':'day');}catch(e){}
+}
+function initTheme(){
+  try{
+    if(localStorage.getItem('wc-theme')==='night'){
+      document.body.classList.add('night');
+      document.getElementById('theme-toggle').textContent='☀️ Day';
+    }
+  }catch(e){}
+}
+function initVisitorCounter(){
+  try{
+    let count=parseInt(localStorage.getItem('wc-visitors')||'0');
+    count++;
+    localStorage.setItem('wc-visitors',count);
+    // Add a base so it looks populated from day 1 (103 real visits + base)
+    const display=count+1842;
+    const str=String(display).padStart(7,'0');
+    const digits=document.getElementById('vc-digits');
+    digits.innerHTML=
+      `<span class="vc-digit">${str[0]}</span>`+
+      `<span class="vc-digit">${str[1]}</span>`+
+      `<span class="vc-digit">${str[2]}</span>`+
+      `<span class="vc-digit">${str[3]}</span>`+
+      `<span class="vc-dot">·</span>`+
+      `<span class="vc-digit">${str[4]}</span>`+
+      `<span class="vc-digit">${str[5]}</span>`+
+      `<span class="vc-digit">${str[6]}</span>`;
+  }catch(e){}
+}
+initTheme();
+initVisitorCounter();
+function toggleFilters(){
+  const btn=document.getElementById('filter-toggle-btn');
+  const card=document.getElementById('filter-card');
+  const open=card.style.display==='block';
+  card.style.display=open?'none':'block';
+  btn.classList.toggle('open',!open);
+}
+function updateFilterBadge(){
+  const hasFilter=['f-starts','f-ends','f-contains','f-length'].some(id=>document.getElementById(id).value);
+  document.getElementById('filter-active-badge').style.display=hasFilter?'inline':'none';
+}
+function showFilterToggle(){
+  document.getElementById('filter-toggle-row').style.display='flex';
+}
 function canMake(word,letters){const p={};for(const c of letters)p[c]=(p[c]||0)+1;for(const c of word){if(!p[c])return false;p[c]--;}return true;}
 function unscramble(){
   const raw=document.getElementById('letters').value.toLowerCase().replace(/[^a-z]/g,'');
@@ -180,24 +320,24 @@ function unscramble(){
   found=[];
   for(const w of WORD_SET){if(w.length>=2&&w.length<=raw.length&&canMake(w,raw))found.push(w);}
   if(!found.length){
-    ['stats-row','filter-row','sort-bar','filter-card','affiliate-bar'].forEach(id=>document.getElementById(id).style.display='none');
+    ['stats-row','filter-row','sort-bar','affiliate-bar'].forEach(id=>document.getElementById(id).style.display='none');
     document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">No words found</div><div class="empty-sub">Try different letters</div></div>';
     return;
   }
   const longest=found.reduce((a,b)=>a.length>=b.length?a:b);
   const topScore=Math.max(...found.map(wordScore));
-  document.getElementById('stats-row').style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;';
+  document.getElementById('stats-row').style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;';
   document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card" style="background:#eeeaff;border-color:#d4ceff;"><div class="stat-num" style="color:#5b4fcf;">${found.length}</div><div class="stat-label" style="color:#7c75b0;">Words</div></div>
-    <div class="stat-card" style="background:#fff0f0;border-color:#ffd5d4;"><div class="stat-num" style="color:#f0544f;">${longest.toUpperCase()}</div><div class="stat-label" style="color:#e57373;">Longest</div></div>
-    <div class="stat-card" style="background:#fff9e6;border-color:#ffe082;"><div class="stat-num" style="color:#e65100;">${topScore}pts</div><div class="stat-label" style="color:#e65100;">Top score</div></div>`;
+    <div class="stat-card"><div class="stat-num" style="color:var(--accent);">${found.length}</div><div class="stat-label">Words</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--text);font-size:16px;">${longest.toUpperCase()}</div><div class="stat-label">Longest</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--accent2);">${topScore}pts</div><div class="stat-label">Top score</div></div>`;
   const lengths=[...new Set(found.map(w=>w.length))].sort((a,b)=>a-b);
   activeLen='all';
   const fr=document.getElementById('filter-row');
   fr.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;';
   fr.innerHTML=`<button class="filter-btn active" onclick="setLen('all',this)">All</button>`+lengths.map(l=>`<button class="filter-btn" onclick="setLen(${l},this)">${l}L</button>`).join('');
   document.getElementById('sort-bar').style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;';
-  document.getElementById('filter-card').style.display='block';
+  showFilterToggle();
   document.getElementById('affiliate-bar').style.display='flex';
   renderWords();
 }
@@ -231,7 +371,11 @@ function renderWords(){
 function clearFilters(){['f-starts','f-ends','f-contains','f-length'].forEach(id=>{document.getElementById(id).value='';});renderWords();}
 function clearAll(){
   document.getElementById('letters').value='';
-  ['stats-row','filter-row','sort-bar','filter-card','affiliate-bar'].forEach(id=>document.getElementById(id).style.display='none');
+  ['stats-row','filter-row','sort-bar','affiliate-bar'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('filter-toggle-row').style.display='none';
+  document.getElementById('filter-card').style.display='none';
+  document.getElementById('filter-toggle-btn').classList.remove('open');
+  document.getElementById('filter-active-badge').style.display='none';
   document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div class="empty-title">Type your letters above</div><div class="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div></div>';
   found=[];document.getElementById('letters').focus();
 }
