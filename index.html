@@ -33,6 +33,15 @@
   --btn-text: #fff;
   --shadow: 0 2px 16px rgba(91,79,207,0.10);
 }
+/* ── COLOR THEMES ── */
+:root[data-theme="green"] { --bg:#f0fdf4; --accent:#16a34a; --accent3:#22c55e; --surface2:#dcfce7; --chip-bg:#dcfce7; --border:#bbf7d0; --muted:#4ade80; --text:#14532d; --shadow:0 2px 16px rgba(22,163,74,0.10); }
+:root[data-theme="pink"]  { --bg:#fdf2f8; --accent:#db2777; --accent3:#ec4899; --surface2:#fce7f3; --chip-bg:#fce7f3; --border:#fbcfe8; --muted:#f472b6; --text:#831843; --shadow:0 2px 16px rgba(219,39,119,0.10); }
+:root[data-theme="blue"]  { --bg:#eff6ff; --accent:#2563eb; --accent3:#3b82f6; --surface2:#dbeafe; --chip-bg:#dbeafe; --border:#bfdbfe; --muted:#60a5fa; --text:#1e3a8a; --shadow:0 2px 16px rgba(37,99,235,0.10); }
+:root[data-theme="amber"] { --bg:#fffbeb; --accent:#d97706; --accent3:#f59e0b; --surface2:#fef3c7; --chip-bg:#fef3c7; --border:#fde68a; --muted:#fbbf24; --text:#78350f; --shadow:0 2px 16px rgba(217,119,6,0.10); }
+/* swatches */
+.color-swatches { display:flex; align-items:center; gap:5px; }
+.cswatch { width:14px; height:14px; border-radius:50%; cursor:pointer; border:1.5px solid transparent; flex-shrink:0; transition:transform .15s; }
+.cswatch.active { border-color:#fff; outline:2px solid #888; transform:scale(1.2); }
 
 /* ── NIGHT MODE ── */
 body.night {
@@ -71,7 +80,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); min-hei
 .vc-dot { color:var(--muted); font-size:8px; font-weight:800; }
 
 /* INPUT CARD */
-.input-card { background:var(--surface); border-radius:var(--radius); padding:20px; margin-bottom:12px; border:1px solid var(--border); box-shadow:var(--shadow); position:relative; overflow:hidden; }
+.input-card { background:var(--surface); border-radius:0 var(--radius) var(--radius) var(--radius); padding:20px; margin-bottom:12px; border:1px solid var(--border); box-shadow:var(--shadow); position:relative; overflow:hidden; }
 .input-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2)); }
 .input-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:12px; }
 .letter-input { width:100%; font-family:var(--display); font-size:32px; font-weight:800; letter-spacing:8px; text-transform:uppercase; color:var(--text); background:transparent; border:none; outline:none; caret-color:var(--accent); -webkit-appearance:none; }
@@ -85,7 +94,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); min-hei
 
 /* FILTER TOGGLE */
 .filter-toggle-row { display:none; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
-.filter-toggle-btn { background:none; border:none; font-family:var(--font); font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; display:flex; align-items:center; gap:5px; padding:0; transition:color 0.15s; }
+.filter-toggle-btn { background:none; border:none; font-family:var(--font); font-size:13px; font-weight:700; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:5px; padding:0; transition:color 0.15s; }
 .filter-toggle-btn:hover { color:var(--accent); }
 .filter-toggle-arrow { transition:transform 0.2s; display:inline-block; }
 .filter-toggle-btn.open .filter-toggle-arrow { transform:rotate(180deg); }
@@ -177,20 +186,29 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
       <div class="logo">Word Unscrambler</div>
       <div class="title">Word<span>Crack</span></div>
     </div>
-    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
+      <div class="color-swatches">
+        <div class="cswatch active" style="background:#5b4fcf" onclick="setColor('purple',this)" title="Purple"></div>
+        <div class="cswatch" style="background:#16a34a" onclick="setColor('green',this)" title="Green"></div>
+        <div class="cswatch" style="background:#db2777" onclick="setColor('pink',this)" title="Pink"></div>
+        <div class="cswatch" style="background:#2563eb" onclick="setColor('blue',this)" title="Blue"></div>
+        <div class="cswatch" style="background:#d97706" onclick="setColor('amber',this)" title="Amber"></div>
+      </div>
+    </div>
   </div>
   <div class="subtitle">Find every word hidden in your letters</div>
-  <div style="display:flex;gap:8px;margin-bottom:16px;">
-  <span style="font-size:13px;font-weight:700;color:var(--muted);padding:8px 0;">🔤 WordCrack</span>
-  <a href="hangman.html" style="padding:8px 14px;background:var(--chip-bg);border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;">🪢 Hangman</a>
-</div>
-  <div class="dict-badge">✓ 168,000 word dictionary</div>
+  <!-- FOLDER TABS -->
+  <div style="display:flex;gap:0;margin-bottom:-1px;position:relative;z-index:1">
+    <div style="padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-bottom-color:var(--surface);border-radius:10px 10px 0 0;font-size:13px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px">🔤 WordCrack</div>
+    <a href="hangman.html" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;margin-left:4px">🪢 Hangman</a>
+  </div>
   <div class="input-card">
     <div class="input-label">Your letters</div>
     <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <div class="divider"></div>
     <div class="input-actions">
-      <button class="btn-primary" onclick="unscramble()">Crack it!</button>
+      <button class="btn-primary" onclick="unscramble()">Reveal</button>
       <button class="btn-clear" onclick="clearAll()">✕</button>
     </div>
     <!-- Filter toggle — only visible after letters typed -->
@@ -273,12 +291,26 @@ function toggleTheme(){
   btn.textContent=night?'☀️ Day':'🌙 Night';
   try{localStorage.setItem('wc-theme',night?'night':'day');}catch(e){}
 }
+function setColor(theme, el){
+  document.querySelectorAll('.cswatch').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  const root=document.documentElement;
+  if(theme==='purple'){ root.removeAttribute('data-theme'); }
+  else { root.setAttribute('data-theme', theme); }
+  try{ localStorage.setItem('wc-color', theme); }catch(e){}
+}
 function initTheme(){
   try{
     if(localStorage.getItem('wc-theme')==='night'){
       document.body.classList.add('night');
       document.getElementById('theme-toggle').textContent='☀️ Day';
     }
+    const savedColor=localStorage.getItem('wc-color')||'purple';
+    if(savedColor!=='purple'){ document.documentElement.setAttribute('data-theme',savedColor); }
+    document.querySelectorAll('.cswatch').forEach(s=>{
+      if(s.title.toLowerCase()===savedColor) s.classList.add('active');
+      else s.classList.remove('active');
+    });
   }catch(e){}
 }
 function initVisitorCounter(){
