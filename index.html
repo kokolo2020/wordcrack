@@ -173,35 +173,38 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all 0.25s; pointer-events:none; white-space:nowrap; z-index:999; box-shadow:var(--shadow); }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* PAGE LAYOUT */
-.page-wrapper{display:grid;grid-template-columns:220px 1fr;gap:20px;max-width:1080px;margin:0 auto;padding:0 16px;align-items:start;}
-@media(max-width:800px){.page-wrapper{grid-template-columns:1fr;}.game-panel{position:static!important;}}
-/* GAME PANEL */
-.game-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:sticky;top:16px;}
-.game-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:block;}
-.timer-wrap{position:relative;width:68px;height:68px;margin:0 auto 14px;}
-.timer-svg{transform:rotate(-90deg);}
-.timer-circle-bg{fill:none;stroke:var(--border);stroke-width:5;}
-.timer-circle{fill:none;stroke:#f0544f;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .95s linear,stroke .3s;}
-.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:22px;font-weight:800;color:#f0544f;}
-.game-word-card{background:var(--surface2);border-radius:10px;padding:14px 10px;margin-bottom:12px;text-align:center;}
-.game-letters{font-family:var(--display);font-size:14px;font-weight:800;letter-spacing:3px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.game-hint{font-size:10px;color:var(--muted);margin-top:5px;}
-.game-input{width:100%;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--text);background:transparent;border:none;border-bottom:2px solid var(--border);outline:none;padding:8px 0;margin-bottom:10px;text-align:center;caret-color:var(--accent);-webkit-appearance:none;transition:border-color .2s,color .2s;}
-.game-input:focus{border-color:var(--accent);}
-.game-input.correct{border-color:#16a34a!important;color:#16a34a!important;}
+.page-wrapper{display:grid;grid-template-columns:220px 1fr;gap:0;max-width:1080px;margin:0 auto;padding:0 16px;align-items:start;}
+@media(max-width:800px){.page-wrapper{grid-template-columns:1fr;}.game-panel{position:static!important;border-radius:var(--radius) var(--radius) 0 0;}}
+.game-panel{background:#1a1728;border-radius:var(--radius);padding:16px;position:sticky;top:16px;overflow:hidden;}
+.game-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;display:block;}
+.timer-bar-section{margin-bottom:14px;}
+.timer-top-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
+.timer-big{font-size:30px;font-weight:800;font-family:var(--display);color:#f0544f;line-height:1;}
+.timer-sub{font-size:10px;color:#6b6485;}
+.timer-bar-bg{height:4px;background:#2d2a45;border-radius:2px;}
+.timer-bar-fill{height:4px;background:#f0544f;border-radius:2px;width:100%;transition:width .95s linear,background .3s;}
+.tile-row{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
+.letter-tile{min-width:28px;height:32px;padding:0 4px;border:1.5px solid #3d3a56;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;font-family:var(--display);color:#f0eeff;background:#221f35;flex-shrink:0;}
+.game-hint-dark{font-size:10px;color:#6b6485;margin-bottom:10px;text-align:center;}
+.game-feedback{min-height:18px;text-align:center;font-size:12px;font-weight:700;margin-bottom:6px;}
+.game-input{width:100%;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f0eeff;background:#221f35;border:1.5px solid #3d3a56;border-radius:8px;outline:none;padding:9px 10px;text-align:center;-webkit-appearance:none;transition:border-color .2s;margin-bottom:8px;caret-color:#9d8ff0;}
+.game-input:focus{border-color:#534AB7;}
+.game-input::placeholder{color:#3d3a56;font-weight:400;font-family:var(--font);letter-spacing:0;font-size:12px;}
+.game-input.correct{border-color:#1D9E75!important;color:#5DCAA5!important;}
 .game-input.wrong{animation:shake .3s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.btn-game{width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--display);font-size:13px;font-weight:800;cursor:pointer;-webkit-appearance:none;transition:transform .15s;box-shadow:0 3px 10px rgba(91,79,207,.3);}
+.btn-game{width:100%;padding:10px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:800;cursor:pointer;-webkit-appearance:none;transition:transform .15s,background .2s;margin-bottom:12px;}
 .btn-game:active{transform:scale(0.97);}
-.game-divider{height:1px;background:var(--border);margin:14px 0;}
-.game-score-val{font-family:var(--display);font-size:28px;font-weight:800;color:var(--text);text-align:center;line-height:1;}
-.game-streak{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;margin-bottom:14px;min-height:16px;}
-.game-feedback{min-height:20px;text-align:center;font-size:12px;font-weight:700;margin-bottom:6px;}
-.lb-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
-.lb-row:last-child{border-bottom:none;}
-.lb-name{font-weight:600;color:var(--text);}
-.lb-pts{color:var(--muted);}
+.btn-game.stop-btn{background:#2d2a45;color:#9d8ff0;}
+.game-score-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid #2d2a45;margin-bottom:10px;}
+.game-score-val{font-family:var(--display);font-size:24px;font-weight:800;color:#f0eeff;line-height:1;}
+.game-score-lbl{font-size:9px;color:#6b6485;text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
+.game-streak{background:#2d2a45;color:#9d8ff0;font-size:10px;font-weight:700;padding:4px 9px;border-radius:10px;min-width:40px;text-align:center;}
+.lb-section{border-top:1px solid #2d2a45;padding-top:10px;}
+.lb-top-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
+.lb-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:none;}
+.lb-name{font-weight:700;color:#9d8ff0;}
+.lb-pts{color:#6b6485;}
 .name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;}
 .name-overlay.open{display:flex;}
 .name-modal{background:var(--surface);border-radius:20px;padding:28px 24px;width:min(300px,100%);text-align:center;animation:slideUp .3s ease;}
@@ -220,30 +223,39 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 <div class="page-wrapper">
   <div class="game-panel" id="game-panel">
     <span class="game-label">⚡ Word Blitz</span>
-    <div class="timer-wrap">
-      <svg class="timer-svg" width="68" height="68" viewBox="0 0 68 68">
-        <circle class="timer-circle-bg" cx="34" cy="34" r="30"/>
-        <circle class="timer-circle" id="timer-ring" cx="34" cy="34" r="30" stroke-dasharray="188.5" stroke-dashoffset="0"/>
-      </svg>
-      <div class="timer-num" id="timer-num">10</div>
+    <div class="timer-bar-section">
+      <div class="timer-top-row">
+        <span class="timer-big" id="timer-num">10</span>
+        <span class="timer-sub">seconds</span>
+      </div>
+      <div class="timer-bar-bg"><div class="timer-bar-fill" id="timer-bar"></div></div>
     </div>
-    <div class="game-word-card">
-      <div class="game-letters" id="game-letters">– – – –</div>
-      <div class="game-hint" id="game-hint">press start to play</div>
+    <div class="tile-row" id="tile-row">
+      <div class="letter-tile">–</div>
+      <div class="letter-tile">–</div>
+      <div class="letter-tile">–</div>
+      <div class="letter-tile">–</div>
     </div>
+    <div class="game-hint-dark" id="game-hint">press start to play</div>
     <div class="game-feedback" id="game-feedback"></div>
-    <input class="game-input" id="game-input" type="text" placeholder="your answer" maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" disabled/>
+    <input class="game-input" id="game-input" type="text" placeholder="type your answer" maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" disabled/>
     <button class="btn-game" id="btn-game-start" onclick="startGame()">▶ Start Game</button>
-    <div class="game-divider"></div>
-    <div class="game-score-val" id="game-score">0</div>
-    <div class="game-streak" id="game-streak"></div>
-    <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">🏆 Top 5</div>
-    <div id="lb-list"><div class="lb-row"><span class="lb-name" style="color:var(--muted)">—</span><span class="lb-pts">play to rank</span></div></div>
-  </div>
+    <div class="game-score-row">
+      <div>
+        <div class="game-score-val" id="game-score">0</div>
+        <div class="game-score-lbl">score</div>
+      </div>
+      <div class="game-streak" id="game-streak">–</div>
+    </div>
+    <div class="lb-section">
+      <div class="lb-top-label">🏆 Top 5</div>
+      <div id="lb-list"><div class="lb-row"><span class="lb-name" style="color:#3d3a56">—</span><span class="lb-pts">play to rank</span></div></div>
+    </div>
+    </div>
   <div class="app">
   <div class="header-row">
     <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.1</span></div>
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.2</span></div>
       <div class="title">Word<span>Crack</span></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
@@ -524,34 +536,37 @@ function scramble(w){
   const s=a.join('');
   return s===w&&w.length>1?scramble(w):s;
 }
-function setTimerRing(secs){
-  const offset=CIRCUMFERENCE*(1-secs/GAME_SECS);
-  const ring=document.getElementById('timer-ring');
-  const num=document.getElementById('timer-num');
-  ring.style.strokeDashoffset=offset;
+function setTimerBar(secs){
   const pct=secs/GAME_SECS;
-  const c=pct>.5?'#5b4fcf':pct>.25?'#f59e0b':'#f0544f';
-  ring.style.stroke=c;num.style.color=c;
+  const bar=document.getElementById('timer-bar');
+  const num=document.getElementById('timer-num');
+  bar.style.width=(pct*100)+'%';
+  const c=pct>.5?'#534AB7':pct>.25?'#f59e0b':'#f0544f';
+  bar.style.background=c;num.style.color=c;
+}
+function renderTiles(word){
+  const row=document.getElementById('tile-row');
+  row.innerHTML=word.split('').map(c=>'<div class="letter-tile">'+c+'</div>').join('');
 }
 function nextWord(){
   if(!wordPool.length)wordPool=[...getBlitzWords()].sort(()=>Math.random()-.5);
   currentWord=wordPool.pop();
   const sc=scramble(currentWord).toUpperCase();
-  document.getElementById('game-letters').textContent=sc;
+  renderTiles(sc);
   document.getElementById('game-hint').textContent=currentWord.length+' letters · '+wordScore(currentWord)+' pts base';
   document.getElementById('game-input').value='';
   document.getElementById('game-input').className='game-input';
   document.getElementById('game-feedback').textContent='';
   timeLeft=GAME_SECS;
-  setTimerRing(GAME_SECS);
+  setTimerBar(GAME_SECS);
   document.getElementById('timer-num').textContent=GAME_SECS;
 }
 function startGame(){
   if(WORD_SET.size<100){showToast('Dictionary loading…');return;}
   gameActive=true;gameScore=0;gameStreak=0;
   document.getElementById('game-score').textContent='0';
-  document.getElementById('game-streak').textContent='';
-  document.getElementById('btn-game-start').textContent='⏹ Stop';
+  document.getElementById('game-streak').textContent='–';
+  document.getElementById('btn-game-start').textContent='⏹ Stop';document.getElementById('btn-game-start').className='btn-game stop-btn';
   document.getElementById('btn-game-start').onclick=stopGame;
   document.getElementById('game-input').disabled=false;
   document.getElementById('game-input').focus();
@@ -562,13 +577,13 @@ function runTimer(){
   gameTimer=setInterval(()=>{
     timeLeft--;
     document.getElementById('timer-num').textContent=timeLeft;
-    setTimerRing(timeLeft);
+    setTimerBar(timeLeft);
     if(timeLeft<=0){
       clearInterval(gameTimer);
       if(gameActive){
         gameStreak=0;
         showFeedback('⏰ Time!','#f0544f');
-        document.getElementById('game-streak').textContent='';
+        document.getElementById('game-streak').textContent='–';
         setTimeout(()=>{if(gameActive){nextWord();runTimer();}},700);
       }
     }
@@ -589,7 +604,7 @@ function checkGuess(){
     document.getElementById('game-score').textContent=gameScore.toLocaleString();
     document.getElementById('game-input').classList.add('correct');
     showFeedback('+'+pts+' pts'+(gameStreak>1?' 🔥×'+gameStreak:''),'#16a34a');
-    document.getElementById('game-streak').textContent=gameStreak>1?'Streak ×'+gameStreak+' 🔥':'';
+    document.getElementById('game-streak').textContent=gameStreak>1?'🔥 ×'+gameStreak:'–';
     setTimeout(()=>{if(gameActive){nextWord();runTimer();}},600);
   }else{
     document.getElementById('game-input').classList.add('wrong');
@@ -600,13 +615,13 @@ function checkGuess(){
 function stopGame(){
   gameActive=false;clearInterval(gameTimer);
   document.getElementById('game-input').disabled=true;
-  document.getElementById('game-letters').textContent='– – – –';
+  document.getElementById('tile-row').innerHTML='<div class="letter-tile">–</div><div class="letter-tile">–</div><div class="letter-tile">–</div><div class="letter-tile">–</div>';
   document.getElementById('game-hint').textContent='press start to play';
   document.getElementById('game-input').value='';
   document.getElementById('game-feedback').textContent='';
   document.getElementById('timer-num').textContent=GAME_SECS;
-  setTimerRing(GAME_SECS);
-  document.getElementById('btn-game-start').textContent='▶ Start Game';
+  setTimerBar(GAME_SECS);
+  document.getElementById('btn-game-start').textContent='▶ Start Game';document.getElementById('btn-game-start').className='btn-game';
   document.getElementById('btn-game-start').onclick=startGame;
   const lb=loadLB();
   if(gameScore>0&&(lb.length<5||gameScore>lb[lb.length-1].score)){
@@ -617,14 +632,14 @@ function stopGame(){
   }
   gameScore=0;gameStreak=0;
   document.getElementById('game-score').textContent='0';
-  document.getElementById('game-streak').textContent='';
+  document.getElementById('game-streak').textContent='–';
 }
 function loadLB(){try{return JSON.parse(localStorage.getItem(LB_KEY))||[];}catch(e){return[];}}
 function saveLBData(lb){try{localStorage.setItem(LB_KEY,JSON.stringify(lb));}catch(e){}}
 function renderLB(){
   const lb=loadLB();
   const el=document.getElementById('lb-list');
-  if(!lb.length){el.innerHTML='<div class="lb-row"><span class="lb-name" style="color:var(--muted)">—</span><span class="lb-pts">play to rank</span></div>';return;}
+  if(!lb.length){el.innerHTML='<div class="lb-row"><span class="lb-name" style="color:#3d3a56">—</span><span class="lb-pts">play to rank</span></div>';return;}
   const medals=['🥇','🥈','🥉','#4','#5'];
   el.innerHTML=lb.map((e,i)=>`<div class="lb-row"><span class="lb-name">${medals[i]} ${e.name}</span><span class="lb-pts">${Number(e.score).toLocaleString()}</span></div>`).join('');
 }
