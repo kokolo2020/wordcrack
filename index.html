@@ -185,7 +185,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .timer-circle{fill:none;stroke:#f0544f;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .95s linear,stroke .3s;}
 .timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:22px;font-weight:800;color:#f0544f;}
 .game-word-card{background:var(--surface2);border-radius:10px;padding:14px 10px;margin-bottom:12px;text-align:center;}
-.game-letters{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:6px;color:var(--text);word-break:break-all;}
+.game-letters{font-family:var(--display);font-size:14px;font-weight:800;letter-spacing:3px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .game-hint{font-size:10px;color:var(--muted);margin-top:5px;}
 .game-input{width:100%;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--text);background:transparent;border:none;border-bottom:2px solid var(--border);outline:none;padding:8px 0;margin-bottom:10px;text-align:center;caret-color:var(--accent);-webkit-appearance:none;transition:border-color .2s,color .2s;}
 .game-input:focus{border-color:var(--accent);}
@@ -536,7 +536,7 @@ function setTimerRing(secs){
 function nextWord(){
   if(!wordPool.length)wordPool=[...getBlitzWords()].sort(()=>Math.random()-.5);
   currentWord=wordPool.pop();
-  const sc=scramble(currentWord).toUpperCase().split('').join(' ');
+  const sc=scramble(currentWord).toUpperCase();
   document.getElementById('game-letters').textContent=sc;
   document.getElementById('game-hint').textContent=currentWord.length+' letters · '+wordScore(currentWord)+' pts base';
   document.getElementById('game-input').value='';
