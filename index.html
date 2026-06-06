@@ -174,7 +174,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 .page-wrapper{display:grid;grid-template-columns:220px 1fr;gap:0;max-width:1080px;margin:0 auto;padding:0 16px;align-items:start;}
-@media(max-width:800px){.page-wrapper{grid-template-columns:1fr;}.game-panel{position:static!important;border-radius:var(--radius) var(--radius) 0 0;}}
+@media(max-width:800px){.page-wrapper{grid-template-columns:1fr;gap:0;}.game-panel{position:static!important;border-radius:var(--radius) var(--radius) 0 0;padding:12px 14px 14px;margin-bottom:0;}.game-panel-body{display:none;}.game-panel-body.open{display:block;padding-top:12px;}.mobile-toggle{display:flex!important;}.app{border-radius:0 0 var(--radius) var(--radius);border-top:1px solid #2d2a45;}.timer-bar-section{margin-bottom:10px;}.tile-row{margin-bottom:8px;}.game-score-row{padding:8px 0;}.lb-section{display:none;}}@media(min-width:801px){.mobile-toggle{display:none!important;}.game-panel-body{display:block!important;}}
 .game-panel{background:#1a1728;border-radius:var(--radius);padding:16px;position:sticky;top:16px;overflow:hidden;}
 .game-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;display:block;}
 .timer-bar-section{margin-bottom:14px;}
@@ -223,6 +223,14 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 <div class="page-wrapper">
   <div class="game-panel" id="game-panel">
     <span class="game-label">⚡ Word Blitz</span>
+    <div class="mobile-toggle" style="display:none;justify-content:space-between;align-items:center;cursor:pointer;padding:2px 0 10px;" onclick="toggleBlitz()">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="mobile-timer-badge" style="background:#2d2a45;color:#9d8ff0;font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;">10s</span>
+        <span id="mobile-word-badge" style="color:#f0eeff;font-size:11px;font-weight:500;">tap to play</span>
+      </div>
+      <span id="mobile-toggle-arrow" style="color:#6b6485;font-size:11px;">▼ expand</span>
+    </div>
+    <div class="game-panel-body" id="game-panel-body">
     <div class="timer-bar-section">
       <div class="timer-top-row">
         <span class="timer-big" id="timer-num">10</span>
@@ -252,6 +260,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
       <div id="lb-list"><div class="lb-row"><span class="lb-name" style="color:#3d3a56">—</span><span class="lb-pts">play to rank</span></div></div>
     </div>
     </div>
+  </div><!-- /game-panel -->
   <div class="app">
   <div class="header-row">
     <div class="header-left">
@@ -568,6 +577,7 @@ function startGame(){
   document.getElementById('game-streak').textContent='–';
   document.getElementById('btn-game-start').textContent='⏹ Stop';document.getElementById('btn-game-start').className='btn-game stop-btn';
   document.getElementById('btn-game-start').onclick=stopGame;
+  var pb=document.getElementById('game-panel-body');if(pb&&!pb.classList.contains('open')){pb.classList.add('open');var arr=document.getElementById('mobile-toggle-arrow');if(arr)arr.textContent='▲ collapse';}
   document.getElementById('game-input').disabled=false;
   document.getElementById('game-input').focus();
   nextWord();runTimer();
@@ -577,7 +587,7 @@ function runTimer(){
   gameTimer=setInterval(()=>{
     timeLeft--;
     document.getElementById('timer-num').textContent=timeLeft;
-    setTimerBar(timeLeft);
+    setTimerBar(timeLeft);updateMobileBadge();
     if(timeLeft<=0){
       clearInterval(gameTimer);
       if(gameActive){
@@ -653,7 +663,20 @@ function saveName(){
   renderLB();
   document.getElementById('name-overlay').classList.remove('open');
 }
-document.addEventListener('DOMContentLoaded',function(){var ni=document.getElementById('name-input-field');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});renderLB();});
+document.addEventListener('DOMContentLoaded',function(){var ni=document.getElementById('name-input-field');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});renderLB();
+function toggleBlitz(){
+  var body=document.getElementById('game-panel-body');
+  var arrow=document.getElementById('mobile-toggle-arrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.textContent=isOpen?'▲ collapse':'▼ expand';
+}
+function updateMobileBadge(){
+  var tb=document.getElementById('mobile-timer-badge');
+  var wb=document.getElementById('mobile-word-badge');
+  if(tb)tb.textContent=timeLeft+'s';
+  if(wb&&gameActive&&currentWord)wb.textContent=currentWord.length+' letters';
+}
+});
 </script>
 
 <div class="name-overlay" id="name-overlay">
