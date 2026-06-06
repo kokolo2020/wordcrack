@@ -4,6 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
+<meta name="keywords" content="word unscrambler, unscramble words, word finder, anagram solver, scrabble word finder, words with letters, wordcrack, unscramble letters, word cheat, scrabble helper, words with friends cheat, anagram finder, jumble solver, letter unscrambler, find words from letters"/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="WordCrack"/>
+<link rel="canonical" href="https://wordcrack.pro/"/>
+<meta property="og:title" content="WordCrack — Free Word Unscrambler"/>
+<meta property="og:description" content="Instantly unscramble any letters and find all possible words. 168,000 word dictionary. Free, fast, no signup."/>
+<meta property="og:url" content="https://wordcrack.pro/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="WordCrack"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="WordCrack — Free Word Unscrambler"/>
+<meta name="twitter:description" content="Instantly unscramble any letters and find all possible words. 168,000 word dictionary. Free, fast, no signup."/>
 <meta name="description" content="WordCrack - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
 <title>WordCrack — Free Word Unscrambler | 168,000 Words</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -54,7 +66,7 @@ body.night {
 
 html { font-size:16px; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; transition:background 0.3s, color 0.3s; }
-.app { padding:28px 16px 20px; }
+.app { max-width:480px; margin:0 auto; padding:28px 16px 20px; }
 
 /* HEADER ROW */
 .header-row { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
@@ -172,81 +184,18 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 /* TOAST */
 .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all 0.25s; pointer-events:none; white-space:nowrap; z-index:999; box-shadow:var(--shadow); }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-.tab-bar{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:200;}
-.tab-btn{padding:12px 18px;font-family:var(--font);font-size:14px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;-webkit-appearance:none;transition:color .2s,border-color .2s;margin-bottom:-1px;}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
-.page-wrapper{display:grid;grid-template-columns:220px 1fr;gap:0;max-width:1080px;margin:0 auto;padding:0 16px;align-items:start;}
-.game-panel{background:#1a1728;border-radius:var(--radius);padding:16px;position:sticky;top:16px;}
-.game-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;display:block;}
-.timer-bar-section{margin-bottom:14px;}
-.timer-top-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
-.timer-big{font-size:30px;font-weight:800;font-family:var(--display);color:#f0544f;line-height:1;}
-.timer-sub{font-size:10px;color:#6b6485;}
-.timer-bar-bg{height:4px;background:#2d2a45;border-radius:2px;}
-.timer-bar-fill{height:4px;background:#534AB7;border-radius:2px;width:100%;transition:width .95s linear,background .3s;}
-.tile-row{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
-.letter-tile{min-width:28px;height:32px;padding:0 4px;border:1.5px solid #3d3a56;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;font-family:var(--display);color:#f0eeff;background:#221f35;flex-shrink:0;}
-.game-hint-dark{font-size:10px;color:#6b6485;margin-bottom:10px;text-align:center;}
-.game-feedback{min-height:18px;text-align:center;font-size:12px;font-weight:700;margin-bottom:6px;}
-.game-input{width:100%;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f0eeff;background:#221f35;border:1.5px solid #3d3a56;border-radius:8px;outline:none;padding:9px 10px;text-align:center;-webkit-appearance:none;transition:border-color .2s;margin-bottom:8px;caret-color:#9d8ff0;}
-.game-input:focus{border-color:#534AB7;}
-.game-input::placeholder{color:#3d3a56;font-weight:400;font-family:var(--font);letter-spacing:0;font-size:12px;}
-.game-input.correct{border-color:#1D9E75!important;color:#5DCAA5!important;}
-.game-input.wrong{animation:shake .3s ease;}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.btn-game{width:100%;padding:10px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:800;cursor:pointer;-webkit-appearance:none;transition:transform .15s;margin-bottom:12px;}
-.btn-game:active{transform:scale(0.97);}
-.btn-game.stop-btn{background:#2d2a45;color:#9d8ff0;}
-.game-score-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid #2d2a45;margin-bottom:10px;}
-.game-score-val{font-family:var(--display);font-size:24px;font-weight:800;color:#f0eeff;line-height:1;}
-.game-score-lbl{font-size:9px;color:#6b6485;text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
-.game-streak-badge{background:#2d2a45;color:#9d8ff0;font-size:10px;font-weight:700;padding:4px 9px;border-radius:10px;}
-.lb-section{border-top:1px solid #2d2a45;padding-top:10px;}
-.lb-top-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
-.lb-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;}
-.lb-name{font-weight:700;color:#9d8ff0;}
-.lb-pts{color:#6b6485;}
-.name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;}
-.name-overlay.open{display:flex;}
-.name-modal{background:var(--surface);border-radius:20px;padding:28px 24px;width:min(300px,100%);text-align:center;animation:slideUp .3s ease;}
-.name-modal h3{font-family:var(--display);font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;}
-.name-modal p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
-.name-input-field{width:100%;font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text);background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center;outline:none;-webkit-appearance:none;margin-bottom:14px;transition:border-color .2s;}
-.name-input-field:focus{border-color:var(--accent);}
-@media(max-width:800px){
-  .tab-bar{display:flex;}
-  .page-wrapper{grid-template-columns:1fr;padding:0 12px;}
-  .game-panel{position:static;border-radius:var(--radius);margin-top:12px;}
-  .game-panel.tab-hidden{display:none;}
-  .app.tab-hidden{display:none;}
-  .sticky-ad{display:none;}
-}
 </style>
 </head>
 <body>
-<div class="tab-bar" id="tab-bar"><button class="tab-btn active" id="tab-u" onclick="switchTab('u')">Unscrambler</button><button class="tab-btn" id="tab-g" onclick="switchTab('g')">Word Blitz</button></div>
 <div class="sticky-ad">
   <!-- Media.net sticky bottom ad -->
   <div id="wordcrack-bottom" style="width:320px;height:50px;"></div>
   <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","320x50","wordcrack-bottom");});}catch(e){}</script>
 </div>
-<div class="page-wrapper">
-  <div class="game-panel tab-hidden" id="game-panel">
-    <span class="game-label">Word Blitz</span>
-    <div class="timer-bar-section"><div class="timer-top-row"><span class="timer-big" id="timer-num">10</span><span class="timer-sub">seconds</span></div><div class="timer-bar-bg"><div class="timer-bar-fill" id="timer-bar"></div></div></div>
-    <div class="tile-row" id="tile-row"><div class="letter-tile">-</div><div class="letter-tile">-</div><div class="letter-tile">-</div><div class="letter-tile">-</div></div>
-    <div class="game-hint-dark" id="game-hint">press start to play</div>
-    <div class="game-feedback" id="game-feedback"></div>
-    <input class="game-input" id="game-input" type="text" placeholder="type your answer" maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" disabled/>
-    <button class="btn-game" id="btn-game-start" onclick="startGame()">Start Game</button>
-    <div class="game-score-row"><div><div class="game-score-val" id="game-score">0</div><div class="game-score-lbl">score</div></div><div class="game-streak-badge" id="game-streak">-</div></div>
-    <div class="lb-section"><div class="lb-top-label">Top 5</div><div id="lb-list"><div class="lb-row"><span class="lb-name" style="color:#3d3a56">-</span><span class="lb-pts">play to rank</span></div></div></div>
-  </div>
-  <div class="app">
+<div class="app">
   <div class="header-row">
     <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.2</span></div>
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.0</span></div>
       <div class="title">Word<span>Crack</span></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
@@ -334,7 +283,6 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div id="modal-body"><div class="modal-loading">✦ Loading AI insights...</div></div>
     <button class="modal-close" onclick="closeModal()">Close</button>
   </div>
-</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -503,163 +451,6 @@ async function showWordDetail(word){
 function closeModal(){document.getElementById('word-modal').classList.remove('open');}
 document.getElementById('letters').addEventListener('keydown',e=>{if(e.key==='Enter')unscramble();});
 let tt;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2000);}
-
-function switchTab(t){
-  var panel=document.getElementById('game-panel');
-  var app=document.querySelector('.app');
-  var btnU=document.getElementById('tab-u');
-  var btnG=document.getElementById('tab-g');
-  if(t==='g'){
-    panel.classList.remove('tab-hidden');
-    app.classList.add('tab-hidden');
-    btnG.classList.add('active');btnU.classList.remove('active');
-  }else{
-    app.classList.remove('tab-hidden');
-    panel.classList.add('tab-hidden');
-    btnU.classList.add('active');btnG.classList.remove('active');
-  }
-}
-window.addEventListener('resize',function(){
-  if(window.innerWidth>800){
-    document.getElementById('game-panel').classList.remove('tab-hidden');
-    document.querySelector('.app').classList.remove('tab-hidden');
-  }
-});
-const GAME_SECS=10,LB_KEY='wc-lb-v2';
-let blitzWords=[],wordPool=[],gameActive=false,gameTimer=null;
-let gameScore=0,gameStreak=0,pendingScore=0,currentWord='',timeLeft=GAME_SECS;
-function getBlitzWords(){
-  if(blitzWords.length)return blitzWords;
-  var arr=[];for(var w of WORD_SET){if(w.length>=4&&w.length<=7)arr.push(w);}
-  for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;}
-  return blitzWords=arr.slice(0,600);
-}
-function scramble(w){
-  var a=w.split('');
-  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
-  var s=a.join('');return s===w&&w.length>1?scramble(w):s;
-}
-function setTimerBar(secs){
-  var pct=secs/GAME_SECS;
-  document.getElementById('timer-bar').style.width=(pct*100)+'%';
-  var c=pct>.5?'#534AB7':pct>.25?'#f59e0b':'#f0544f';
-  document.getElementById('timer-bar').style.background=c;
-  document.getElementById('timer-num').style.color=c;
-}
-function renderTiles(word){
-  document.getElementById('tile-row').innerHTML=word.split('').map(function(c){return '<div class="letter-tile">'+c+'</div>';}).join('');
-}
-function nextWord(){
-  if(!wordPool.length)wordPool=getBlitzWords().slice().sort(function(){return Math.random()-.5;});
-  currentWord=wordPool.pop();
-  renderTiles(scramble(currentWord).toUpperCase());
-  document.getElementById('game-hint').textContent=currentWord.length+' letters - '+wordScore(currentWord)+' pts base';
-  document.getElementById('game-input').value='';
-  document.getElementById('game-input').className='game-input';
-  document.getElementById('game-feedback').textContent='';
-  timeLeft=GAME_SECS;setTimerBar(GAME_SECS);
-  document.getElementById('timer-num').textContent=GAME_SECS;
-}
-function startGame(){
-  if(WORD_SET.size<100){showToast('Dictionary loading...');return;}
-  gameActive=true;gameScore=0;gameStreak=0;
-  document.getElementById('game-score').textContent='0';
-  document.getElementById('game-streak').textContent='-';
-  document.getElementById('btn-game-start').textContent='Stop';
-  document.getElementById('btn-game-start').className='btn-game stop-btn';
-  document.getElementById('btn-game-start').onclick=stopGame;
-  document.getElementById('game-input').disabled=false;
-  document.getElementById('game-input').focus();
-  nextWord();runTimer();
-}
-function runTimer(){
-  clearInterval(gameTimer);
-  gameTimer=setInterval(function(){
-    timeLeft--;
-    document.getElementById('timer-num').textContent=timeLeft;
-    setTimerBar(timeLeft);
-    if(timeLeft<=0){
-      clearInterval(gameTimer);
-      if(gameActive){
-        gameStreak=0;
-        document.getElementById('game-feedback').textContent='Time!';
-        document.getElementById('game-feedback').style.color='#f0544f';
-        document.getElementById('game-streak').textContent='-';
-        setTimeout(function(){if(gameActive){nextWord();runTimer();}},700);
-      }
-    }
-  },1000);
-}
-function checkGuess(){
-  var guess=document.getElementById('game-input').value.toLowerCase().trim();
-  if(!guess)return;
-  if(guess===currentWord){
-    clearInterval(gameTimer);
-    var pts=currentWord.length*timeLeft;
-    gameScore+=pts;gameStreak++;
-    document.getElementById('game-score').textContent=gameScore.toLocaleString();
-    document.getElementById('game-input').classList.add('correct');
-    document.getElementById('game-feedback').textContent='+'+pts+' pts'+(gameStreak>1?' x'+gameStreak:'');
-    document.getElementById('game-feedback').style.color='#1D9E75';
-    document.getElementById('game-streak').textContent=gameStreak>1?'x'+gameStreak:'-';
-    setTimeout(function(){if(gameActive){nextWord();runTimer();}},600);
-  }else{
-    document.getElementById('game-input').classList.add('wrong');
-    document.getElementById('game-feedback').textContent='wrong';
-    document.getElementById('game-feedback').style.color='#f0544f';
-    setTimeout(function(){document.getElementById('game-input').classList.remove('wrong');document.getElementById('game-input').value='';},400);
-  }
-}
-function stopGame(){
-  gameActive=false;clearInterval(gameTimer);
-  document.getElementById('game-input').disabled=true;
-  renderTiles('----');
-  document.getElementById('game-hint').textContent='press start to play';
-  document.getElementById('game-input').value='';
-  document.getElementById('game-feedback').textContent='';
-  document.getElementById('timer-num').textContent=GAME_SECS;
-  setTimerBar(GAME_SECS);
-  document.getElementById('btn-game-start').textContent='Start Game';
-  document.getElementById('btn-game-start').className='btn-game';
-  document.getElementById('btn-game-start').onclick=startGame;
-  var lb=loadLB();
-  if(gameScore>0&&(lb.length<5||gameScore>lb[lb.length-1].score)){
-    pendingScore=gameScore;
-    document.getElementById('name-input-field').value='';
-    document.getElementById('name-overlay').classList.add('open');
-    setTimeout(function(){document.getElementById('name-input-field').focus();},100);
-  }
-  gameScore=0;gameStreak=0;
-  document.getElementById('game-score').textContent='0';
-  document.getElementById('game-streak').textContent='-';
-}
-function loadLB(){try{return JSON.parse(localStorage.getItem(LB_KEY))||[];}catch(e){return[];}}
-function saveLBData(lb){try{localStorage.setItem(LB_KEY,JSON.stringify(lb));}catch(e){}}
-function renderLB(){
-  var lb=loadLB();var el=document.getElementById('lb-list');
-  if(!el)return;
-  if(!lb.length){el.innerHTML='<div class="lb-row"><span class="lb-name" style="color:#3d3a56">-</span><span class="lb-pts">play to rank</span></div>';return;}
-  var m=['1st','2nd','3rd','4th','5th'];
-  el.innerHTML=lb.map(function(e,i){return '<div class="lb-row"><span class="lb-name">'+m[i]+' '+e.name+'</span><span class="lb-pts">'+Number(e.score).toLocaleString()+'</span></div>';}).join('');
-}
-function saveName(){
-  var name=(document.getElementById('name-input-field').value||'').toUpperCase().trim()||'ANON';
-  name=name.substring(0,10);
-  var lb=loadLB();lb.push({name:name,score:pendingScore});
-  lb.sort(function(a,b){return b.score-a.score;});
-  saveLBData(lb.slice(0,5));renderLB();
-  document.getElementById('name-overlay').classList.remove('open');
-}
-var _gi=document.getElementById('game-input');
-if(_gi)_gi.addEventListener('keydown',function(e){if(e.key==='Enter'&&gameActive)checkGuess();});
-document.addEventListener('DOMContentLoaded',function(){
-  var ni=document.getElementById('name-input-field');
-  if(ni)ni.addEventListener('keydown',function(e){if(e.key==='Enter')saveName();});
-  renderLB();
-});
-
 </script>
-
-<div class="name-overlay" id="name-overlay"><div class="name-modal"><h3>Top 5!</h3><p>You made the leaderboard!<br>Enter your name:</p><input class="name-input-field" id="name-input-field" type="text" maxlength="12" placeholder="YOUR NAME" autocomplete="off" autocapitalize="characters" spellcheck="false"/><button class="btn-game" onclick="saveName()">Save Score</button></div></div>
 </body>
 </html>
