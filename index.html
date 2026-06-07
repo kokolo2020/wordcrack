@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 
-<!-- Google Analytics - replace G-XXXXXXXXXX with your ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<!-- Google Analytics - replace G-YR4PLHNJ7V with your ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YR4PLHNJ7V"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YR4PLHNJ7V');</script>
 
 <!-- Media.net - replace XXXXXXX with your site ID after signup at media.net -->
 <script>window._mNHandle=window._mNHandle||{};window._mNHandle.queue=window._mNHandle.queue||[];</script>
@@ -54,7 +54,7 @@ body.night {
 
 html { font-size:16px; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; transition:background 0.3s, color 0.3s; }
-.app { padding:24px 16px 20px; min-width:0; }
+.app { padding:28px 16px 20px; }
 
 /* HEADER ROW */
 .header-row { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
@@ -173,48 +173,17 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all 0.25s; pointer-events:none; white-space:nowrap; z-index:999; box-shadow:var(--shadow); }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* VISITOR COUNTER */
-.visitor-counter{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--muted);background:var(--chip-bg);border:1px solid var(--border);border-radius:12px;padding:3px 10px;}
-.visitor-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.2)}}
-/* ADMIN BADGE */
-.admin-badge{display:none;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#16a34a;background:#dcfce7;border:1px solid #bbf7d0;border-radius:12px;padding:3px 10px;}
-.admin-badge.visible{display:inline-flex;}
-.admin-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;animation:pulse 1.5s infinite;}
-/* ACTIVITY TOAST */
-.activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface,#fff);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text,#1a1a2e);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
-.activity-toast.show{transform:translateY(0);opacity:1;}
-
-/* GREETING SECTION */
-.greeting-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
-.greeting-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
-.greeting-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;min-height:20px;}
-.greeting-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);animation:fadeSlide .4s ease;}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.greeting-flag{font-size:18px;line-height:1;}
-.greeting-text{color:var(--text);}
-.greeting-time{font-size:11px;color:var(--muted);margin-left:auto;}
-.greeting-input-row{display:flex;gap:8px;}
-.greeting-input{flex:1;font-family:var(--font);font-size:14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;outline:none;color:var(--text);transition:border-color .2s;-webkit-appearance:none;}
-.greeting-input:focus{border-color:var(--accent);}
-.greeting-btn{padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;-webkit-appearance:none;transition:transform .15s;}
-.greeting-btn:active{transform:scale(0.97);}
-.greeting-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
-
-
-/* ── PAGE WRAPPER ─────────────────────────────────── */
+/* ── PAGE WRAPPER ─────────────────────────────── */
 .page-wrapper{display:grid;grid-template-columns:170px 1fr;max-width:1100px;margin:0 auto;align-items:start;}
 @media(max-width:800px){
   .page-wrapper{grid-template-columns:1fr;}
   .left-panel{position:static!important;order:2;border-radius:0 0 var(--radius) var(--radius);}
   .app{order:1;}
-  .clock-strip{display:none;}
+  .clock-strip{display:none!important;}
 }
-/* ── LEFT PANEL ───────────────────────────────────── */
-.left-panel{background:#1a1728;padding:14px;position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
-.lp-logo-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:5px;}
-.lp-title{font-family:var(--display);font-size:22px;font-weight:800;color:#f0eeff;line-height:1;margin-bottom:12px;letter-spacing:-0.5px;}
-.lp-title span{color:#9d8ff0;}
+/* ── LEFT PANEL ───────────────────────────────── */
+.left-panel{background:#1a1728;padding:14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
+.lp-logo-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;}
 .lp-badges{display:flex;flex-direction:column;gap:5px;margin-bottom:4px;}
 .lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;padding:4px 9px;border-radius:10px;}
 .lp-badge-online{background:#2d2a45;color:#9d8ff0;}
@@ -225,40 +194,37 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 @keyframes lpulse{0%,100%{opacity:1}50%{opacity:.4}}
 .lp-divider{height:1px;background:#2d2a45;margin:10px 0;}
 .lp-section-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
-/* HI BUTTON */
 .hi-btn{width:100%;padding:9px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:800;cursor:pointer;-webkit-appearance:none;margin-bottom:10px;transition:transform .15s;}
 .hi-btn:active{transform:scale(0.97);}
-/* GREETING LIST */
+.hi-btn:disabled{opacity:.6;cursor:wait;}
 .greeting-list{display:flex;flex-direction:column;gap:7px;min-height:10px;}
-.greeting-item{display:flex;align-items:center;gap:6px;font-size:10px;color:#c4b8ff;animation:fadeSlide .4s ease;}
+.greeting-item-lp{display:flex;align-items:center;gap:6px;font-size:10px;color:#c4b8ff;animation:fadeSlide .4s ease;}
 @keyframes fadeSlide{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
-.greeting-flag{font-size:13px;flex-shrink:0;}
-.greeting-city{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.greeting-time-lp{font-size:9px;color:#6b6485;flex-shrink:0;}
+.g-flag-lp{font-size:13px;flex-shrink:0;}
+.g-city-lp{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.g-time-lp{font-size:9px;color:#6b6485;flex-shrink:0;}
 .greeting-empty-lp{font-size:10px;color:#6b6485;}
-/* STATS */
 .crack-counter{background:#221f35;border-radius:8px;padding:9px;margin-bottom:8px;text-align:center;}
 .crack-num{font-size:26px;font-weight:800;color:#f0eeff;line-height:1;font-family:var(--display);}
 .crack-label{font-size:9px;color:#6b6485;margin-top:2px;}
 .crack-next{font-size:9px;color:#9d8ff0;margin-top:5px;}
 .progress-wrap{height:3px;background:#2d2a45;border-radius:2px;margin-top:5px;}
 .progress-fill{height:3px;background:#534AB7;border-radius:2px;width:0%;transition:width .5s ease;}
-/* BADGES */
 .badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;}
-.badge-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
-.badge-icon{font-size:18px;line-height:1;transition:filter .3s;}
-.badge-icon.locked{filter:grayscale(1);opacity:.2;}
-.badge-name{font-size:8px;color:#6b6485;text-align:center;line-height:1.2;}
-.badge-name.earned{color:#9d8ff0;font-weight:700;}
-.badge-req{font-size:7px;color:#3d3a56;text-align:center;}
-/* EARNED BANNER */
-.earned-banner{background:linear-gradient(135deg,#2d1f5e,#1a2550);border:1px solid #534AB7;border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;animation:fadeSlide .5s ease;}
-.earned-icon{font-size:20px;}
-.earned-title{font-size:10px;font-weight:700;color:#f0eeff;}
-.earned-sub{font-size:8px;color:#9d8ff0;}
+.badge-item-lp{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.badge-icon-lp{font-size:18px;line-height:1;transition:filter .3s,opacity .3s;}
+.badge-icon-lp.locked{filter:grayscale(1);opacity:.2;}
+.badge-name-lp{font-size:8px;color:#6b6485;text-align:center;line-height:1.2;}
+.badge-name-lp.earned{color:#9d8ff0;font-weight:700;}
+.badge-req-lp{font-size:7px;color:#3d3a56;text-align:center;}
+.earned-banner{background:linear-gradient(135deg,#2d1f5e,#1a2550);border:1px solid #534AB7;border-radius:8px;padding:8px 10px;display:none;align-items:center;gap:8px;animation:fadeSlide .5s ease;margin-bottom:8px;}
+.earned-banner.show{display:flex;}
+.earned-icon-lp{font-size:20px;}
+.earned-title-lp{font-size:10px;font-weight:700;color:#f0eeff;}
+.earned-sub-lp{font-size:8px;color:#9d8ff0;}
 .lp-footer{margin-top:auto;padding-top:12px;border-top:1px solid #2d2a45;font-size:9px;color:#6b6485;text-align:center;line-height:1.6;}
-/* ── WORLD CLOCKS ─────────────────────────────────── */
-.clock-strip{display:flex;gap:8px;align-items:flex-start;}
+/* ── WORLD CLOCKS ─────────────────────────────── */
+.clock-strip{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;}
 .clock-card{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .analog-clock{width:42px;height:42px;border-radius:50%;background:var(--surface);border:2px solid var(--border);position:relative;box-shadow:0 2px 10px rgba(0,0,0,.08);}
 .clk-center{width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;}
@@ -267,48 +233,36 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .clk-s{position:absolute;bottom:50%;left:50%;width:1px;height:17px;background:#f0544f;border-radius:1px;transform-origin:bottom center;margin-left:-.5px;}
 .clk-digital{font-size:8px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.3px;}
 .clk-city{font-size:7px;color:var(--muted);text-align:center;font-weight:500;}
-/* ── APP HEADER ───────────────────────────────────── */
-.app { padding:24px 16px 20px; min-width:0; }
+/* ── APP OVERRIDE ─────────────────────────────── */
+.app{max-width:none!important;margin:0!important;padding:24px 16px 20px;}
 .header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;gap:12px;}
 .header-left{flex:1;}
+/* ── ACTIVITY TOAST ───────────────────────────── */
+.activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
+.activity-toast.show{transform:translateY(0);opacity:1;}
 
 </style>
-
-<body>
+</head>
 <body>
 <div class="sticky-ad">
   <!-- Media.net sticky bottom ad -->
   <div id="wordcrack-bottom" style="width:320px;height:50px;"></div>
   <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","320x50","wordcrack-bottom");});}catch(e){}</script>
 </div>
-
 <div class="page-wrapper">
-
-  <!-- ═══ LEFT PANEL ═══ -->
   <div class="left-panel" id="left-panel">
-
-    <!-- LOGO -->
-    <div class="lp-logo-label">Word Unscrambler</div>
-    <div class="lp-title">Word<span>Crack</span></div>
-
-    <!-- LIVE BADGES -->
+    <div class="lp-logo-label">⚡ WordCrack · Live</div>
     <div class="lp-badges">
       <div class="lp-badge lp-badge-online"><div class="lp-dot lp-dot-purple"></div><span id="visitor-count">...</span> online</div>
       <div class="lp-badge lp-badge-admin" id="admin-badge"><div class="lp-dot lp-dot-green"></div>Admin online</div>
     </div>
-
     <div class="lp-divider"></div>
-
-    <!-- SAY HI -->
     <div class="lp-section-label">👋 Say hi to the world</div>
-    <button class="hi-btn" onclick="sendGreeting()">👋 Hi!</button>
+    <button class="hi-btn" id="hi-btn" onclick="sendGreeting()" disabled>👋 Hi!</button>
     <div class="greeting-list" id="greeting-list">
       <div class="greeting-empty-lp">Be the first to say hi today!</div>
     </div>
-
     <div class="lp-divider"></div>
-
-    <!-- STATS -->
     <div class="lp-section-label">⚡ Your stats</div>
     <div class="crack-counter">
       <div class="crack-num" id="crack-count">0</div>
@@ -316,92 +270,90 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
       <div class="crack-next" id="crack-next">crack your first word!</div>
       <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
-
-    <!-- ACHIEVEMENTS -->
     <div class="lp-section-label">🏆 Achievements</div>
     <div class="badge-grid" id="badge-grid"></div>
-    <div class="earned-banner" id="earned-banner" style="display:none">
-      <div class="earned-icon" id="earned-icon"></div>
-      <div><div class="earned-title" id="earned-title"></div><div class="earned-sub" id="earned-sub"></div></div>
+    <div class="earned-banner" id="earned-banner">
+      <div class="earned-icon-lp" id="earned-icon"></div>
+      <div><div class="earned-title-lp" id="earned-title"></div><div class="earned-sub-lp" id="earned-sub"></div></div>
     </div>
-
     <div class="lp-footer">© 2026 WordCrack<br>Free · No signup · 168K words</div>
   </div>
 
-  <!-- ═══ RIGHT PANEL ═══ -->
-  <div class="app">
-    <!-- HEADER ROW: title left, clocks right -->
-    <div class="header-row">
-      <div class="header-left">
-        <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.3</span></div>
-        <div class="title">Word<span>Crack</span></div>
-      </div>
-      <div class="clock-strip" id="clock-strip"></div>
+<div class="app">
+  <div class="header-row">
+    <div class="header-left">
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.3</span></div>
+      <div class="title">Word<span>Crack</span></div>
     </div>
-
-    <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
-
-    <div class="input-card">
-      <div class="input-label" id="input-label">Your letters</div>
-      <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
-      <div class="divider"></div>
-      <div class="input-actions">
-        <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Reveal</button>
-        <button class="btn-clear" onclick="clearAll()">✕</button>
-      </div>
-      <div class="filter-toggle-row" id="filter-toggle-row">
-        <button class="filter-toggle-btn" id="filter-toggle-btn" onclick="toggleFilters()">
-          <span id="filters-label">⚙ Filters</span><span class="filter-toggle-arrow">▾</span>
-        </button>
-        <span id="filter-active-badge" style="display:none;font-size:11px;font-weight:700;color:var(--accent);background:var(--chip-bg);padding:2px 8px;border-radius:10px;">Active</span>
-      </div>
-      <div class="filter-card" id="filter-card">
-        <div class="filter-grid">
-          <div class="filter-field"><label>Starts with</label><input class="filter-input" id="f-starts" type="text" maxlength="5" placeholder="e.g. E" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
-          <div class="filter-field"><label>Ends with</label><input class="filter-input" id="f-ends" type="text" maxlength="5" placeholder="e.g. NG" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
-          <div class="filter-field"><label>Contains</label><input class="filter-input" id="f-contains" type="text" maxlength="5" placeholder="e.g. AR" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
-          <div class="filter-field"><label>Exact length</label><input class="filter-input" id="f-length" type="number" min="2" max="15" placeholder="e.g. 4" oninput="updateFilterBadge();renderWords()" onchange="updateFilterBadge();renderWords()"/></div>
-        </div>
-        <button class="btn-clear-filters" onclick="clearFilters()">✕ Clear all filters</button>
-      </div>
+          <div class="clock-strip" id="clock-strip"></div>
     </div>
+  </div>
+  <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
 
-    <div id="stats-row" class="stats-row"></div>
-    <div id="filter-row" class="filter-row"></div>
-    <div id="sort-bar" class="sort-bar">
-      <span style="font-size:13px;color:var(--muted);font-weight:500;" id="sort-label">Sort by</span>
-      <select class="sort-select" id="sort-select" onchange="renderWords()">
-        <option value="score-desc">Highest score</option>
-        <option value="length-desc">Longest first</option>
-        <option value="length-asc">Shortest first</option>
-        <option value="alpha">A → Z</option>
-      </select>
+  <div class="input-card">
+    <div class="input-label" id="input-label">Your letters</div>
+    <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
+    <div class="divider"></div>
+    <div class="input-actions">
+      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Reveal</button>
+      <button class="btn-clear" onclick="clearAll()">✕</button>
     </div>
-    <div id="results">
-      <div class="empty">
-        <div class="empty-icon">✏️</div>
-        <div class="empty-title">Type your letters above</div>
-        <div class="empty-sub" id="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div>
+    <!-- Filter toggle — only visible after letters typed -->
+    <div class="filter-toggle-row" id="filter-toggle-row">
+      <button class="filter-toggle-btn" id="filter-toggle-btn" onclick="toggleFilters()">
+        <span id="filters-label">⚙ Filters</span><span class="filter-toggle-arrow">▾</span>
+      </button>
+      <span id="filter-active-badge" style="display:none;font-size:11px;font-weight:700;color:var(--accent);background:var(--chip-bg);padding:2px 8px;border-radius:10px;">Active</span>
+    </div>
+    <div class="filter-card" id="filter-card">
+      <div class="filter-grid">
+        <div class="filter-field"><label>Starts with</label><input class="filter-input" id="f-starts" type="text" maxlength="5" placeholder="e.g. E" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Ends with</label><input class="filter-input" id="f-ends" type="text" maxlength="5" placeholder="e.g. NG" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Contains</label><input class="filter-input" id="f-contains" type="text" maxlength="5" placeholder="e.g. AR" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'');updateFilterBadge();renderWords()"/></div>
+        <div class="filter-field"><label>Exact length</label><input class="filter-input" id="f-length" type="number" min="2" max="15" placeholder="e.g. 4" oninput="updateFilterBadge();renderWords()" onchange="updateFilterBadge();renderWords()"/></div>
       </div>
+      <button class="btn-clear-filters" onclick="clearFilters()">✕ Clear all filters</button>
     </div>
-
-    <div id="wordcrack-top" class="ad-banner" style="margin-bottom:12px;"></div>
-    <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","728x90","wordcrack-top");});}catch(e){}</script>
-
-    <a class="affiliate-bar" id="affiliate-bar" href="https://www.amazon.com/s?k=scrabble+board+game&tag=wordcrack-20" target="_blank">
-      <div><div style="font-size:13px;font-weight:600;color:var(--text);">🎲 Shop Scrabble & Word Games</div><div style="font-size:11px;color:var(--muted);margin-top:1px;">Amazon — Free shipping on orders $25+</div></div>
-      <div class="aff-btn">Shop →</div>
-    </a>
-
-    <!-- FOOTER -->
-    <div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
-      <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">WordCrack™</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">© 2026 Nanith Technologies. All rights reserved.</div>
-      <div style="font-size:11px;color:var(--muted);">Free word unscrambler · 168,000 words · Scrabble scores</div>
+  </div>
+  <div id="stats-row" class="stats-row"></div>
+  <div id="filter-row" class="filter-row"></div>
+  <div id="sort-bar" class="sort-bar">
+    <span style="font-size:13px;color:var(--muted);font-weight:500;" id="sort-label">Sort by</span>
+    <select class="sort-select" id="sort-select" onchange="renderWords()">
+      <option value="score-desc">Highest score</option>
+      <option value="length-desc">Longest first</option>
+      <option value="length-asc">Shortest first</option>
+      <option value="alpha">A → Z</option>
+    </select>
+  </div>
+  <div id="results">
+    <div class="empty">
+      <div class="empty-icon">✏️</div>
+      <div class="empty-title">Type your letters above</div>
+      <div class="empty-sub" id="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div>
     </div>
-  </div><!-- /app -->
+  </div>
+  <!-- Media.net ad — shown below results -->
+  <div id="wordcrack-top" class="ad-banner" style="margin-bottom:12px;"></div>
+  <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","728x90","wordcrack-top");});}catch(e){}</script>
+
+  <a class="affiliate-bar" id="affiliate-bar" href="https://www.amazon.com/s?k=scrabble+board+game&tag=wordcrack-20" target="_blank">
+    <div><div style="font-size:13px;font-weight:600;color:var(--text);">🎲 Shop Scrabble & Word Games</div><div style="font-size:11px;color:var(--muted);margin-top:1px;">Amazon — Free shipping on orders $25+</div></div>
+    <div class="aff-btn">Shop →</div>
+  </a>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
+    <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">WordCrack™</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">© 2026 Nanith Technologies. All rights reserved.</div>
+    <div style="font-size:11px;color:var(--muted);">Free word unscrambler · 168,000 words · Scrabble scores</div>
+    <div style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;">
+      <span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Visitors</span>
+      <div id="vc-digits" style="display:flex;gap:2px;align-items:center;"></div>
+    </div>
+    <div style="font-size:10px;color:var(--border);margin-top:6px;">v1.0.0</div>
+  </div>
 </div><!-- /page-wrapper -->
-
 
 <div class="modal-backdrop" id="word-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -410,8 +362,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div class="modal-score" id="modal-score"></div>
     <div id="modal-body"><div class="modal-loading">✦ Loading AI insights...</div></div>
     <button class="modal-close" onclick="closeModal()">Close</button>
-  
-</div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -564,7 +515,7 @@ function clearAll(){
   document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div class="empty-title">Type your letters above</div><div class="empty-sub" id="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div></div>';
   found=[];document.getElementById('letters').focus();
 }
-async function showWordDetail(word){incrementCrackCount();
+async function showWordDetail(word){if(typeof incrementCrackCount==="function")incrementCrackCount();
   document.getElementById('modal-word').textContent=word.toUpperCase();
   document.getElementById('modal-score').textContent='Scrabble score: '+wordScore(word)+' points';
   document.getElementById('modal-body').innerHTML='<div class="modal-loading">✦ Getting AI insights...</div>';
@@ -581,309 +532,160 @@ function closeModal(){document.getElementById('word-modal').classList.remove('op
 document.getElementById('letters').addEventListener('keydown',e=>{if(e.key==='Enter')unscramble();});
 let tt;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2000);}
 
-// ── VISITOR COUNTER ──────────────────────────────────────────────
-(function(){
-  var base=18;
-  var hour=new Date().getHours();
-  // More visitors during day hours
-  var timeBoost=hour>=9&&hour<=22?Math.floor(Math.random()*25)+10:Math.floor(Math.random()*8)+3;
-  var count=base+timeBoost;
-  function flicker(){count+=Math.floor(Math.random()*3)-1;count=Math.max(8,Math.min(99,count));document.getElementById('visitor-count').textContent=count;}
-  document.getElementById('visitor-count').textContent=count;
-  setInterval(flicker,15000);
-})();
+// ── ALL INIT INSIDE DOMContentLoaded ─────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
 
-// ── ADMIN BADGE ───────────────────────────────────────────────────
-(function(){
-  var params=new URLSearchParams(window.location.search);
-  if(params.get('admin')==='on'){
-    sessionStorage.setItem('adminOn','1');
-  }
-  if(sessionStorage.getItem('adminOn')==='1'){
-    var ab=document.getElementById('admin-badge');if(ab)ab.style.display='inline-flex';
-  }
-})();
-
-// ── ACTIVITY TOASTS ──────────────────────────────────────────────
-(function(){
-  var messages=[
-    '🔥 Someone just unscrambled STALER for 6 pts!',
-    '🎯 ALERTS cracked in under 5 seconds!',
-    '👀 Someone found 324 words from AELRST!',
-    '⚡ New visitor from Singapore just joined!',
-    '🏆 ZEPHYR unscrambled — 30 pts!',
-    '🔥 Someone cracked QUARTZ for 24 pts!',
-    '🎉 100th word found today!',
-    '👾 Someone just beat their personal best!',
-    '🌍 New visitor from the US just joined!',
-    '⚡ JUKEBOX unscrambled — massive score!',
-    '🔥 3 people unscrambling right now!',
-    '🎯 MYSTERY solved in 4 seconds!',
+  // WORLD CLOCKS
+  var WC_CITIES=[
+    {code:'NY', flag:'🇺🇸', tz:'America/New_York'},
+    {code:'LON',flag:'🇬🇧', tz:'Europe/London'},
+    {code:'SGP',flag:'🇸🇬', tz:'Asia/Singapore'},
+    {code:'GER',flag:'🇩🇪', tz:'Europe/Berlin'},
+    {code:'CHN',flag:'🇨🇳', tz:'Asia/Shanghai'},
   ];
-  var toast=document.getElementById('activity-toast');
-  var idx=0;
-  function showToastMsg(){
-    var msg=messages[Math.floor(Math.random()*messages.length)];
-    toast.textContent=msg;
-    toast.classList.add('show');
-    setTimeout(function(){toast.classList.remove('show');},3500);
-  }
-  // First toast after 20 seconds
-  setTimeout(function(){
-    showToastMsg();
-    // Then every 30-60 seconds
-    setInterval(showToastMsg, Math.floor(Math.random()*30000)+30000);
-  },20000);
-})();
-
-
-// ── GREETING SECTION ─────────────────────────────────────────────
-var userLocation = null;
-
-// Fetch location on load
-fetch('https://ipapi.co/json/')
-  .then(function(r){return r.json();})
-  .then(function(d){
-    userLocation = {
-      city: d.city || d.country_name || 'Somewhere',
-      country: d.country_name || '',
-      flag: getFlagEmoji(d.country_code || '')
-    };
-  })
-  .catch(function(){
-    userLocation = {city:'Somewhere', country:'', flag:'🌍'};
-  });
-
-function getFlagEmoji(countryCode){
-  if(!countryCode)return '🌍';
-  return countryCode.toUpperCase().replace(/./g,function(c){
-    return String.fromCodePoint(c.charCodeAt(0)+127397);
-  });
-}
-
-function getGreetingKey(){
-  var d=new Date();
-  return 'wc-greetings-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-}
-
-function loadGreetings(){
-  try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}
-}
-
-function saveGreetings(list){
-  try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}
-}
-
-function renderGreetings(){
-  var list=loadGreetings();
-  var el=document.getElementById('greeting-list');
-  if(!list.length){
-    el.innerHTML='<div class="greeting-empty">Be the first to say hi today!</div>';
-    return;
-  }
-  // Show last 5
-  var recent=list.slice(-5).reverse();
-  el.innerHTML=recent.map(function(g){
-    return '<div class="greeting-item"><span class="greeting-flag">'+g.flag+'</span><span class="greeting-text"><strong>'+g.city+'</strong> says hi!</span><span class="greeting-time">'+g.time+'</span></div>';
-  }).join('');
-}
-
-function sendGreeting(){
-  var input=document.getElementById('greeting-input');
-  var val=input.value.toLowerCase().trim();
-  if(!val){input.focus();return;}
-  if(val!=='hi'&&val!=='hello'&&val!=='hey'){
-    input.value='';
-    input.placeholder='Just type "hi" 😊';
-    setTimeout(function(){input.placeholder='Type "hi" and press send';},2000);
-    return;
-  }
-  var loc=userLocation||{city:'Somewhere',country:'',flag:'🌍'};
-  var now=new Date();
-  var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  var list=loadGreetings();
-  list.push({city:loc.city,country:loc.country,flag:loc.flag,time:time});
-  saveGreetings(list);
-  renderGreetings();
-  input.value='';
-  input.placeholder='Hi sent! 🎉';
-  setTimeout(function(){input.placeholder='Type "hi" and press send';},2000);
-}
-
-document.getElementById('greeting-input').addEventListener('keydown',function(e){
-  if(e.key==='Enter')sendGreeting();
-});
-
-renderGreetings();
-
-
-// ── WORLD CLOCKS ─────────────────────────────────────────────────
-const WC_CITIES=[
-  {code:'NY', flag:'🇺🇸', tz:'America/New_York'},
-  {code:'LON',flag:'🇬🇧', tz:'Europe/London'},
-  {code:'SGP',flag:'🇸🇬', tz:'Asia/Singapore'},
-  {code:'GER',flag:'🇩🇪', tz:'Europe/Berlin'},
-  {code:'CHN',flag:'🇨🇳', tz:'Asia/Shanghai'},
-];
-function buildClocks(){
   var strip=document.getElementById('clock-strip');
-  if(!strip)return;
-  strip.innerHTML=WC_CITIES.map(function(c,i){
-    return '<div class="clock-card"><div class="analog-clock"><div class="clk-h" id="clkh'+i+'"></div><div class="clk-m" id="clkm'+i+'"></div><div class="clk-s" id="clks'+i+'"></div><div class="clk-center"></div></div><div class="clk-digital" id="clkd'+i+'"></div><div class="clk-city">'+c.flag+' '+c.code+'</div></div>';
-  }).join('');
-}
-function tickClocks(){
-  WC_CITIES.forEach(function(c,i){
-    var now=new Date();
-    var p=new Intl.DateTimeFormat('en',{timeZone:c.tz,hour:'numeric',minute:'numeric',second:'numeric',hour12:false}).formatToParts(now);
-    var h=0,m=0,s=0;
-    p.forEach(function(x){if(x.type==='hour')h=+x.value%12;if(x.type==='minute')m=+x.value;if(x.type==='second')s=+x.value;});
-    var eh=document.getElementById('clkh'+i),em=document.getElementById('clkm'+i),es=document.getElementById('clks'+i),ed=document.getElementById('clkd'+i);
-    if(eh)eh.style.transform='rotate('+(h*30+m*0.5)+'deg)';
-    if(em)em.style.transform='rotate('+(m*6+s*0.1)+'deg)';
-    if(es)es.style.transform='rotate('+(s*6)+'deg)';
-    if(ed)ed.textContent=now.toLocaleTimeString('en-US',{timeZone:c.tz,hour:'2-digit',minute:'2-digit',hour12:true});
-  });
-}
-buildClocks();tickClocks();setInterval(tickClocks,1000);
+  if(strip){
+    strip.innerHTML=WC_CITIES.map(function(c,i){
+      return '<div class="clock-card"><div class="analog-clock"><div class="clk-h" id="clkh'+i+'"></div><div class="clk-m" id="clkm'+i+'"></div><div class="clk-s" id="clks'+i+'"></div><div class="clk-center"></div></div><div class="clk-digital" id="clkd'+i+'"></div><div class="clk-city">'+c.flag+' '+c.code+'</div></div>';
+    }).join('');
+    function tickClocks(){
+      var now=new Date();
+      WC_CITIES.forEach(function(c,i){
+        var p=new Intl.DateTimeFormat('en',{timeZone:c.tz,hour:'numeric',minute:'numeric',second:'numeric',hour12:false}).formatToParts(now);
+        var h=0,m=0,s=0;
+        p.forEach(function(x){if(x.type==='hour')h=+x.value%12;if(x.type==='minute')m=+x.value;if(x.type==='second')s=+x.value;});
+        var eh=document.getElementById('clkh'+i),em=document.getElementById('clkm'+i),es=document.getElementById('clks'+i),ed=document.getElementById('clkd'+i);
+        if(eh)eh.style.transform='rotate('+(h*30+m*0.5)+'deg)';
+        if(em)em.style.transform='rotate('+(m*6+s*0.1)+'deg)';
+        if(es)es.style.transform='rotate('+(s*6)+'deg)';
+        if(ed)ed.textContent=now.toLocaleTimeString('en-US',{timeZone:c.tz,hour:'2-digit',minute:'2-digit',hour12:true});
+      });
+    }
+    tickClocks();setInterval(tickClocks,1000);
+  }
 
-// ── VISITOR COUNTER ───────────────────────────────────────────────
-(function(){
-  var base=18;
-  var hour=new Date().getHours();
+  // VISITOR COUNTER
+  var base=18,hour=new Date().getHours();
   var boost=hour>=9&&hour<=22?Math.floor(Math.random()*25)+10:Math.floor(Math.random()*8)+3;
-  var count=base+boost;
-  function flicker(){count+=Math.floor(Math.random()*3)-1;count=Math.max(8,Math.min(99,count));var el=document.getElementById('visitor-count');if(el)el.textContent=count;}
-  var el=document.getElementById('visitor-count');if(el)el.textContent=count;
-  setInterval(flicker,15000);
-})();
+  var vcCount=base+boost;
+  var vcEl=document.getElementById('visitor-count');
+  if(vcEl)vcEl.textContent=vcCount;
+  setInterval(function(){
+    vcCount+=Math.floor(Math.random()*3)-1;vcCount=Math.max(8,Math.min(99,vcCount));
+    if(vcEl)vcEl.textContent=vcCount;
+  },15000);
 
-// ── ADMIN BADGE ───────────────────────────────────────────────────
-(function(){
+  // ADMIN BADGE
   var params=new URLSearchParams(window.location.search);
   if(params.get('admin')==='on')sessionStorage.setItem('adminOn','1');
   if(sessionStorage.getItem('adminOn')==='1'){
     var ab=document.getElementById('admin-badge');
     if(ab)ab.style.display='inline-flex';
   }
-})();
 
-// ── ACTIVITY TOASTS ───────────────────────────────────────────────
-(function(){
-  var msgs=['🔥 Someone just unscrambled STALER for 6 pts!','🎯 ALERTS cracked in under 5 seconds!','👀 Someone found 324 words from AELRST!','⚡ New visitor from Singapore just joined!','🏆 ZEPHYR unscrambled — 30 pts!','🔥 Someone cracked QUARTZ for 24 pts!','🌍 New visitor from the US just joined!','🎯 MYSTERY solved in 4 seconds!'];
+  // ACTIVITY TOASTS
+  var msgs=['🔥 Someone just unscrambled STALER for 6 pts!','🎯 ALERTS cracked in under 5 seconds!','👀 Someone found 324 words from AELRST!','⚡ New visitor from Singapore just joined!','🏆 ZEPHYR unscrambled — 30 pts!','🔥 QUARTZ cracked for 24 pts!','🌍 New visitor from the US just joined!','🎯 MYSTERY solved in 4 seconds!'];
   var toast=document.getElementById('activity-toast');
-  if(!toast)return;
-  function show(){var msg=msgs[Math.floor(Math.random()*msgs.length)];toast.textContent=msg;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},3500);}
-  setTimeout(function(){show();setInterval(show,Math.floor(Math.random()*30000)+30000);},20000);
-})();
-
-// ── GREETING (HI BUTTON) ─────────────────────────────────────────
-var _userLocation=null;
-fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
-  _userLocation={city:d.city||d.country_name||'Somewhere',flag:getFlagEmoji(d.country_code||'')};
-}).catch(function(){_userLocation={city:'Somewhere',flag:'🌍'};});
-function getFlagEmoji(cc){if(!cc)return '🌍';return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(c.charCodeAt(0)+127397);});}
-function getGreetingKey(){var d=new Date();return 'wc-hi-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
-function loadGreetings(){try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}}
-function saveGreetings(list){try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}}
-function renderGreetings(){
-  var list=loadGreetings();
-  var el=document.getElementById('greeting-list');
-  if(!el)return;
-  if(!list.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
-  var recent=list.slice(-5).reverse();
-  el.innerHTML=recent.map(function(g){
-    return '<div class="greeting-item"><span class="greeting-flag">'+g.flag+'</span><span class="greeting-city">'+g.city+'</span><span class="greeting-time-lp">'+g.time+'</span></div>';
-  }).join('');
-}
-function sendGreeting(){
-  var loc=_userLocation||{city:'Somewhere',flag:'🌍'};
-  var now=new Date();
-  var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  var list=loadGreetings();
-  list.push({city:loc.city,flag:loc.flag,time:time});
-  saveGreetings(list);
-  renderGreetings();
-  var btn=document.getElementById('hi-btn')||document.querySelector('.hi-btn');
-  if(btn){btn.textContent='✅ Said hi!';setTimeout(function(){btn.textContent='👋 Hi!';},2000);}
-}
-document.addEventListener('DOMContentLoaded',function(){renderGreetings();});
-
-// ── ACHIEVEMENTS ─────────────────────────────────────────────────
-var ACHIEVEMENTS=[
-  {id:'starter', icon:'🌱', name:'Starter',   req:1},
-  {id:'onfire',  icon:'🔥', name:'On Fire',   req:10},
-  {id:'cracker', icon:'⚡', name:'Cracker',   req:50},
-  {id:'master',  icon:'🏆', name:'Master',    req:100},
-  {id:'legend',  icon:'💎', name:'Legend',    req:500},
-  {id:'wordking',icon:'👑', name:'Wordking',  req:1000},
-];
-var CRACK_KEY='wc-crack-count-v1';
-var EARNED_KEY='wc-earned-v1';
-function getCrackCount(){try{return parseInt(localStorage.getItem(CRACK_KEY))||0;}catch(e){return 0;}}
-function saveCrackCount(n){try{localStorage.setItem(CRACK_KEY,n);}catch(e){}}
-function getEarned(){try{return JSON.parse(localStorage.getItem(EARNED_KEY))||[];}catch(e){return[];}}
-function saveEarned(arr){try{localStorage.setItem(EARNED_KEY,JSON.stringify(arr));}catch(e){}}
-function getNextMilestone(count){
-  for(var i=0;i<ACHIEVEMENTS.length;i++){if(ACHIEVEMENTS[i].req>count)return ACHIEVEMENTS[i];}
-  return null;
-}
-function renderAchievements(){
-  var count=getCrackCount();
-  var earned=getEarned();
-  var el=document.getElementById('crack-count');if(el)el.textContent=count.toLocaleString();
-  var next=getNextMilestone(count);
-  var nextEl=document.getElementById('crack-next');
-  if(nextEl){
-    if(next){var rem=next.req-count;nextEl.textContent=rem+' more → '+next.icon+' '+next.name;}
-    else{nextEl.textContent='🎉 All achievements unlocked!';}
+  if(toast){
+    function showActivityToast(){var msg=msgs[Math.floor(Math.random()*msgs.length)];toast.textContent=msg;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},3500);}
+    setTimeout(function(){showActivityToast();setInterval(showActivityToast,Math.floor(Math.random()*30000)+30000);},20000);
   }
-  var pfEl=document.getElementById('progress-fill');
-  if(pfEl&&next){
-    var prev=0;
-    for(var i=0;i<ACHIEVEMENTS.length;i++){if(ACHIEVEMENTS[i].req===next.req&&i>0){prev=ACHIEVEMENTS[i-1].req;break;}}
-    var pct=Math.min(100,Math.round(((count-prev)/(next.req-prev))*100));
-    pfEl.style.width=pct+'%';
-  } else if(pfEl){pfEl.style.width='100%';}
-  var grid=document.getElementById('badge-grid');
-  if(grid){
-    grid.innerHTML=ACHIEVEMENTS.map(function(a){
-      var isEarned=earned.indexOf(a.id)>-1||count>=a.req;
-      return '<div class="badge-item"><div class="badge-icon'+(isEarned?'':' locked')+'">'+a.icon+'</div><div class="badge-name'+(isEarned?' earned':'')+'">'+a.name+'</div><div class="badge-req">'+a.req+' words</div></div>';
+
+  // GREETING — fetch location first, then enable Hi button
+  var _loc=null;
+  var hiBtn=document.getElementById('hi-btn');
+  function getFlagEmoji(cc){if(!cc)return '🌍';return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(c.charCodeAt(0)+127397);});}
+  function enableHiBtn(){if(hiBtn)hiBtn.disabled=false;}
+  fetch('https://ipapi.co/json/')
+    .then(function(r){return r.json();})
+    .then(function(d){_loc={city:d.city||d.country_name||'Somewhere',flag:getFlagEmoji(d.country_code||'')};enableHiBtn();})
+    .catch(function(){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();});
+  setTimeout(function(){if(!_loc){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();}},3000);
+
+  function getGreetingKey(){var d=new Date();return 'wc-hi-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function loadGreetings(){try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}}
+  function saveGreetings(list){try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}}
+  function renderGreetings(){
+    var list=loadGreetings();
+    var el=document.getElementById('greeting-list');
+    if(!el)return;
+    if(!list.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
+    el.innerHTML=list.slice(-5).reverse().map(function(g){
+      return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+g.time+'</span></div>';
     }).join('');
   }
-}
-function checkNewAchievement(count){
-  var earned=getEarned();
-  var newlyEarned=null;
-  ACHIEVEMENTS.forEach(function(a){
-    if(count>=a.req&&earned.indexOf(a.id)===-1){
-      earned.push(a.id);
-      newlyEarned=a;
+  window.sendGreeting=function(){
+    var loc=_loc||{city:'Somewhere',flag:'🌍'};
+    var now=new Date();
+    var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    var list=loadGreetings();
+    list.push({city:loc.city,flag:loc.flag,time:time});
+    saveGreetings(list);renderGreetings();
+    if(hiBtn){hiBtn.textContent='✅ Said hi!';hiBtn.disabled=true;setTimeout(function(){hiBtn.textContent='👋 Hi!';hiBtn.disabled=false;},3000);}
+  };
+  renderGreetings();
+
+  // ACHIEVEMENTS
+  var ACHIEVEMENTS=[
+    {id:'starter', icon:'🌱', name:'Starter',  req:1},
+    {id:'onfire',  icon:'🔥', name:'On Fire',  req:10},
+    {id:'cracker', icon:'⚡', name:'Cracker',  req:50},
+    {id:'master',  icon:'🏆', name:'Master',   req:100},
+    {id:'legend',  icon:'💎', name:'Legend',   req:500},
+    {id:'wordking',icon:'👑', name:'Wordking', req:1000},
+  ];
+  var CRACK_KEY='wc-crack-v1', EARNED_KEY='wc-earned-v1';
+  function getCrackCount(){try{return parseInt(localStorage.getItem(CRACK_KEY))||0;}catch(e){return 0;}}
+  function saveCrackCount(n){try{localStorage.setItem(CRACK_KEY,String(n));}catch(e){}}
+  function getEarned(){try{return JSON.parse(localStorage.getItem(EARNED_KEY))||[];}catch(e){return[];}}
+  function saveEarned(arr){try{localStorage.setItem(EARNED_KEY,JSON.stringify(arr));}catch(e){}}
+  function getNextMilestone(count){for(var i=0;i<ACHIEVEMENTS.length;i++){if(ACHIEVEMENTS[i].req>count)return ACHIEVEMENTS[i];}return null;}
+  function renderAchievements(){
+    var count=getCrackCount(),earned=getEarned();
+    var ccEl=document.getElementById('crack-count');if(ccEl)ccEl.textContent=count.toLocaleString();
+    var next=getNextMilestone(count);
+    var nextEl=document.getElementById('crack-next');
+    if(nextEl){if(next){var rem=next.req-count;nextEl.textContent=rem+' more \u2192 '+next.icon+' '+next.name;}else{nextEl.textContent='\uD83C\uDF89 All unlocked!';}}
+    var pfEl=document.getElementById('progress-fill');
+    if(pfEl&&next){
+      var prev=0;for(var i=0;i<ACHIEVEMENTS.length;i++){if(ACHIEVEMENTS[i].id===next.id&&i>0){prev=ACHIEVEMENTS[i-1].req;break;}}
+      pfEl.style.width=Math.min(100,Math.round(((count-prev)/(next.req-prev))*100))+'%';
+    } else if(pfEl){pfEl.style.width='100%';}
+    var grid=document.getElementById('badge-grid');
+    if(grid){
+      grid.innerHTML=ACHIEVEMENTS.map(function(a){
+        var isEarned=earned.indexOf(a.id)>-1||count>=a.req;
+        return '<div class="badge-item-lp"><div class="badge-icon-lp'+(isEarned?'':' locked')+'">'+a.icon+'</div><div class="badge-name-lp'+(isEarned?' earned':'')+'">'+a.name+'</div><div class="badge-req-lp">'+a.req+'</div></div>';
+      }).join('');
     }
-  });
-  if(newlyEarned){
-    saveEarned(earned);
-    var banner=document.getElementById('earned-banner');
-    var icon=document.getElementById('earned-icon');
-    var title=document.getElementById('earned-title');
-    var sub=document.getElementById('earned-sub');
-    if(banner&&icon&&title&&sub){
-      icon.textContent=newlyEarned.icon;
-      title.textContent=newlyEarned.name+' unlocked!';
-      sub.textContent=newlyEarned.req+' words cracked';
-      banner.style.display='flex';
+  }
+  function checkNewAchievement(count){
+    var earned=getEarned(),newlyEarned=null;
+    ACHIEVEMENTS.forEach(function(a){if(count>=a.req&&earned.indexOf(a.id)===-1){earned.push(a.id);newlyEarned=a;}});
+    if(newlyEarned){
+      saveEarned(earned);
+      var banner=document.getElementById('earned-banner');
+      var icon=document.getElementById('earned-icon');
+      var title=document.getElementById('earned-title');
+      var sub=document.getElementById('earned-sub');
+      if(banner&&icon&&title&&sub){
+        icon.textContent=newlyEarned.icon;
+        title.textContent=newlyEarned.name+' unlocked!';
+        sub.textContent=newlyEarned.req+' words cracked';
+        banner.classList.add('show');
+      }
       showToast(newlyEarned.icon+' Achievement: '+newlyEarned.name+'!');
     }
   }
-}
-function incrementCrackCount(){
-  var count=getCrackCount()+1;
-  saveCrackCount(count);
+  window.incrementCrackCount=function(){
+    var count=getCrackCount()+1;
+    saveCrackCount(count);
+    renderAchievements();
+    checkNewAchievement(count);
+  };
   renderAchievements();
-  checkNewAchievement(count);
-}
-document.addEventListener('DOMContentLoaded',function(){renderAchievements();});
+
+});// end DOMContentLoaded
 
 </script>
 <div class="activity-toast" id="activity-toast"></div>
