@@ -242,14 +242,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 /* ── APP COLUMN ───────────────────────── */
 .app{min-width:0;width:100%;padding:24px 16px 20px;box-sizing:border-box;}
 
-.hi-btn-header{padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;-webkit-appearance:none;transition:transform .15s;white-space:nowrap;}
-.hi-btn-header:active{transform:scale(0.97);}
-.hi-btn-header:disabled{opacity:.6;cursor:wait;}
-.greeting-list-header{display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:180px;}
-.greeting-item-header{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);animation:fadeSlide .4s ease;}
-.g-flag-h{font-size:12px;}
-.g-city-h{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;}
-.g-time-h{font-size:9px;color:var(--border);}
+
 
 .title-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .hi-btn-micro{padding:1px 6px;background:var(--accent);color:#fff;border:none;border-radius:5px;font-size:8px;font-weight:700;cursor:pointer;line-height:1.8;-webkit-appearance:none;transition:transform .15s;}
@@ -305,10 +298,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
         <div class="like-pill-micro" id="like-pill" onclick="toggleLike()">❤️ <span id="like-count">2,500</span></div>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:4px;flex-shrink:0;">
-      <button class="hi-btn-header" id="hi-btn-header" onclick="sendGreeting()" disabled>👋 Say Hi!</button>
-      <div class="greeting-list-header" id="greeting-list-header"></div>
-    </div>
+
     </div>
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
 
@@ -601,11 +591,7 @@ function loadGreetingsFromSupa(){
       return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+time+'</span></div>';
     }).join('');
     el.innerHTML=html;
-    // Also update header list (show last 3, horizontal style)
-    var hel=document.getElementById('greeting-list-header');
-    if(hel){hel.innerHTML=data.slice(0,3).map(function(g){
-      return '<div class="greeting-item-header"><span class="g-flag-h">'+g.flag+'</span><span class="g-city-h">'+g.city+'</span></div>';
-    }).join('');}
+
   }).catch(function(){});
 }
 function saveGreetingToSupa(city,flag){
