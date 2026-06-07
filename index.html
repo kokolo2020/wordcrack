@@ -184,6 +184,22 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 /* ACTIVITY TOAST */
 .activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface,#fff);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text,#1a1a2e);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
 .activity-toast.show{transform:translateY(0);opacity:1;}
+
+/* GREETING SECTION */
+.greeting-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
+.greeting-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
+.greeting-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;min-height:20px;}
+.greeting-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);animation:fadeSlide .4s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.greeting-flag{font-size:18px;line-height:1;}
+.greeting-text{color:var(--text);}
+.greeting-time{font-size:11px;color:var(--muted);margin-left:auto;}
+.greeting-input-row{display:flex;gap:8px;}
+.greeting-input{flex:1;font-family:var(--font);font-size:14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;outline:none;color:var(--text);transition:border-color .2s;-webkit-appearance:none;}
+.greeting-input:focus{border-color:var(--accent);}
+.greeting-btn{padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;-webkit-appearance:none;transition:transform .15s;}
+.greeting-btn:active{transform:scale(0.97);}
+.greeting-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
 </style>
 </head>
 <body>
@@ -286,7 +302,19 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div class="modal-score" id="modal-score"></div>
     <div id="modal-body"><div class="modal-loading">✦ Loading AI insights...</div></div>
     <button class="modal-close" onclick="closeModal()">Close</button>
+  
+  <!-- GREETING SECTION -->
+  <div class="greeting-section" id="greeting-section">
+    <div class="greeting-title">👋 Say hi to the world</div>
+    <div class="greeting-list" id="greeting-list">
+      <div class="greeting-empty">Be the first to say hi today!</div>
+    </div>
+    <div class="greeting-input-row">
+      <input class="greeting-input" id="greeting-input" type="text" placeholder='Type "hi" and press send' maxlength="20" autocomplete="off"/>
+      <button class="greeting-btn" onclick="sendGreeting()">Send 👋</button>
+    </div>
   </div>
+</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -510,6 +538,86 @@ let tt;function showToast(msg){const el=document.getElementById('toast');el.text
     setInterval(showToastMsg, Math.floor(Math.random()*30000)+30000);
   },20000);
 })();
+
+
+// ── GREETING SECTION ─────────────────────────────────────────────
+var userLocation = null;
+
+// Fetch location on load
+fetch('https://ipapi.co/json/')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    userLocation = {
+      city: d.city || d.country_name || 'Somewhere',
+      country: d.country_name || '',
+      flag: getFlagEmoji(d.country_code || '')
+    };
+  })
+  .catch(function(){
+    userLocation = {city:'Somewhere', country:'', flag:'🌍'};
+  });
+
+function getFlagEmoji(countryCode){
+  if(!countryCode)return '🌍';
+  return countryCode.toUpperCase().replace(/./g,function(c){
+    return String.fromCodePoint(c.charCodeAt(0)+127397);
+  });
+}
+
+function getGreetingKey(){
+  var d=new Date();
+  return 'wc-greetings-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+
+function loadGreetings(){
+  try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}
+}
+
+function saveGreetings(list){
+  try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}
+}
+
+function renderGreetings(){
+  var list=loadGreetings();
+  var el=document.getElementById('greeting-list');
+  if(!list.length){
+    el.innerHTML='<div class="greeting-empty">Be the first to say hi today!</div>';
+    return;
+  }
+  // Show last 5
+  var recent=list.slice(-5).reverse();
+  el.innerHTML=recent.map(function(g){
+    return '<div class="greeting-item"><span class="greeting-flag">'+g.flag+'</span><span class="greeting-text"><strong>'+g.city+'</strong> says hi!</span><span class="greeting-time">'+g.time+'</span></div>';
+  }).join('');
+}
+
+function sendGreeting(){
+  var input=document.getElementById('greeting-input');
+  var val=input.value.toLowerCase().trim();
+  if(!val){input.focus();return;}
+  if(val!=='hi'&&val!=='hello'&&val!=='hey'){
+    input.value='';
+    input.placeholder='Just type "hi" 😊';
+    setTimeout(function(){input.placeholder='Type "hi" and press send';},2000);
+    return;
+  }
+  var loc=userLocation||{city:'Somewhere',country:'',flag:'🌍'};
+  var now=new Date();
+  var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  var list=loadGreetings();
+  list.push({city:loc.city,country:loc.country,flag:loc.flag,time:time});
+  saveGreetings(list);
+  renderGreetings();
+  input.value='';
+  input.placeholder='Hi sent! 🎉';
+  setTimeout(function(){input.placeholder='Type "hi" and press send';},2000);
+}
+
+document.getElementById('greeting-input').addEventListener('keydown',function(e){
+  if(e.key==='Enter')sendGreeting();
+});
+
+renderGreetings();
 
 </script>
 
