@@ -54,7 +54,7 @@ body.night {
 
 html { font-size:16px; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; transition:background 0.3s, color 0.3s; }
-.app { padding:28px 16px 20px; }
+/* app handled below */
 
 /* HEADER ROW */
 .header-row { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
@@ -182,7 +182,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   .clock-strip{display:none!important;}
 }
 /* ── LEFT PANEL ───────────────────────────────── */
-.left-panel{background:#1a1728;padding:14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
+.left-panel{background:#1a1728;padding:14px;position:sticky;top:0;max-height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
 .lp-logo-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;}
 .lp-badges{display:flex;flex-direction:column;gap:5px;margin-bottom:4px;}
 .lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;padding:4px 9px;border-radius:10px;}
@@ -234,13 +234,16 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .clk-digital{font-size:8px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.3px;}
 .clk-city{font-size:7px;color:var(--muted);text-align:center;font-weight:500;}
 /* ── APP OVERRIDE ─────────────────────────────── */
-.app{max-width:none!important;margin:0!important;padding:24px 16px 20px;}
-.header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;gap:12px;}
-.header-left{flex:1;}
+/* app handled below */
+.header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;gap:8px;min-width:0;}
+.header-left{flex:1;min-width:0;overflow:hidden;}
 /* ── ACTIVITY TOAST ───────────────────────────── */
 .activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
 .activity-toast.show{transform:translateY(0);opacity:1;}
 
+
+/* ── APP COLUMN ───────────────────────── */
+.app{min-width:0;width:100%;padding:24px 16px 20px;box-sizing:border-box;}
 </style>
 </head>
 <body>
@@ -287,7 +290,6 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     </div>
           <div class="clock-strip" id="clock-strip"></div>
     </div>
-  </div>
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
 
   <div class="input-card">
@@ -353,6 +355,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     </div>
     <div style="font-size:10px;color:var(--border);margin-top:6px;">v1.0.0</div>
   </div>
+  </div><!-- /app -->
 </div><!-- /page-wrapper -->
 
 <div class="modal-backdrop" id="word-modal" onclick="if(event.target===this)closeModal()">
@@ -673,8 +676,14 @@ document.addEventListener('DOMContentLoaded', function() {
         title.textContent=newlyEarned.name+' unlocked!';
         sub.textContent=newlyEarned.req+' words cracked';
         banner.classList.add('show');
+        setTimeout(function(){banner.classList.remove('show');},5000);
       }
-      showToast(newlyEarned.icon+' Achievement: '+newlyEarned.name+'!');
+      // Special first word celebration
+      if(newlyEarned.id==='starter'){
+        showToast('🎉 First word cracked! 🌱 Starter badge unlocked!');
+      } else {
+        showToast(newlyEarned.icon+' Achievement unlocked: '+newlyEarned.name+'!');
+      }
     }
   }
   window.incrementCrackCount=function(){
