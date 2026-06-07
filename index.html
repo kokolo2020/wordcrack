@@ -54,7 +54,7 @@ body.night {
 
 html { font-size:16px; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; transition:background 0.3s, color 0.3s; }
-.app { max-width:480px; margin:0 auto; padding:28px 16px 20px; }
+.app { padding:24px 16px 20px; min-width:0; }
 
 /* HEADER ROW */
 .header-row { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
@@ -200,6 +200,45 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .greeting-btn{padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;-webkit-appearance:none;transition:transform .15s;}
 .greeting-btn:active{transform:scale(0.97);}
 .greeting-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
+
+/* PAGE WRAPPER */
+.page-wrapper{display:grid;grid-template-columns:230px 1fr;max-width:1080px;margin:0 auto;align-items:start;gap:0;}
+@media(max-width:800px){
+  .page-wrapper{grid-template-columns:1fr;}
+  .left-panel{order:2;position:static!important;border-radius:var(--radius);margin:0 12px 16px;}
+  .app{order:1;}
+}
+/* LEFT PANEL */
+.left-panel{background:#1a1728;padding:18px;position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;}
+.lp-logo-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:6px;}
+.lp-title{font-family:var(--display);font-size:24px;font-weight:800;color:#f0eeff;line-height:1;margin-bottom:16px;letter-spacing:-0.5px;}
+.lp-title span{color:#9d8ff0;}
+.lp-version{font-size:9px;background:#2d2a45;border-radius:8px;padding:2px 7px;color:#9d8ff0;font-weight:700;vertical-align:middle;margin-left:4px;}
+.lp-badges{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}
+.lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 10px;border-radius:12px;}
+.lp-badge-online{background:#2d2a45;color:#9d8ff0;}
+.lp-badge-admin{background:#0f2a1a;color:#4ade80;border:1px solid #166534;}
+.lp-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s infinite;}
+.lp-dot-purple{background:#9d8ff0;}
+.lp-dot-green{background:#4ade80;}
+.lp-divider{height:1px;background:#2d2a45;margin:14px 0;}
+.lp-section-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;}
+/* GREETING inside dark panel */
+.greeting-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;min-height:20px;}
+.greeting-item{display:flex;align-items:center;gap:7px;font-size:11px;color:#c4b8ff;animation:fadeSlide .4s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.greeting-flag{font-size:15px;line-height:1;}
+.greeting-time{font-size:10px;color:#6b6485;margin-left:auto;}
+.greeting-empty-lp{font-size:11px;color:#6b6485;padding:4px 0;}
+.greeting-input-row{display:flex;gap:6px;}
+.greeting-input{flex:1;font-family:var(--font);font-size:12px;background:#221f35;border:1.5px solid #3d3a56;border-radius:8px;padding:8px 10px;color:#f0eeff;outline:none;-webkit-appearance:none;transition:border-color .2s;}
+.greeting-input:focus{border-color:#534AB7;}
+.greeting-input::placeholder{color:#3d3a56;font-size:11px;}
+.greeting-btn{padding:8px 12px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;-webkit-appearance:none;white-space:nowrap;}
+.greeting-btn:active{transform:scale(0.97);}
+.lp-footer{margin-top:auto;padding-top:14px;border-top:1px solid #2d2a45;font-size:10px;color:#6b6485;text-align:center;line-height:1.6;}
+/* Remove old greeting section styles */
+.greeting-section{display:none;}
 </style>
 </head>
 <body>
@@ -208,20 +247,30 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   <div id="wordcrack-bottom" style="width:320px;height:50px;"></div>
   <script>try{window._mNHandle.queue.push(function(){window._mNDetails.loadTag("XXXXXXX","320x50","wordcrack-bottom");});}catch(e){}</script>
 </div>
-<div class="app">
-  <div class="header-row">
-    <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.1</span></div>
-      <div class="title">Word<span>Crack</span></div>
+<div class="page-wrapper">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel" id="left-panel">
+    <div class="lp-logo-label">Word Unscrambler</div>
+    <div class="lp-title">Word<span>Crack</span><span class="lp-version">v3.2</span></div>
+    <div class="lp-badges">
+      <div class="lp-badge lp-badge-online"><div class="lp-dot lp-dot-purple"></div><span id="visitor-count">...</span> online now</div>
+      <div class="lp-badge lp-badge-admin" id="admin-badge" style="display:none;"><div class="lp-dot lp-dot-green"></div>Admin online</div>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-        <div class="visitor-counter" id="visitor-counter"><div class="visitor-dot"></div><span id="visitor-count">...</span> online</div>
-        <div class="admin-badge" id="admin-badge"><div class="admin-dot"></div>Admin online</div>
-      </div>
-      </div>
+    <div class="lp-divider"></div>
+    <div class="lp-section-label">👋 Say hi to the world</div>
+    <div class="greeting-list" id="greeting-list">
+      <div class="greeting-empty-lp">Be the first to say hi today!</div>
     </div>
+    <div class="greeting-input-row">
+      <input class="greeting-input" id="greeting-input" type="text" placeholder='type "hi"...' maxlength="20" autocomplete="off"/>
+      <button class="greeting-btn" onclick="sendGreeting()">Send 👋</button>
+    </div>
+    <div class="lp-footer">© 2026 WordCrack<br>Free · No signup · 168K words</div>
   </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="app">
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
 
   <div class="input-card">
@@ -300,6 +349,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div style="font-size:10px;color:var(--border);margin-top:6px;">v1.0.0</div>
   </div>
 </div>
+</div><!-- /page-wrapper -->
 <div class="modal-backdrop" id="word-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -497,7 +547,7 @@ let tt;function showToast(msg){const el=document.getElementById('toast');el.text
     sessionStorage.setItem('adminOn','1');
   }
   if(sessionStorage.getItem('adminOn')==='1'){
-    document.getElementById('admin-badge').classList.add('visible');
+    var ab=document.getElementById('admin-badge');if(ab)ab.style.display='inline-flex';
   }
 })();
 
