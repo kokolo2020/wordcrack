@@ -177,9 +177,10 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .page-wrapper{display:grid;grid-template-columns:170px 1fr;max-width:1100px;margin:0 auto;align-items:start;}
 @media(max-width:800px){
   .page-wrapper{grid-template-columns:1fr;}
-  .left-panel{position:static!important;order:2;border-radius:0 0 var(--radius) var(--radius);}
+  .left-panel{position:static!important;order:2;border-radius:var(--radius);margin:12px;max-height:none!important;height:auto!important;}
   .app{order:1;}
   .clock-strip{display:none!important;}
+  .lp-footer{margin-top:16px;}
 }
 /* ── LEFT PANEL ───────────────────────────────── */
 .left-panel{background:#1a1728;padding:14px;position:sticky;top:0;max-height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
