@@ -464,6 +464,7 @@ function unscramble(){
     return;
   }
   const longest=found.reduce((a,b)=>a.length>=b.length?a:b);
+  if(typeof incrementCrackCount==='function')incrementCrackCount();
   const topScore=Math.max(...found.map(wordScore));
   document.getElementById('stats-row').style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;';
   document.getElementById('stats-row').innerHTML=`
