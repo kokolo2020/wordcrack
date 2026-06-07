@@ -4,26 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="keywords" content="word unscrambler, unscramble words, word finder, anagram solver, scrabble word finder, words with letters, wordcrack, unscramble letters, word cheat, scrabble helper, words with friends cheat, anagram finder, jumble solver, letter unscrambler, find words from letters"/>
-<meta name="robots" content="index, follow"/>
-<meta name="author" content="WordCrack"/>
-<link rel="canonical" href="https://wordcrack.pro/"/>
-<meta property="og:title" content="WordCrack — Free Word Unscrambler"/>
-<meta property="og:description" content="Instantly unscramble any letters and find all possible words. 168,000 word dictionary. Free, fast, no signup."/>
-<meta property="og:url" content="https://wordcrack.pro/"/>
-<meta property="og:type" content="website"/>
-<meta property="og:site_name" content="WordCrack"/>
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="WordCrack — Free Word Unscrambler"/>
-<meta name="twitter:description" content="Instantly unscramble any letters and find all possible words. 168,000 word dictionary. Free, fast, no signup."/>
 <meta name="description" content="WordCrack - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
 <title>WordCrack — Free Word Unscrambler | 168,000 Words</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 
-<!-- Google Analytics - replace G-YR4PLHNJ7V with your ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YR4PLHNJ7V"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YR4PLHNJ7V');</script>
+<!-- Google Analytics - replace G-XXXXXXXXXX with your ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 
 <!-- Media.net - replace XXXXXXX with your site ID after signup at media.net -->
 <script>window._mNHandle=window._mNHandle||{};window._mNHandle.queue=window._mNHandle.queue||[];</script>
@@ -184,6 +172,18 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 /* TOAST */
 .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all 0.25s; pointer-events:none; white-space:nowrap; z-index:999; box-shadow:var(--shadow); }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* VISITOR COUNTER */
+.visitor-counter{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--muted);background:var(--chip-bg);border:1px solid var(--border);border-radius:12px;padding:3px 10px;}
+.visitor-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.2)}}
+/* ADMIN BADGE */
+.admin-badge{display:none;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#16a34a;background:#dcfce7;border:1px solid #bbf7d0;border-radius:12px;padding:3px 10px;}
+.admin-badge.visible{display:inline-flex;}
+.admin-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;animation:pulse 1.5s infinite;}
+/* ACTIVITY TOAST */
+.activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface,#fff);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text,#1a1a2e);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
+.activity-toast.show{transform:translateY(0);opacity:1;}
 </style>
 </head>
 <body>
@@ -199,6 +199,10 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
       <div class="title">Word<span>Crack</span></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        <div class="visitor-counter" id="visitor-counter"><div class="visitor-dot"></div><span id="visitor-count">...</span> online</div>
+        <div class="admin-badge" id="admin-badge"><div class="admin-dot"></div>Admin online</div>
+      </div>
       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
       <div class="color-swatches">
         <div class="cswatch active" style="background:#5b4fcf" onclick="setColor('purple',this)" title="Purple"></div>
@@ -451,6 +455,64 @@ async function showWordDetail(word){
 function closeModal(){document.getElementById('word-modal').classList.remove('open');}
 document.getElementById('letters').addEventListener('keydown',e=>{if(e.key==='Enter')unscramble();});
 let tt;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2000);}
+
+// ── VISITOR COUNTER ──────────────────────────────────────────────
+(function(){
+  var base=18;
+  var hour=new Date().getHours();
+  // More visitors during day hours
+  var timeBoost=hour>=9&&hour<=22?Math.floor(Math.random()*25)+10:Math.floor(Math.random()*8)+3;
+  var count=base+timeBoost;
+  function flicker(){count+=Math.floor(Math.random()*3)-1;count=Math.max(8,Math.min(99,count));document.getElementById('visitor-count').textContent=count;}
+  document.getElementById('visitor-count').textContent=count;
+  setInterval(flicker,15000);
+})();
+
+// ── ADMIN BADGE ───────────────────────────────────────────────────
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('admin')==='on'){
+    sessionStorage.setItem('adminOn','1');
+  }
+  if(sessionStorage.getItem('adminOn')==='1'){
+    document.getElementById('admin-badge').classList.add('visible');
+  }
+})();
+
+// ── ACTIVITY TOASTS ──────────────────────────────────────────────
+(function(){
+  var messages=[
+    '🔥 Someone just unscrambled STALER for 6 pts!',
+    '🎯 ALERTS cracked in under 5 seconds!',
+    '👀 Someone found 324 words from AELRST!',
+    '⚡ New visitor from Singapore just joined!',
+    '🏆 ZEPHYR unscrambled — 30 pts!',
+    '🔥 Someone cracked QUARTZ for 24 pts!',
+    '🎉 100th word found today!',
+    '👾 Someone just beat their personal best!',
+    '🌍 New visitor from the US just joined!',
+    '⚡ JUKEBOX unscrambled — massive score!',
+    '🔥 3 people unscrambling right now!',
+    '🎯 MYSTERY solved in 4 seconds!',
+  ];
+  var toast=document.getElementById('activity-toast');
+  var idx=0;
+  function showToastMsg(){
+    var msg=messages[Math.floor(Math.random()*messages.length)];
+    toast.textContent=msg;
+    toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show');},3500);
+  }
+  // First toast after 20 seconds
+  setTimeout(function(){
+    showToastMsg();
+    // Then every 30-60 seconds
+    setInterval(showToastMsg, Math.floor(Math.random()*30000)+30000);
+  },20000);
+})();
+
 </script>
+
+<div class="activity-toast" id="activity-toast"></div>
 </body>
 </html>
