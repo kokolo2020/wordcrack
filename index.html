@@ -211,7 +211,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 <div class="app">
   <div class="header-row">
     <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.0</span></div>
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.1</span></div>
       <div class="title">Word<span>Crack</span></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:2px">
@@ -219,13 +219,6 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
         <div class="visitor-counter" id="visitor-counter"><div class="visitor-dot"></div><span id="visitor-count">...</span> online</div>
         <div class="admin-badge" id="admin-badge"><div class="admin-dot"></div>Admin online</div>
       </div>
-      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
-      <div class="color-swatches">
-        <div class="cswatch active" style="background:#5b4fcf" onclick="setColor('purple',this)" title="Purple"></div>
-        <div class="cswatch" style="background:#16a34a" onclick="setColor('green',this)" title="Green"></div>
-        <div class="cswatch" style="background:#db2777" onclick="setColor('pink',this)" title="Pink"></div>
-        <div class="cswatch" style="background:#2563eb" onclick="setColor('blue',this)" title="Blue"></div>
-        <div class="cswatch" style="background:#d97706" onclick="setColor('amber',this)" title="Amber"></div>
       </div>
     </div>
   </div>
@@ -282,6 +275,18 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div><div style="font-size:13px;font-weight:600;color:var(--text);">🎲 Shop Scrabble & Word Games</div><div style="font-size:11px;color:var(--muted);margin-top:1px;">Amazon — Free shipping on orders $25+</div></div>
     <div class="aff-btn">Shop →</div>
   </a>
+  <!-- GREETING SECTION -->
+  <div class="greeting-section" id="greeting-section">
+    <div class="greeting-title">👋 Say hi to the world</div>
+    <div class="greeting-list" id="greeting-list">
+      <div class="greeting-empty">Be the first to say hi today!</div>
+    </div>
+    <div class="greeting-input-row">
+      <input class="greeting-input" id="greeting-input" type="text" placeholder='Type "hi" and press send' maxlength="20" autocomplete="off"/>
+      <button class="greeting-btn" onclick="sendGreeting()">Send 👋</button>
+    </div>
+  </div>
+
 
   <!-- FOOTER -->
   <div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
@@ -303,17 +308,6 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <div id="modal-body"><div class="modal-loading">✦ Loading AI insights...</div></div>
     <button class="modal-close" onclick="closeModal()">Close</button>
   
-  <!-- GREETING SECTION -->
-  <div class="greeting-section" id="greeting-section">
-    <div class="greeting-title">👋 Say hi to the world</div>
-    <div class="greeting-list" id="greeting-list">
-      <div class="greeting-empty">Be the first to say hi today!</div>
-    </div>
-    <div class="greeting-input-row">
-      <input class="greeting-input" id="greeting-input" type="text" placeholder='Type "hi" and press send' maxlength="20" autocomplete="off"/>
-      <button class="greeting-btn" onclick="sendGreeting()">Send 👋</button>
-    </div>
-  </div>
 </div>
 </div>
 <div class="toast" id="toast"></div>
