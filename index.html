@@ -537,6 +537,62 @@ function closeModal(){document.getElementById('word-modal').classList.remove('op
 document.getElementById('letters').addEventListener('keydown',e=>{if(e.key==='Enter')unscramble();});
 let tt;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2000);}
 
+
+// ── SUPABASE CONFIG ───────────────────────────────────────────────
+var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
+function supaFetch(path, opts){
+  return fetch(SUPA_URL+'/rest/v1/'+path, Object.assign({
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'}
+  }, opts||{}));
+}
+
+// ── REAL VISITOR COUNTER ──────────────────────────────────────────
+function trackVisit(){
+  // Insert visit
+  supaFetch('wordcrack_visits', {method:'POST', body:JSON.stringify({})});
+  // Count visits in last 5 mins = "online now"
+  var since=new Date(Date.now()-5*60*1000).toISOString();
+  supaFetch('wordcrack_visits?created_at=gte.'+since+'&select=id', {
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'count=exact','Range-Unit':'items','Range':'0-0'}
+  }).then(function(r){
+    var count=r.headers.get('content-range');
+    if(count){
+      var total=parseInt(count.split('/')[1])||0;
+      var el=document.getElementById('visitor-count');
+      if(el&&total>0)el.textContent=total;
+    }
+  }).catch(function(){});
+}
+
+// ── SHARED GREETINGS ──────────────────────────────────────────────
+function loadGreetingsFromSupa(){
+  supaFetch('wordcrack_greetings?select=city,flag,created_at&order=created_at.desc&limit=5', {method:'GET'})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var el=document.getElementById('greeting-list');
+    if(!el)return;
+    if(!data||!data.length){
+      el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';
+      return;
+    }
+    el.innerHTML=data.map(function(g){
+      var d=new Date(g.created_at);
+      var time=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+      return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+time+'</span></div>';
+    }).join('');
+  }).catch(function(){});
+}
+
+function saveGreetingToSupa(city, flag){
+  supaFetch('wordcrack_greetings', {
+    method:'POST',
+    body:JSON.stringify({city:city, flag:flag})
+  }).then(function(){
+    loadGreetingsFromSupa();
+  }).catch(function(){});
+}
+
 // ── ALL INIT INSIDE DOMContentLoaded ─────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -569,16 +625,9 @@ document.addEventListener('DOMContentLoaded', function() {
     tickClocks();setInterval(tickClocks,1000);
   }
 
-  // VISITOR COUNTER
-  var base=18,hour=new Date().getHours();
-  var boost=hour>=9&&hour<=22?Math.floor(Math.random()*25)+10:Math.floor(Math.random()*8)+3;
-  var vcCount=base+boost;
-  var vcEl=document.getElementById('visitor-count');
-  if(vcEl)vcEl.textContent=vcCount;
-  setInterval(function(){
-    vcCount+=Math.floor(Math.random()*3)-1;vcCount=Math.max(8,Math.min(99,vcCount));
-    if(vcEl)vcEl.textContent=vcCount;
-  },15000);
+  // REAL VISITOR COUNTER via Supabase
+  trackVisit();
+  setInterval(trackVisit, 60000);
 
   // ADMIN BADGE
   var params=new URLSearchParams(window.location.search);
@@ -607,28 +656,14 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(function(){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();});
   setTimeout(function(){if(!_loc){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();}},3000);
 
-  function getGreetingKey(){var d=new Date();return 'wc-hi-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
-  function loadGreetings(){try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}}
-  function saveGreetings(list){try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}}
-  function renderGreetings(){
-    var list=loadGreetings();
-    var el=document.getElementById('greeting-list');
-    if(!el)return;
-    if(!list.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
-    el.innerHTML=list.slice(-5).reverse().map(function(g){
-      return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+g.time+'</span></div>';
-    }).join('');
-  }
+  function renderGreetings(){loadGreetingsFromSupa();}
   window.sendGreeting=function(){
     var loc=_loc||{city:'Somewhere',flag:'🌍'};
-    var now=new Date();
-    var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-    var list=loadGreetings();
-    list.push({city:loc.city,flag:loc.flag,time:time});
-    saveGreetings(list);renderGreetings();
+    saveGreetingToSupa(loc.city, loc.flag);
     if(hiBtn){hiBtn.textContent='✅ Said hi!';hiBtn.disabled=true;setTimeout(function(){hiBtn.textContent='👋 Hi!';hiBtn.disabled=false;},3000);}
   };
   renderGreetings();
+  setInterval(renderGreetings, 30000);
 
   // ACHIEVEMENTS
   var ACHIEVEMENTS=[
