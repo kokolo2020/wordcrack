@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
@@ -241,6 +241,22 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 
 /* ── APP COLUMN ───────────────────────── */
 .app{min-width:0;width:100%;padding:24px 16px 20px;box-sizing:border-box;}
+
+.hi-btn-header{padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;-webkit-appearance:none;transition:transform .15s;white-space:nowrap;}
+.hi-btn-header:active{transform:scale(0.97);}
+.hi-btn-header:disabled{opacity:.6;cursor:wait;}
+.greeting-list-header{display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:180px;}
+.greeting-item-header{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);animation:fadeSlide .4s ease;}
+.g-flag-h{font-size:12px;}
+.g-city-h{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;}
+.g-time-h{font-size:9px;color:var(--border);}
+
+.title-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.hi-btn-micro{padding:1px 6px;background:var(--accent);color:#fff;border:none;border-radius:5px;font-size:8px;font-weight:700;cursor:pointer;line-height:1.8;-webkit-appearance:none;transition:transform .15s;}
+.hi-btn-micro:active{transform:scale(0.95);}
+.hi-btn-micro:disabled{opacity:.6;cursor:wait;}
+.like-pill-micro{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:8px;font-weight:600;color:var(--muted);line-height:1.8;transition:all .2s;}
+.like-pill-micro.liked{background:var(--accent);color:#fff;border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -258,7 +274,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     </div>
     <div class="lp-divider"></div>
     <div class="lp-section-label">👋 Say hi to the world</div>
-    <button class="hi-btn" id="hi-btn" onclick="sendGreeting()" disabled>👋 Hi!</button>
+    <button class="hi-btn" id="hi-btn" onclick="sendGreeting()" disabled style="display:none">👋 Hi!</button>
     <div class="greeting-list" id="greeting-list">
       <div class="greeting-empty-lp">Be the first to say hi today!</div>
     </div>
@@ -282,8 +298,16 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 <div class="app">
   <div class="header-row">
     <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.3</span></div>
-      <div class="title">Word<span>Crack</span></div>
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.4</span></div>
+      <div class="title-row">
+        <div class="title">Word<span>Crack</span></div>
+        <button class="hi-btn-micro" id="hi-btn-header" onclick="sendGreeting()" disabled>👋 Hi</button>
+        <div class="like-pill-micro" id="like-pill" onclick="toggleLike()">❤️ <span id="like-count">2,500</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:4px;flex-shrink:0;">
+      <button class="hi-btn-header" id="hi-btn-header" onclick="sendGreeting()" disabled>👋 Say Hi!</button>
+      <div class="greeting-list-header" id="greeting-list-header"></div>
     </div>
     </div>
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
@@ -293,7 +317,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <div class="divider"></div>
     <div class="input-actions">
-      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Reveal</button>
+      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">⚡ Crack It!</button>
       <button class="btn-clear" onclick="clearAll()">✕</button>
     </div>
     <!-- Filter toggle — only visible after letters typed -->
@@ -571,16 +595,57 @@ function loadGreetingsFromSupa(){
     var el=document.getElementById('greeting-list');
     if(!el)return;
     if(!data||!data.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
-    el.innerHTML=data.map(function(g){
+    var html=data.map(function(g){
       var d=new Date(g.created_at);
       var time=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
       return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+time+'</span></div>';
     }).join('');
+    el.innerHTML=html;
+    // Also update header list (show last 3, horizontal style)
+    var hel=document.getElementById('greeting-list-header');
+    if(hel){hel.innerHTML=data.slice(0,3).map(function(g){
+      return '<div class="greeting-item-header"><span class="g-flag-h">'+g.flag+'</span><span class="g-city-h">'+g.city+'</span></div>';
+    }).join('');}
   }).catch(function(){});
 }
 function saveGreetingToSupa(city,flag){
   supaFetch('wordcrack_greetings',{method:'POST',body:JSON.stringify({city:city,flag:flag})})
   .then(function(){loadGreetingsFromSupa();}).catch(function(){});
+}
+// LIKES
+var _liked=false;
+function loadLikeCount(){
+  fetch(SUPA_URL+'/rest/v1/wordcrack_likes?select=count&limit=1',{
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d&&d[0]){
+      var n=d[0].count;
+      var el=document.getElementById('like-count');
+      if(el)el.textContent=Number(n).toLocaleString();
+    }
+  }).catch(function(){});
+}
+function toggleLike(){
+  if(_liked)return;
+  _liked=true;
+  var pill=document.getElementById('like-pill');
+  if(pill)pill.classList.add('liked');
+  // Increment in Supabase via RPC or update
+  fetch(SUPA_URL+'/rest/v1/rpc/increment_likes',{
+    method:'POST',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({})
+  }).catch(function(){
+    // Fallback: direct update
+    fetch(SUPA_URL+'/rest/v1/wordcrack_likes?id=eq.1',{
+      method:'PATCH',
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+      body:JSON.stringify({count:parseInt(document.getElementById('like-count').textContent.replace(/,/g,''))+1})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d&&d[0]){var el=document.getElementById('like-count');if(el)el.textContent=Number(d[0].count).toLocaleString();}
+    });
+  });
+  loadLikeCount();
 }
 
 // ── ALL INIT INSIDE DOMContentLoaded ─────────────────────────────
@@ -591,6 +656,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // VISITOR COUNTER
   trackVisit();
   setInterval(trackVisit,60000);
+  loadLikeCount();
+  setInterval(loadLikeCount,30000);
 
   // ADMIN BADGE
   var params=new URLSearchParams(window.location.search);
@@ -612,7 +679,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var _loc=null;
   var hiBtn=document.getElementById('hi-btn');
   function getFlagEmoji(cc){if(!cc)return '🌍';return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(c.charCodeAt(0)+127397);});}
-  function enableHiBtn(){if(hiBtn)hiBtn.disabled=false;}
+  function enableHiBtn(){
+    if(hiBtn)hiBtn.disabled=false;
+    var hb=document.getElementById('hi-btn-header');
+    if(hb)hb.disabled=false;
+  }
   fetch('https://ipapi.co/json/')
     .then(function(r){return r.json();})
     .then(function(d){_loc={city:d.city||d.country_name||'Somewhere',flag:getFlagEmoji(d.country_code||'')};enableHiBtn();})
@@ -623,7 +694,9 @@ document.addEventListener('DOMContentLoaded', function() {
   window.sendGreeting=function(){
     var loc=_loc||{city:'Somewhere',flag:'🌍'};
     saveGreetingToSupa(loc.city,loc.flag);
-    if(hiBtn){hiBtn.textContent='Said hi!';hiBtn.disabled=true;setTimeout(function(){hiBtn.textContent='👋 Hi!';hiBtn.disabled=false;},3000);}
+    // Update both hi buttons
+    var btns=[document.getElementById('hi-btn'),document.getElementById('hi-btn-header')];
+    btns.forEach(function(b){if(b){b.textContent='Said hi!';b.disabled=true;setTimeout(function(){b.textContent=b.id==='hi-btn-header'?'👋 Say Hi!':'👋 Hi!';b.disabled=false;},3000);}});
   };
   renderGreetings();
   setInterval(renderGreetings,30000);
