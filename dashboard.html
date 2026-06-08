@@ -17,8 +17,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .main{max-width:1000px;margin:0 auto;}
 /* SITE CARDS */
-.sites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
-@media(max-width:700px){.sites-grid{grid-template-columns:1fr;}}
+.sites-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:900px){.sites-grid{grid-template-columns:repeat(2,1fr);}}@media(max-width:500px){.sites-grid{grid-template-columns:1fr;}}
 .site-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;}
 .site-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .site-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
@@ -102,6 +102,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="stat-mini"><div class="stat-mini-val" id="ic-total">—</div><div class="stat-mini-lbl">All time</div></div>
       </div>
     </div>
+  <div class="site-card" id="card-dc">
+      <div class="site-card-header">
+        <div><div class="site-name">DebtCrack</div><div class="site-url">debtcrack.pro</div></div>
+        <div class="live-badge"><span class="dot"></span><span id="dc-live">—</span></div>
+      </div>
+      <div class="stat-big" id="dc-today">—</div>
+      <div class="stat-label">visits today</div>
+      <div class="stat-row">
+        <div class="stat-mini"><div class="stat-mini-val" id="dc-week">—</div><div class="stat-mini-lbl">This week</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" id="dc-total">—</div><div class="stat-mini-lbl">All time</div></div>
+      </div>
+    </div>
   </div>
 
   <!-- 7 DAY CHART -->
@@ -115,6 +127,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#7c6fcd"></div>WordCrack</div>
       <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#22c98a"></div>LoanCrack</div>
       <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></div>InsuranceCrack</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#f0544f"></div>DebtCrack</div>
     </div>
   </div>
 </div>
@@ -148,9 +161,10 @@ var SITES=[
   {table:'wordcrack_visits', live:'wc-live', today:'wc-today', week:'wc-week', total:'wc-total', color:'#7c6fcd'},
   {table:'loancrack_visits', live:'lc-live', today:'lc-today', week:'lc-week', total:'lc-total', color:'#22c98a'},
   {table:'insurancecrack_visits', live:'ic-live', today:'ic-today', week:'ic-week', total:'ic-total', color:'#f59e0b'},
+  {table:'debtcrack_visits', live:'dc-live', today:'dc-today', week:'dc-week', total:'dc-total', color:'#f0544f'},
 ];
 
-var chartData=[[],[],[]];
+var chartData=[[],[],[],[]];
 
 function loadAll(){
   var totalLive=0,totalToday=0,totalWeek=0;
