@@ -43,8 +43,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .chart-label{flex:1;text-align:center;font-size:9px;color:var(--muted);}
 /* TOTAL */
 .total-card{background:linear-gradient(135deg,#1e1b4b,#1a2550);border:1px solid var(--border);border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;}
-.total-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);}
-.total-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+body.light .total-card{background:linear-gradient(135deg,#534AB7,#7c6fcd);}
+body.light .total-val{color:#fff;}
+body.light .total-lbl{color:rgba(255,255,255,.8);}
+.total-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;}
+.total-lbl{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
 .loading{color:var(--muted);font-size:13px;}
 </style>
 </head>
