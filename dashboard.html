@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Crack Network Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#222636;--border:#2d3148;--text:#f0f0ff;--muted:#8b8fad;--accent:#7c6fcd;--green:#22c98a;--orange:#f59e0b;--red:#f0544f;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 16px;}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;max-width:1000px;margin-left:auto;margin-right:auto;}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);}
+.logo span{color:var(--accent);}
+.last-update{font-size:12px;color:var(--muted);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.main{max-width:1000px;margin:0 auto;}
+/* SITE CARDS */
+.sites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:700px){.sites-grid{grid-template-columns:1fr;}}
+.site-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;}
+.site-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.site-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
+.site-url{font-size:11px;color:var(--muted);margin-top:2px;}
+.live-badge{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--green);background:rgba(34,201,138,.1);padding:3px 8px;border-radius:8px;}
+.stat-big{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--text);line-height:1;}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;margin-bottom:16px;}
+.stat-row{display:flex;gap:12px;}
+.stat-mini{flex:1;background:var(--surface2);border-radius:8px;padding:10px;}
+.stat-mini-val{font-size:16px;font-weight:700;color:var(--accent);}
+.stat-mini-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
+/* CHART */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;}
+.chart-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.chart-wrap{display:flex;align-items:flex-end;gap:4px;height:80px;}
+.chart-bar-group{flex:1;display:flex;gap:2px;align-items:flex-end;}
+.chart-bar{flex:1;border-radius:3px 3px 0 0;min-height:2px;transition:height .5s ease;}
+.chart-labels{display:flex;gap:4px;margin-top:6px;}
+.chart-label{flex:1;text-align:center;font-size:9px;color:var(--muted);}
+/* TOTAL */
+.total-card{background:linear-gradient(135deg,#1e1b4b,#1a2550);border:1px solid var(--border);border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;}
+.total-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);}
+.total-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+.loading{color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="logo">Crack <span>Network</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:2px;">Private Dashboard</div>
+  </div>
+  <div class="last-update"><span class="dot"></span>Live · updates every 60s · <span id="last-updated">loading...</span></div>
+</div>
+
+<div class="main">
+  <!-- TOTAL ROW -->
+  <div class="total-card" style="margin-bottom:24px;">
+    <div><div class="total-val" id="total-live">—</div><div class="total-lbl">Total online now</div></div>
+    <div><div class="total-val" id="total-today">—</div><div class="total-lbl">Total today</div></div>
+    <div><div class="total-val" id="total-week">—</div><div class="total-lbl">This week</div></div>
+  </div>
+
+  <!-- SITE CARDS -->
+  <div class="sites-grid">
+    <div class="site-card" id="card-wc">
+      <div class="site-card-header">
+        <div><div class="site-name">WordCrack</div><div class="site-url">wordcrack.pro</div></div>
+        <div class="live-badge"><span class="dot"></span><span id="wc-live">—</span></div>
+      </div>
+      <div class="stat-big" id="wc-today">—</div>
+      <div class="stat-label">visits today</div>
+      <div class="stat-row">
+        <div class="stat-mini"><div class="stat-mini-val" id="wc-week">—</div><div class="stat-mini-lbl">This week</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" id="wc-total">—</div><div class="stat-mini-lbl">All time</div></div>
+      </div>
+    </div>
+
+    <div class="site-card" id="card-lc">
+      <div class="site-card-header">
+        <div><div class="site-name">LoanCrack</div><div class="site-url">loancrack.pro</div></div>
+        <div class="live-badge"><span class="dot"></span><span id="lc-live">—</span></div>
+      </div>
+      <div class="stat-big" id="lc-today">—</div>
+      <div class="stat-label">visits today</div>
+      <div class="stat-row">
+        <div class="stat-mini"><div class="stat-mini-val" id="lc-week">—</div><div class="stat-mini-lbl">This week</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" id="lc-total">—</div><div class="stat-mini-lbl">All time</div></div>
+      </div>
+    </div>
+
+    <div class="site-card" id="card-ic">
+      <div class="site-card-header">
+        <div><div class="site-name">InsuranceCrack</div><div class="site-url">insurancecrack.pro</div></div>
+        <div class="live-badge"><span class="dot"></span><span id="ic-live">—</span></div>
+      </div>
+      <div class="stat-big" id="ic-today">—</div>
+      <div class="stat-label">visits today</div>
+      <div class="stat-row">
+        <div class="stat-mini"><div class="stat-mini-val" id="ic-week">—</div><div class="stat-mini-lbl">This week</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" id="ic-total">—</div><div class="stat-mini-lbl">All time</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 DAY CHART -->
+  <div class="chart-card">
+    <div class="chart-title">7-day visits by site</div>
+    <div class="chart-wrap" id="chart-wrap">
+      <div class="loading">Loading chart...</div>
+    </div>
+    <div class="chart-labels" id="chart-labels"></div>
+    <div style="display:flex;gap:16px;margin-top:10px;">
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#7c6fcd"></div>WordCrack</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#22c98a"></div>LoanCrack</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></div>InsuranceCrack</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
+
+function sf(path){
+  return fetch(SUPA_URL+'/rest/v1/'+path,{
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+  }).then(function(r){return r.json();});
+}
+function sfCount(path){
+  return fetch(SUPA_URL+'/rest/v1/'+path,{
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'count=exact','Range-Unit':'items','Range':'0-0'}
+  }).then(function(r){
+    var c=r.headers.get('content-range');
+    return c?parseInt(c.split('/')[1])||0:0;
+  });
+}
+
+function getISO(minsAgo){return new Date(Date.now()-minsAgo*60*1000).toISOString();}
+function getISODaysAgo(days){
+  var d=new Date();d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-days);
+  return d.toISOString();
+}
+
+var SITES=[
+  {table:'wordcrack_visits', live:'wc-live', today:'wc-today', week:'wc-week', total:'wc-total', color:'#7c6fcd'},
+  {table:'loancrack_visits', live:'lc-live', today:'lc-today', week:'lc-week', total:'lc-total', color:'#22c98a'},
+  {table:'insurancecrack_visits', live:'ic-live', today:'ic-today', week:'ic-week', total:'ic-total', color:'#f59e0b'},
+];
+
+var chartData=[[],[],[]];
+
+function loadAll(){
+  var totalLive=0,totalToday=0,totalWeek=0;
+  var promises=SITES.map(function(s,i){
+    return Promise.all([
+      sfCount(s.table+'?created_at=gte.'+getISO(5)+'&select=id'),
+      sfCount(s.table+'?created_at=gte.'+getISODaysAgo(0)+'&select=id'),
+      sfCount(s.table+'?created_at=gte.'+getISODaysAgo(7)+'&select=id'),
+      sfCount(s.table+'?select=id'),
+    ]).then(function(d){
+      document.getElementById(s.live).textContent=d[0];
+      document.getElementById(s.today).textContent=d[1].toLocaleString();
+      document.getElementById(s.week).textContent=d[2].toLocaleString();
+      document.getElementById(s.total).textContent=d[3].toLocaleString();
+      totalLive+=d[0];totalToday+=d[1];totalWeek+=d[2];
+    });
+  });
+
+  Promise.all(promises).then(function(){
+    document.getElementById('total-live').textContent=totalLive;
+    document.getElementById('total-today').textContent=totalToday.toLocaleString();
+    document.getElementById('total-week').textContent=totalWeek.toLocaleString();
+    document.getElementById('last-updated').textContent=new Date().toLocaleTimeString();
+  });
+
+  // Load 7-day chart
+  load7DayChart();
+}
+
+function load7DayChart(){
+  var days=[];
+  for(var i=6;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    days.push(d);
+  }
+  var promises=SITES.map(function(s,si){
+    return Promise.all(days.map(function(d){
+      var start=new Date(d);start.setHours(0,0,0,0);
+      var end=new Date(d);end.setHours(23,59,59,999);
+      return sfCount(s.table+'?created_at=gte.'+start.toISOString()+'&created_at=lte.'+end.toISOString()+'&select=id');
+    })).then(function(counts){chartData[si]=counts;});
+  });
+
+  Promise.all(promises).then(function(){
+    renderChart(days);
+  });
+}
+
+function renderChart(days){
+  var allVals=[].concat(chartData[0],chartData[1],chartData[2]);
+  var maxVal=Math.max.apply(null,allVals)||1;
+  var wrap=document.getElementById('chart-wrap');
+  var labels=document.getElementById('chart-labels');
+  wrap.innerHTML='';labels.innerHTML='';
+  var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  days.forEach(function(d,i){
+    var group=document.createElement('div');
+    group.className='chart-bar-group';
+    SITES.forEach(function(s,si){
+      var bar=document.createElement('div');
+      bar.className='chart-bar';
+      var h=Math.round((chartData[si][i]/maxVal)*76)+4;
+      bar.style.height=h+'px';
+      bar.style.background=s.color;
+      bar.title=s.table.replace('_visits','')+': '+chartData[si][i];
+      group.appendChild(bar);
+    });
+    wrap.appendChild(group);
+    var lbl=document.createElement('div');
+    lbl.className='chart-label';
+    lbl.textContent=dayNames[d.getDay()];
+    labels.appendChild(lbl);
+  });
+}
+
+loadAll();
+setInterval(loadAll,60000);
+</script>
+</body>
+</html>
