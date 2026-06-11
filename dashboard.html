@@ -135,6 +135,35 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
     </div>
   </div>
 
+  <!-- SOSFAM SECTION -->
+  <div style="margin-bottom:24px;">
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin-bottom:14px;">
+      🆘 SOSFam <span style="font-size:12px;font-weight:500;color:var(--muted);font-family:'DM Sans',sans-serif;">sosfam.netlify.app</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Families</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);" id="sf-families">—</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Members</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);" id="sf-members">—</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Online now</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#22c98a;" id="sf-online">—</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">SOS today</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#f0544f;" id="sf-sos">—</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Recent events</div>
+      <div id="sf-events" style="font-size:13px;color:var(--muted);">Loading...</div>
+    </div>
+  </div>
+
   <!-- 7 DAY CHART -->
   <div class="chart-card">
     <div class="chart-title">7-day visits by site</div>
@@ -262,7 +291,71 @@ function renderChart(days){
 }
 
 loadAll();
-setInterval(loadAll,60000);
+loadSOSFam();
+
+var SF_TOKEN = 'afc5da2bce3e7e74797ed1bd8c513265bbdd12de5d09469019bda4927dd1e71d';
+
+function sfSos(path) {
+  return fetch(SUPA_URL+'/rest/v1/'+path, {
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer '+SUPA_KEY,
+      'x-app-token': SF_TOKEN,
+      'Prefer': 'count=exact',
+      'Range-Unit': 'items',
+      'Range': '0-0'
+    }
+  }).then(function(r) {
+    var c = r.headers.get('content-range');
+    return c ? parseInt(c.split('/')[1]) || 0 : 0;
+  });
+}
+
+function sfSosGet(path) {
+  return fetch(SUPA_URL+'/rest/v1/'+path, {
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer '+SUPA_KEY,
+      'x-app-token': SF_TOKEN
+    }
+  }).then(function(r) { return r.json(); });
+}
+
+function loadSOSFam() {
+  var today = new Date(); today.setHours(0,0,0,0);
+  var oneMinAgo = new Date(Date.now() - 60000).toISOString();
+
+  Promise.all([
+    sfSos('fam_families?select=id'),
+    sfSos('fam_members?select=id'),
+    sfSos('fam_members?last_seen=gte.'+oneMinAgo+'&select=id'),
+    sfSos('sosfam_stats?event=eq.sos&created_at=gte.'+today.toISOString()+'&select=id'),
+    sfSosGet('sosfam_stats?select=event,member_name,family_id,created_at&order=created_at.desc&limit=5')
+  ]).then(function(d) {
+    document.getElementById('sf-families').textContent = d[0];
+    document.getElementById('sf-members').textContent = d[1];
+    document.getElementById('sf-online').textContent = d[2];
+    document.getElementById('sf-sos').textContent = d[3];
+
+    var events = d[4];
+    var el = document.getElementById('sf-events');
+    if (!events || !events.length) { el.textContent = 'No recent events'; return; }
+    el.innerHTML = events.map(function(e) {
+      var badge = e.event === 'sos' ? 'background:#f0544f;color:white;' :
+                  e.event === 'login' ? 'background:rgba(34,201,138,.15);color:#22c98a;' :
+                  'background:var(--surface2);color:var(--muted);';
+      var t = new Date(e.created_at).toLocaleTimeString('en-GB', {timeZone:'Asia/Bangkok',hour:'2-digit',minute:'2-digit'});
+      return '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);">' +
+        '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;'+badge+'">'+e.event.toUpperCase()+'</span>' +
+        '<span style="flex:1;color:var(--text);">'+(e.member_name||'—')+' · '+(e.family_id||'—')+'</span>' +
+        '<span style="font-size:11px;color:var(--muted);">'+t+'</span>' +
+        '</div>';
+    }).join('');
+  }).catch(function() {
+    document.getElementById('sf-events').textContent = 'Unable to load SOSFam data';
+  });
+}
+setInterval(function(){ loadAll(); loadSOSFam(); }, 60000);
 
 function toggleTheme(){
   var isLight=document.body.classList.toggle('light');
