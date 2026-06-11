@@ -141,21 +141,21 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
       🆘 SOSFam <span style="font-size:12px;font-weight:500;color:var(--muted);font-family:'DM Sans',sans-serif;">sosfam.netlify.app</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Families</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);" id="sf-families">—</div>
+      <div class="site-card">
+        <div class="stat-label" style="margin-bottom:6px;">Families</div>
+        <div class="stat-big" id="sf-families">—</div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Members</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);" id="sf-members">—</div>
+      <div class="site-card">
+        <div class="stat-label" style="margin-bottom:6px;">Members</div>
+        <div class="stat-big" id="sf-members">—</div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Online now</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#22c98a;" id="sf-online">—</div>
+      <div class="site-card">
+        <div class="stat-label" style="margin-bottom:6px;">Online now</div>
+        <div class="stat-big" style="color:#22c98a;" id="sf-online">—</div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">SOS today</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#f0544f;" id="sf-sos">—</div>
+      <div class="site-card">
+        <div class="stat-label" style="margin-bottom:6px;">SOS today</div>
+        <div class="stat-big" style="color:#f0544f;" id="sf-sos">—</div>
       </div>
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;">
@@ -307,7 +307,11 @@ function sfSos(path) {
     }
   }).then(function(r) {
     var c = r.headers.get('content-range');
-    return c ? parseInt(c.split('/')[1]) || 0 : 0;
+    if (c && c.indexOf('/') > -1) {
+      var total = c.split('/')[1];
+      return total === '*' ? 0 : parseInt(total) || 0;
+    }
+    return 0;
   });
 }
 
