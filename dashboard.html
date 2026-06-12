@@ -49,9 +49,34 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 .total-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;}
 .total-lbl{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
 .loading{color:var(--muted);font-size:13px;}
+
+/* PIN LOCK */
+.lock-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f1117,#1e1b4b);display:flex;align-items:center;justify-content:center;padding:20px;}
+.lock-box{width:100%;max-width:380px;background:rgba(26,29,39,.96);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.35);text-align:center;}
+.lock-logo{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:6px;color:#fff;}
+.lock-logo span{color:var(--accent);}
+.lock-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.lock-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:22px;text-align:center;letter-spacing:6px;outline:none;margin-bottom:14px;}
+.lock-input:focus{border-color:var(--accent);}
+.lock-btn{width:100%;border:0;border-radius:14px;background:var(--accent);color:#fff;font-weight:800;padding:14px;font-size:15px;cursor:pointer;}
+.lock-error{min-height:18px;color:var(--red);font-size:12px;margin-top:12px;}
+.lock-note{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.4;}
+body.locked .header,body.locked .main{filter:blur(8px);pointer-events:none;user-select:none;}
+
 </style>
 </head>
-<body>
+<body class="locked">
+<div class="lock-screen" id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-logo">Crack <span>Network</span></div>
+    <div class="lock-sub">Private Dashboard Access</div>
+    <input id="dash-pin" class="lock-input" type="password" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="off" onkeydown="if(event.key==='Enter')unlockDashboard()">
+    <button class="lock-btn" onclick="unlockDashboard()">Unlock Dashboard</button>
+    <div class="lock-error" id="lock-error"></div>
+    <div class="lock-note">This hides the dashboard from casual visitors. For stronger protection, also enable Netlify password protection or basic auth.</div>
+  </div>
+</div>
+
 <div class="header">
   <div>
     <div class="logo">Crack <span>Network</span></div>
@@ -182,6 +207,39 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 </div>
 
 <script>
+// Simple private dashboard PIN gate. Change this PIN before uploading.
+var DASHBOARD_PIN = '739204';
+var DASH_UNLOCK_KEY = 'crack_dash_unlocked_v1';
+
+function unlockDashboard(){
+  var input=document.getElementById('dash-pin');
+  var err=document.getElementById('lock-error');
+  if(!input)return;
+  if(input.value.trim()===DASHBOARD_PIN){
+    try{sessionStorage.setItem(DASH_UNLOCK_KEY,'yes');}catch(e){}
+    document.body.classList.remove('locked');
+    var lock=document.getElementById('lock-screen');
+    if(lock)lock.style.display='none';
+  }else{
+    err.textContent='Wrong PIN. Try again.';
+    input.value='';
+    input.focus();
+  }
+}
+
+function checkDashboardLock(){
+  var ok=false;
+  try{ok=sessionStorage.getItem(DASH_UNLOCK_KEY)==='yes';}catch(e){}
+  if(ok){
+    document.body.classList.remove('locked');
+    var lock=document.getElementById('lock-screen');
+    if(lock)lock.style.display='none';
+  }else{
+    setTimeout(function(){var input=document.getElementById('dash-pin');if(input)input.focus();},100);
+  }
+}
+checkDashboardLock();
+
 var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
 var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
 
