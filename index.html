@@ -2,16 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-<meta name="apple-mobile-web-app-title" content="WordSolver"/>
-<meta name="theme-color" content="#5b4fcf"/>
-<link rel="manifest" href="/manifest.json"/>
-<link rel="apple-touch-icon" href="/icon-192.svg"/>
-<meta name="description" content="WordSolver - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
-<title>WordSolver — Free Word Unscrambler | 168,000 Words</title>
+<meta name="description" content="WordCrack - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
+<title>WordCrack — Free Word Unscrambler | 168,000 Words</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 
@@ -24,7 +18,7 @@
 <script async src="https://contextual.media.net/dmedianet.js?cid=XXXXXXX"></script>
 
 <!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5063827367072521" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9700227474442026" crossorigin="anonymous"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -185,6 +179,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   .page-wrapper{grid-template-columns:1fr;}
   .left-panel{position:static!important;order:2;border-radius:var(--radius);margin:12px;max-height:none!important;height:auto!important;}
   .app{order:1;}
+  .clock-strip{display:none!important;}
   .lp-footer{margin-top:16px;}
 }
 /* ── LEFT PANEL ───────────────────────────────── */
@@ -229,10 +224,19 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .earned-title-lp{font-size:10px;font-weight:700;color:#f0eeff;}
 .earned-sub-lp{font-size:8px;color:#9d8ff0;}
 .lp-footer{margin-top:auto;padding-top:12px;border-top:1px solid #2d2a45;font-size:9px;color:#6b6485;text-align:center;line-height:1.6;}
-
+/* ── WORLD CLOCKS ─────────────────────────────── */
+.clock-strip{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;}
+.clock-card{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.analog-clock{width:42px;height:42px;border-radius:50%;background:var(--surface);border:2px solid var(--border);position:relative;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.clk-center{width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;}
+.clk-h{position:absolute;bottom:50%;left:50%;width:2px;height:11px;background:var(--text);border-radius:2px;transform-origin:bottom center;margin-left:-1px;}
+.clk-m{position:absolute;bottom:50%;left:50%;width:1.5px;height:14px;background:var(--accent);border-radius:2px;transform-origin:bottom center;margin-left:-.75px;}
+.clk-s{position:absolute;bottom:50%;left:50%;width:1px;height:17px;background:#f0544f;border-radius:1px;transform-origin:bottom center;margin-left:-.5px;}
+.clk-digital{font-size:8px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.3px;}
+.clk-city{font-size:7px;color:var(--muted);text-align:center;font-weight:500;}
 /* ── APP OVERRIDE ─────────────────────────────── */
 /* app handled below */
-.header-row{display:flex;align-items:flex-start;margin-bottom:4px;}
+.header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;gap:8px;min-width:0;}
 .header-left{flex:1;min-width:0;overflow:hidden;}
 /* ── ACTIVITY TOAST ───────────────────────────── */
 .activity-toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:999;max-width:280px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;pointer-events:none;}
@@ -241,24 +245,9 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 
 /* ── APP COLUMN ───────────────────────── */
 .app{min-width:0;width:100%;padding:24px 16px 20px;box-sizing:border-box;}
-
-
-
-
-
-.hi-btn-micro{padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;-webkit-appearance:none;transition:transform .15s;}
-.hi-btn-micro:active{transform:scale(0.97);}
-.hi-btn-micro:disabled{opacity:.6;cursor:wait;}
-.like-pill-micro{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;}
-.like-pill-micro.liked{background:var(--accent);color:#fff;border-color:var(--accent);}
 </style>
 </head>
 <body>
-  <nav style="padding:10px;">
-  <a href="/5-letter-words.html">5 Letter Words</a> |
-  <a href="/6-letter-words.html">6 Letter Words</a> |
-  <a href="/words-starting-with-a.html">Words Starting With A</a>
-</nav>
 <div class="sticky-ad">
   <!-- Media.net sticky bottom ad -->
   <div id="wordcrack-bottom" style="width:320px;height:50px;"></div>
@@ -266,14 +255,14 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 </div>
 <div class="page-wrapper">
   <div class="left-panel" id="left-panel">
-    <div class="lp-logo-label">⚡ WordSolver · Live</div>
+    <div class="lp-logo-label">⚡ WordCrack · Live</div>
     <div class="lp-badges">
       <div class="lp-badge lp-badge-online"><div class="lp-dot lp-dot-purple"></div><span id="visitor-count">...</span> online</div>
       <div class="lp-badge lp-badge-admin" id="admin-badge"><div class="lp-dot lp-dot-green"></div>Admin online</div>
     </div>
     <div class="lp-divider"></div>
     <div class="lp-section-label">👋 Say hi to the world</div>
-    <button class="hi-btn" id="hi-btn" onclick="sendGreeting()" disabled style="display:none">👋 Hi!</button>
+    <button class="hi-btn" id="hi-btn" onclick="sendGreeting()" disabled>👋 Hi!</button>
     <div class="greeting-list" id="greeting-list">
       <div class="greeting-empty-lp">Be the first to say hi today!</div>
     </div>
@@ -291,16 +280,16 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
       <div class="earned-icon-lp" id="earned-icon"></div>
       <div><div class="earned-title-lp" id="earned-title"></div><div class="earned-sub-lp" id="earned-sub"></div></div>
     </div>
-    <div class="lp-footer">© 2026 WordSolver<br>Free · No signup · 168K words</div>
+    <div class="lp-footer">© 2026 WordCrack<br>Free · No signup · 168K words</div>
   </div>
 
 <div class="app">
   <div class="header-row">
     <div class="header-left">
-      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.4</span></div>
+      <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.3</span></div>
       <div class="title">Word<span>Crack</span></div>
     </div>
-
+          <div class="clock-strip" id="clock-strip"></div>
     </div>
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
 
@@ -309,12 +298,8 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
     <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <div class="divider"></div>
     <div class="input-actions">
-      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">⚡ Crack It!</button>
+      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Reveal</button>
       <button class="btn-clear" onclick="clearAll()">✕</button>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;">
-      <button class="hi-btn-micro" id="hi-btn-header" onclick="sendGreeting()" disabled>👋 Say Hi!</button>
-      <div class="like-pill-micro" id="like-pill" onclick="toggleLike()">❤️ <span id="like-count">2,500</span></div>
     </div>
     <!-- Filter toggle — only visible after letters typed -->
     <div class="filter-toggle-row" id="filter-toggle-row">
@@ -361,21 +346,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   </a>
 
   <!-- FOOTER -->
-  
-<!-- SEO: About section -->
-<div style="padding:20px 16px;border-top:1px solid var(--border);margin-top:16px;">
-  <h2 style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">About WordCrack</h2>
-  <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:8px;">
-    WordCrack is a free word unscrambler and anagram solver that instantly finds all possible words from your letters. Perfect for Scrabble, Words With Friends, Wordle, Wordscapes, Wordfeud, TextTwist, Word Cookies, Jumble and any word game. Our 168,000 word dictionary includes Scrabble scores and AI-powered definitions — no signup, no paywall, completely free.
-  </p>
-  <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:8px;">
-    WordCrack includes a live world clock showing real-time for New York, London, Singapore, Germany and China. Join our global community — say hi to word players around the world and see who is playing right now. Earn achievement badges from Starter to Wordking as you crack more words and track your progress with a live counter.
-  </p>
-  <p style="font-size:12px;color:var(--muted);line-height:1.8;">
-    The fastest free anagram solver and word finder online. Unscramble letters instantly for the highest scoring words in Scrabble, Words With Friends cheat, word jumble solver, letter unscrambler and more. No download required — works on mobile and desktop.
-  </p>
-</div>
-<div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
+  <div style="text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:16px;">
     <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">WordCrack™</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">© 2026 Nanith Technologies. All rights reserved.</div>
     <div style="font-size:11px;color:var(--muted);">Free word unscrambler · 168,000 words · Scrabble scores</div>
@@ -566,90 +537,48 @@ function closeModal(){document.getElementById('word-modal').classList.remove('op
 document.getElementById('letters').addEventListener('keydown',e=>{if(e.key==='Enter')unscramble();});
 let tt;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2000);}
 
-
-var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
-var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
-function supaFetch(path,opts){
-  return fetch(SUPA_URL+'/rest/v1/'+path,Object.assign({
-    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'}
-  },opts||{}));
-}
-function trackVisit(){
-  supaFetch('wordcrack_visits',{method:'POST',body:JSON.stringify({})});
-  var since=new Date(Date.now()-5*60*1000).toISOString();
-  supaFetch('wordcrack_visits?created_at=gte.'+since+'&select=id',{
-    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'count=exact','Range-Unit':'items','Range':'0-0'}
-  }).then(function(r){
-    var c=r.headers.get('content-range');
-    if(c){var t=parseInt(c.split('/')[1])||0;var el=document.getElementById('visitor-count');if(el&&t>0)el.textContent=t;}
-  }).catch(function(){});
-}
-function loadGreetingsFromSupa(){
-  fetch(SUPA_URL+'/rest/v1/wordcrack_greetings?select=city,flag,created_at&order=created_at.desc&limit=5',{
-    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
-  }).then(function(r){return r.json();}).then(function(data){
-    var el=document.getElementById('greeting-list');
-    if(!el)return;
-    if(!data||!data.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
-    var html=data.map(function(g){
-      var d=new Date(g.created_at);
-      var time=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
-      return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+time+'</span></div>';
-    }).join('');
-    el.innerHTML=html;
-
-  }).catch(function(){});
-}
-function saveGreetingToSupa(city,flag){
-  supaFetch('wordcrack_greetings',{method:'POST',body:JSON.stringify({city:city,flag:flag})})
-  .then(function(){loadGreetingsFromSupa();}).catch(function(){});
-}
-// LIKES
-var _liked=false;
-function loadLikeCount(){
-  fetch(SUPA_URL+'/rest/v1/wordcrack_likes?select=count&limit=1',{
-    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
-  }).then(function(r){return r.json();}).then(function(d){
-    if(d&&d[0]){
-      var n=d[0].count;
-      var el=document.getElementById('like-count');
-      if(el)el.textContent=Number(n).toLocaleString();
-    }
-  }).catch(function(){});
-}
-function toggleLike(){
-  if(_liked)return;
-  _liked=true;
-  var pill=document.getElementById('like-pill');
-  if(pill)pill.classList.add('liked');
-  // Increment in Supabase via RPC or update
-  fetch(SUPA_URL+'/rest/v1/rpc/increment_likes',{
-    method:'POST',
-    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({})
-  }).catch(function(){
-    // Fallback: direct update
-    fetch(SUPA_URL+'/rest/v1/wordcrack_likes?id=eq.1',{
-      method:'PATCH',
-      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-      body:JSON.stringify({count:parseInt(document.getElementById('like-count').textContent.replace(/,/g,''))+1})
-    }).then(function(r){return r.json();}).then(function(d){
-      if(d&&d[0]){var el=document.getElementById('like-count');if(el)el.textContent=Number(d[0].count).toLocaleString();}
-    });
-  });
-  loadLikeCount();
-}
-
 // ── ALL INIT INSIDE DOMContentLoaded ─────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
 
-
+  // WORLD CLOCKS
+  var WC_CITIES=[
+    {code:'NY', flag:'🇺🇸', tz:'America/New_York'},
+    {code:'LON',flag:'🇬🇧', tz:'Europe/London'},
+    {code:'SGP',flag:'🇸🇬', tz:'Asia/Singapore'},
+    {code:'GER',flag:'🇩🇪', tz:'Europe/Berlin'},
+    {code:'CHN',flag:'🇨🇳', tz:'Asia/Shanghai'},
+  ];
+  var strip=document.getElementById('clock-strip');
+  if(strip){
+    strip.innerHTML=WC_CITIES.map(function(c,i){
+      return '<div class="clock-card"><div class="analog-clock"><div class="clk-h" id="clkh'+i+'"></div><div class="clk-m" id="clkm'+i+'"></div><div class="clk-s" id="clks'+i+'"></div><div class="clk-center"></div></div><div class="clk-digital" id="clkd'+i+'"></div><div class="clk-city">'+c.flag+' '+c.code+'</div></div>';
+    }).join('');
+    function tickClocks(){
+      var now=new Date();
+      WC_CITIES.forEach(function(c,i){
+        var p=new Intl.DateTimeFormat('en',{timeZone:c.tz,hour:'numeric',minute:'numeric',second:'numeric',hour12:false}).formatToParts(now);
+        var h=0,m=0,s=0;
+        p.forEach(function(x){if(x.type==='hour')h=+x.value%12;if(x.type==='minute')m=+x.value;if(x.type==='second')s=+x.value;});
+        var eh=document.getElementById('clkh'+i),em=document.getElementById('clkm'+i),es=document.getElementById('clks'+i),ed=document.getElementById('clkd'+i);
+        if(eh)eh.style.transform='rotate('+(h*30+m*0.5)+'deg)';
+        if(em)em.style.transform='rotate('+(m*6+s*0.1)+'deg)';
+        if(es)es.style.transform='rotate('+(s*6)+'deg)';
+        if(ed)ed.textContent=now.toLocaleTimeString('en-US',{timeZone:c.tz,hour:'2-digit',minute:'2-digit',hour12:true});
+      });
+    }
+    tickClocks();setInterval(tickClocks,1000);
+  }
 
   // VISITOR COUNTER
-  trackVisit();
-  setInterval(trackVisit,60000);
-  loadLikeCount();
-  setInterval(loadLikeCount,30000);
+  var base=18,hour=new Date().getHours();
+  var boost=hour>=9&&hour<=22?Math.floor(Math.random()*25)+10:Math.floor(Math.random()*8)+3;
+  var vcCount=base+boost;
+  var vcEl=document.getElementById('visitor-count');
+  if(vcEl)vcEl.textContent=vcCount;
+  setInterval(function(){
+    vcCount+=Math.floor(Math.random()*3)-1;vcCount=Math.max(8,Math.min(99,vcCount));
+    if(vcEl)vcEl.textContent=vcCount;
+  },15000);
 
   // ADMIN BADGE
   var params=new URLSearchParams(window.location.search);
@@ -671,27 +600,35 @@ document.addEventListener('DOMContentLoaded', function() {
   var _loc=null;
   var hiBtn=document.getElementById('hi-btn');
   function getFlagEmoji(cc){if(!cc)return '🌍';return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(c.charCodeAt(0)+127397);});}
-  function enableHiBtn(){
-    if(hiBtn)hiBtn.disabled=false;
-    var hb=document.getElementById('hi-btn-header');
-    if(hb)hb.disabled=false;
-  }
+  function enableHiBtn(){if(hiBtn)hiBtn.disabled=false;}
   fetch('https://ipapi.co/json/')
     .then(function(r){return r.json();})
     .then(function(d){_loc={city:d.city||d.country_name||'Somewhere',flag:getFlagEmoji(d.country_code||'')};enableHiBtn();})
     .catch(function(){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();});
   setTimeout(function(){if(!_loc){_loc={city:'Somewhere',flag:'🌍'};enableHiBtn();}},3000);
 
-  function renderGreetings(){loadGreetingsFromSupa();}
+  function getGreetingKey(){var d=new Date();return 'wc-hi-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function loadGreetings(){try{return JSON.parse(localStorage.getItem(getGreetingKey()))||[];}catch(e){return[];}}
+  function saveGreetings(list){try{localStorage.setItem(getGreetingKey(),JSON.stringify(list));}catch(e){}}
+  function renderGreetings(){
+    var list=loadGreetings();
+    var el=document.getElementById('greeting-list');
+    if(!el)return;
+    if(!list.length){el.innerHTML='<div class="greeting-empty-lp">Be the first to say hi today!</div>';return;}
+    el.innerHTML=list.slice(-5).reverse().map(function(g){
+      return '<div class="greeting-item-lp"><span class="g-flag-lp">'+g.flag+'</span><span class="g-city-lp">'+g.city+'</span><span class="g-time-lp">'+g.time+'</span></div>';
+    }).join('');
+  }
   window.sendGreeting=function(){
     var loc=_loc||{city:'Somewhere',flag:'🌍'};
-    saveGreetingToSupa(loc.city,loc.flag);
-    // Update both hi buttons
-    var btns=[document.getElementById('hi-btn'),document.getElementById('hi-btn-header')];
-    btns.forEach(function(b){if(b){b.textContent='Said hi!';b.disabled=true;setTimeout(function(){b.textContent=b.id==='hi-btn-header'?'👋 Say Hi!':'👋 Hi!';b.disabled=false;},3000);}});
+    var now=new Date();
+    var time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    var list=loadGreetings();
+    list.push({city:loc.city,flag:loc.flag,time:time});
+    saveGreetings(list);renderGreetings();
+    if(hiBtn){hiBtn.textContent='✅ Said hi!';hiBtn.disabled=true;setTimeout(function(){hiBtn.textContent='👋 Hi!';hiBtn.disabled=false;},3000);}
   };
   renderGreetings();
-  setInterval(renderGreetings,30000);
 
   // ACHIEVEMENTS
   var ACHIEVEMENTS=[
@@ -763,39 +700,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <div class="activity-toast" id="activity-toast"></div>
-
-<!-- ADD TO HOME SCREEN -->
-<style>
-.add-home-wrap{display:flex;justify-content:center;padding:8px 16px 16px;}
-.add-home-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;-webkit-appearance:none;box-shadow:0 3px 12px rgba(91,79,207,.25);transition:transform .15s,box-shadow .15s;}
-.add-home-btn:active{transform:scale(0.97);}
-.ios-hint{display:none;text-align:center;font-size:11px;color:var(--muted);margin-top:6px;padding:0 16px;}
-.ios-hint.show{display:block;}
-</style>
-<div class="add-home-wrap">
-  <div>
-    <button class="add-home-btn" id="add-home-btn" onclick="addToHome()">📱 Add WordCrack to Home Screen</button>
-    <div class="ios-hint" id="ios-hint">Tap <strong>Share</strong> → <strong>Add to Home Screen</strong> in Safari</div>
-  </div>
-</div>
-<script>
-var deferredPrompt=null;
-var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault();
-  deferredPrompt=e;
-});
-function addToHome(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(){deferredPrompt=null;});
-  } else if(isIOS){
-    document.getElementById('ios-hint').classList.add('show');
-  } else {
-    // Fallback for desktop/other
-    alert('To add to home screen:\n\nChrome: Menu (⋮) → Add to Home screen\nSafari: Share (□↑) → Add to Home Screen');
-  }
-}
-</script>
 </body>
 </html>
