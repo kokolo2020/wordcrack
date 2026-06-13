@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wordsolver.pro/sitemap.xml
+Sitemap: https://wordcrack.pro/sitemap.xml
