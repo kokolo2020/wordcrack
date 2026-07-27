@@ -20,18 +20,30 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YR4PLHNJ7V');</script>
 <script>
 (function(){
+  var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
+  var inserted=false;
+  function insertVisit(country, countryCode){
+    if(inserted) return; inserted=true;
+    try{
+      fetch('https://mjnigheggxtythytsqle.supabase.co/rest/v1/wordcrack_visits',{
+        method:'POST',
+        headers:{
+          'apikey':SUPA_KEY,
+          'Authorization':'Bearer '+SUPA_KEY,
+          'Content-Type':'application/json',
+          'Prefer':'return=minimal'
+        },
+        body: JSON.stringify({country: country||null, country_code: countryCode||null})
+      }).catch(function(){});
+    }catch(e){}
+  }
   try{
-    fetch('https://mjnigheggxtythytsqle.supabase.co/rest/v1/wordcrack_visits',{
-      method:'POST',
-      headers:{
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q',
-        'Content-Type':'application/json',
-        'Prefer':'return=minimal'
-      },
-      body: JSON.stringify({})
-    }).catch(function(){});
-  }catch(e){}
+    fetch('https://ipapi.co/json/')
+      .then(function(r){return r.json();})
+      .then(function(d){insertVisit(d.country_name||null, d.country_code||null);})
+      .catch(function(){insertVisit(null,null);});
+  }catch(e){insertVisit(null,null);}
+  setTimeout(function(){insertVisit(null,null);}, 2500);
 })();
 </script>
 

@@ -39,6 +39,14 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 .loading{color:var(--muted);font-size:13px;}
 .back-link{display:inline-block;margin-top:8px;font-size:12px;color:var(--muted);text-decoration:none;}
 .back-link:hover{color:var(--accent);}
+.country-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;}
+.country-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.country-row:last-child{margin-bottom:0;}
+.country-flag{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.country-name{font-size:13px;color:var(--text);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.country-bar-wrap{flex:1;background:var(--surface2);border-radius:6px;height:16px;overflow:hidden;}
+.country-bar{height:100%;background:var(--accent);border-radius:6px;transition:width .5s ease;}
+.country-count{font-size:12px;color:var(--muted);width:34px;text-align:right;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -76,6 +84,11 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
     <div class="chart-title">Searches — last 30 days</div>
     <div class="chart-wrap" id="s-chart-wrap"><div class="loading">Loading chart...</div></div>
     <div class="chart-labels" id="s-chart-labels"></div>
+  </div>
+
+  <div class="section-title">🌍 Visits by Country</div>
+  <div class="country-card">
+    <div id="country-list"><div class="loading">Loading countries...</div></div>
   </div>
 </div>
 
@@ -163,8 +176,51 @@ function renderChart(m, days, counts){
   });
 }
 
+function getFlagEmoji(cc){
+  if(!cc) return '🌍';
+  return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(c.charCodeAt(0)+127397);});
+}
+
+function loadCountries(){
+  fetch(SUPA_URL+'/rest/v1/wordcrack_visits?select=country,country_code&created_at=gte.'+RESET_ISO+'&limit=5000',{
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+  }).then(function(r){return r.json();}).then(function(rows){
+    var counts={};
+    rows.forEach(function(row){
+      var name = row.country || 'Unknown';
+      var cc = row.country_code || '';
+      var key = name+'|'+cc;
+      counts[key] = (counts[key]||0)+1;
+    });
+    var entries = Object.keys(counts).map(function(key){
+      var parts = key.split('|');
+      return {name:parts[0], cc:parts[1], count:counts[key]};
+    }).sort(function(a,b){return b.count-a.count;});
+
+    var listEl = document.getElementById('country-list');
+    if(!entries.length){
+      listEl.innerHTML = '<div class="loading">No visits recorded yet</div>';
+      return;
+    }
+    var top = entries.slice(0,10);
+    var maxCount = top[0].count;
+    listEl.innerHTML = top.map(function(e){
+      var pct = Math.round((e.count/maxCount)*100);
+      return '<div class="country-row">'+
+        '<div class="country-flag">'+getFlagEmoji(e.cc)+'</div>'+
+        '<div class="country-name">'+(e.name==='Unknown'?'Unknown':e.name)+'</div>'+
+        '<div class="country-bar-wrap"><div class="country-bar" style="width:'+pct+'%;"></div></div>'+
+        '<div class="country-count">'+e.count+'</div>'+
+      '</div>';
+    }).join('');
+  }).catch(function(){
+    document.getElementById('country-list').innerHTML = '<div class="loading">Unable to load countries</div>';
+  });
+}
+
 function loadAll(){
   METRICS.forEach(function(m){ loadTotals(m); load30DayChart(m); });
+  loadCountries();
   document.getElementById('last-updated').textContent=new Date().toLocaleTimeString();
 }
 loadAll();
