@@ -66,6 +66,11 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
 var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
 var TABLE='wordcrack_visits';
+// Stats were reset on this fixed date: historical rows before this are kept in
+// the database (still used by the multi-site network dashboard) but excluded
+// here so "All time" effectively counts from the reset date forward.
+var RESET_ISO='2026-07-27T00:00:00.000Z';
+var RESET_MS=new Date(RESET_ISO).getTime();
 
 function sfCount(path){
   return fetch(SUPA_URL+'/rest/v1/'+path,{
@@ -86,7 +91,7 @@ function loadTotals(){
   Promise.all([
     sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(0)+'&select=id'),
     sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(7)+'&select=id'),
-    sfCount(TABLE+'?select=id')
+    sfCount(TABLE+'?created_at=gte.'+RESET_ISO+'&select=id')
   ]).then(function(d){
     document.getElementById('total-today').textContent=d[0].toLocaleString();
     document.getElementById('total-week').textContent=d[1].toLocaleString();
@@ -107,7 +112,9 @@ function load30DayChart(){
   Promise.all(days.map(function(d){
     var start=new Date(d);start.setHours(0,0,0,0);
     var end=new Date(d);end.setHours(23,59,59,999);
-    return sfCount(TABLE+'?created_at=gte.'+start.toISOString()+'&created_at=lte.'+end.toISOString()+'&select=id');
+    if(end.getTime()<RESET_MS) return Promise.resolve(0); // before reset date, excluded
+    var gte=start.getTime()<RESET_MS?RESET_ISO:start.toISOString();
+    return sfCount(TABLE+'?created_at=gte.'+gte+'&created_at=lte.'+end.toISOString()+'&select=id');
   })).then(function(counts){
     renderChart(days, counts);
   }).catch(function(){
