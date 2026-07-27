@@ -19,8 +19,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .main{max-width:760px;margin:0 auto;}
-.total-card{background:linear-gradient(135deg,#1e1b4b,#1a2550);border:1px solid var(--border);border-radius:14px;padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;margin-bottom:24px;}
+.section-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin:28px 0 14px;}
+.section-title:first-child{margin-top:0;}
+.total-card{background:linear-gradient(135deg,#1e1b4b,#1a2550);border:1px solid var(--border);border-radius:14px;padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;margin-bottom:16px;}
+.total-card.searches{background:linear-gradient(135deg,#0f3d2e,#155a43);}
 body.light .total-card{background:linear-gradient(135deg,#534AB7,#7c6fcd);}
+body.light .total-card.searches{background:linear-gradient(135deg,#0f9d63,#22c98a);}
 body.light .total-val{color:#fff;}
 body.light .total-lbl{color:rgba(255,255,255,.8);}
 .total-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:#fff;}
@@ -29,6 +33,7 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 .chart-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
 .chart-wrap{display:flex;align-items:flex-end;gap:3px;height:140px;}
 .chart-bar{flex:1;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;transition:height .5s ease;cursor:default;}
+.chart-bar.searches{background:var(--green);}
 .chart-labels{display:flex;gap:3px;margin-top:6px;}
 .chart-label{flex:1;text-align:center;font-size:8px;color:var(--muted);}
 .loading{color:var(--muted);font-size:13px;}
@@ -49,28 +54,46 @@ body.light .total-lbl{color:rgba(255,255,255,.8);}
 </div>
 
 <div class="main">
+  <div class="section-title">👀 Visits</div>
   <div class="total-card">
-    <div><div class="total-val" id="total-today">—</div><div class="total-lbl">Today</div></div>
-    <div><div class="total-val" id="total-week">—</div><div class="total-lbl">This week</div></div>
-    <div><div class="total-val" id="total-all">—</div><div class="total-lbl">All time</div></div>
+    <div><div class="total-val" id="v-today">—</div><div class="total-lbl">Today</div></div>
+    <div><div class="total-val" id="v-week">—</div><div class="total-lbl">This week</div></div>
+    <div><div class="total-val" id="v-all">—</div><div class="total-lbl">All time</div></div>
   </div>
-
   <div class="chart-card">
     <div class="chart-title">Visits — last 30 days</div>
-    <div class="chart-wrap" id="chart-wrap"><div class="loading">Loading chart...</div></div>
-    <div class="chart-labels" id="chart-labels"></div>
+    <div class="chart-wrap" id="v-chart-wrap"><div class="loading">Loading chart...</div></div>
+    <div class="chart-labels" id="v-chart-labels"></div>
+  </div>
+
+  <div class="section-title">🔤 Word searches</div>
+  <div class="total-card searches">
+    <div><div class="total-val" id="s-today">—</div><div class="total-lbl">Today</div></div>
+    <div><div class="total-val" id="s-week">—</div><div class="total-lbl">This week</div></div>
+    <div><div class="total-val" id="s-all">—</div><div class="total-lbl">All time</div></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Searches — last 30 days</div>
+    <div class="chart-wrap" id="s-chart-wrap"><div class="loading">Loading chart...</div></div>
+    <div class="chart-labels" id="s-chart-labels"></div>
   </div>
 </div>
 
 <script>
 var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
 var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
-var TABLE='wordcrack_visits';
-// Stats were reset on this fixed date: historical rows before this are kept in
-// the database (still used by the multi-site network dashboard) but excluded
-// here so "All time" effectively counts from the reset date forward.
+
+// Visits stats were reset on this fixed date: historical rows before this are
+// kept in the database (still used by the multi-site network dashboard) but
+// excluded here so "All time" effectively counts from the reset date forward.
+// Searches table has no history before this date anyway.
 var RESET_ISO='2026-07-27T00:00:00.000Z';
 var RESET_MS=new Date(RESET_ISO).getTime();
+
+var METRICS=[
+  {table:'wordcrack_visits', prefix:'v', label:'visits', barClass:''},
+  {table:'wordcrack_searches', prefix:'s', label:'searches', barClass:'searches'}
+];
 
 function sfCount(path){
   return fetch(SUPA_URL+'/rest/v1/'+path,{
@@ -87,23 +110,21 @@ function getISODaysAgo(days){
   return d.toISOString();
 }
 
-function loadTotals(){
+function loadTotals(m){
   Promise.all([
-    sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(0)+'&select=id'),
-    sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(7)+'&select=id'),
-    sfCount(TABLE+'?created_at=gte.'+RESET_ISO+'&select=id')
+    sfCount(m.table+'?created_at=gte.'+getISODaysAgo(0)+'&select=id'),
+    sfCount(m.table+'?created_at=gte.'+getISODaysAgo(7)+'&select=id'),
+    sfCount(m.table+'?created_at=gte.'+RESET_ISO+'&select=id')
   ]).then(function(d){
-    document.getElementById('total-today').textContent=d[0].toLocaleString();
-    document.getElementById('total-week').textContent=d[1].toLocaleString();
-    document.getElementById('total-all').textContent=d[2].toLocaleString();
-    document.getElementById('last-updated').textContent=new Date().toLocaleTimeString();
+    document.getElementById(m.prefix+'-today').textContent=d[0].toLocaleString();
+    document.getElementById(m.prefix+'-week').textContent=d[1].toLocaleString();
+    document.getElementById(m.prefix+'-all').textContent=d[2].toLocaleString();
   }).catch(function(){
-    document.getElementById('total-today').textContent='—';
-    document.getElementById('last-updated').textContent='error loading';
+    document.getElementById(m.prefix+'-today').textContent='—';
   });
 }
 
-function load30DayChart(){
+function load30DayChart(m){
   var days=[];
   for(var i=29;i>=0;i--){
     var d=new Date();d.setDate(d.getDate()-i);
@@ -114,25 +135,25 @@ function load30DayChart(){
     var end=new Date(d);end.setHours(23,59,59,999);
     if(end.getTime()<RESET_MS) return Promise.resolve(0); // before reset date, excluded
     var gte=start.getTime()<RESET_MS?RESET_ISO:start.toISOString();
-    return sfCount(TABLE+'?created_at=gte.'+gte+'&created_at=lte.'+end.toISOString()+'&select=id');
+    return sfCount(m.table+'?created_at=gte.'+gte+'&created_at=lte.'+end.toISOString()+'&select=id');
   })).then(function(counts){
-    renderChart(days, counts);
+    renderChart(m, days, counts);
   }).catch(function(){
-    document.getElementById('chart-wrap').innerHTML='<div class="loading">Unable to load chart</div>';
+    document.getElementById(m.prefix+'-chart-wrap').innerHTML='<div class="loading">Unable to load chart</div>';
   });
 }
 
-function renderChart(days, counts){
+function renderChart(m, days, counts){
   var maxVal=Math.max.apply(null,counts)||1;
-  var wrap=document.getElementById('chart-wrap');
-  var labels=document.getElementById('chart-labels');
+  var wrap=document.getElementById(m.prefix+'-chart-wrap');
+  var labels=document.getElementById(m.prefix+'-chart-labels');
   wrap.innerHTML='';labels.innerHTML='';
   days.forEach(function(d,i){
     var bar=document.createElement('div');
-    bar.className='chart-bar';
+    bar.className='chart-bar'+(m.barClass?' '+m.barClass:'');
     var h=Math.round((counts[i]/maxVal)*130)+2;
     bar.style.height=h+'px';
-    bar.title=d.toLocaleDateString()+': '+counts[i]+' visits';
+    bar.title=d.toLocaleDateString()+': '+counts[i]+' '+m.label;
     wrap.appendChild(bar);
 
     var lbl=document.createElement('div');
@@ -142,7 +163,10 @@ function renderChart(days, counts){
   });
 }
 
-function loadAll(){ loadTotals(); load30DayChart(); }
+function loadAll(){
+  METRICS.forEach(function(m){ loadTotals(m); load30DayChart(m); });
+  document.getElementById('last-updated').textContent=new Date().toLocaleTimeString();
+}
 loadAll();
 setInterval(loadAll, 60000);
 

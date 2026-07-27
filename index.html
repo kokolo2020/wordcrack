@@ -474,6 +474,7 @@ function canMake(word,letters){const p={};for(const c of letters)p[c]=(p[c]||0)+
 function unscramble(){
   const raw=document.getElementById('letters').value.toLowerCase().replace(/[^a-z]/g,'');
   if(raw.length<2){showToast('Enter at least 2 letters');return;}
+  try{fetch('https://mjnigheggxtythytsqle.supabase.co/rest/v1/wordcrack_searches',{method:'POST',headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({})}).catch(function(){});}catch(e){}
   found=[];
   for(const w of getActiveWordSet()){if(w.length>=2&&w.length<=raw.length&&canMake(w,raw))found.push(w);}
   if(!found.length){
