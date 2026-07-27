@@ -4,6 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#5b4fcf"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="WordCrack"/>
+<link rel="apple-touch-icon" href="/icon-192.svg"/>
 <meta name="description" content="WordCrack - Free word unscrambler with 168,000 words. Find all possible words from your letters instantly."/>
 <title>WordCrack — Free Word Unscrambler | 168,000 Words</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -264,6 +270,60 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 </style>
 </head>
 <body>
+
+<div id="install-banner" style="display:none;background:var(--surface,#fff);border-bottom:1px solid var(--border,#e4e0f7);padding:10px 16px;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-family:'DM Sans',sans-serif;">
+  <span style="font-size:14px;color:var(--text,#1e1b4b);">📲 <strong>Add WordCrack to your home screen</strong> for quick access next time</span>
+  <button id="install-banner-btn" style="background:var(--accent,#5b4fcf);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Install</button>
+  <button id="install-banner-close" aria-label="Dismiss" style="background:none;border:none;color:var(--muted,#7c75b0);font-size:16px;cursor:pointer;padding:2px 6px;">✕</button>
+</div>
+<script>
+(function(){
+  try{
+    var DISMISS_KEY='wc-install-dismissed';
+    var dismissedAt=localStorage.getItem(DISMISS_KEY);
+    if(dismissedAt && (Date.now()-parseInt(dismissedAt,10)) < 14*24*60*60*1000) return; // dismissed within last 14 days
+
+    var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if(isStandalone) return;
+
+    var banner = document.getElementById('install-banner');
+    var btn = document.getElementById('install-banner-btn');
+    var closeBtn = document.getElementById('install-banner-close');
+    var deferredPrompt = null;
+
+    var isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent) && !window.MSStream;
+
+    function showBanner(){ if(banner) banner.style.display='flex'; }
+    function hideBanner(){ if(banner) banner.style.display='none'; }
+    function dismiss(){ try{localStorage.setItem(DISMISS_KEY, String(Date.now()));}catch(e){} hideBanner(); }
+
+    if(closeBtn) closeBtn.addEventListener('click', dismiss);
+
+    if(isIOS){
+      if(btn) btn.textContent='Show me how';
+      if(btn) btn.addEventListener('click', function(){
+        alert('Tap the Share icon in Safari, then "Add to Home Screen".');
+      });
+      showBanner();
+    } else {
+      window.addEventListener('beforeinstallprompt', function(e){
+        e.preventDefault();
+        deferredPrompt = e;
+        showBanner();
+      });
+      if(btn) btn.addEventListener('click', function(){
+        if(!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.finally(function(){
+          deferredPrompt = null;
+          hideBanner();
+        });
+      });
+      window.addEventListener('appinstalled', dismiss);
+    }
+  }catch(e){}
+})();
+</script>
 
 <div class="sticky-ad">
   <!-- Media.net sticky bottom ad -->
