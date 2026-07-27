@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WordCrack — Visit Stats</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#222636;--border:#2d3148;--text:#f0f0ff;--muted:#8b8fad;--accent:#7c6fcd;--green:#22c98a;--orange:#f59e0b;--red:#f0544f;}
+body.light{--bg:#f0f2f8;--surface:#ffffff;--surface2:#f4f6ff;--border:#e0e4f0;--text:#1a1d2e;--muted:#6b7080;--accent:#7c6fcd;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 16px;}
+.theme-toggle{background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;max-width:760px;margin-left:auto;margin-right:auto;}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);}
+.logo span{color:var(--accent);}
+.last-update{font-size:12px;color:var(--muted);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.main{max-width:760px;margin:0 auto;}
+.total-card{background:linear-gradient(135deg,#1e1b4b,#1a2550);border:1px solid var(--border);border-radius:14px;padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;margin-bottom:24px;}
+body.light .total-card{background:linear-gradient(135deg,#534AB7,#7c6fcd);}
+body.light .total-val{color:#fff;}
+body.light .total-lbl{color:rgba(255,255,255,.8);}
+.total-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:#fff;}
+.total-lbl{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;}
+.chart-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.chart-wrap{display:flex;align-items:flex-end;gap:3px;height:140px;}
+.chart-bar{flex:1;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;transition:height .5s ease;cursor:default;}
+.chart-labels{display:flex;gap:3px;margin-top:6px;}
+.chart-label{flex:1;text-align:center;font-size:8px;color:var(--muted);}
+.loading{color:var(--muted);font-size:13px;}
+.back-link{display:inline-block;margin-top:8px;font-size:12px;color:var(--muted);text-decoration:none;}
+.back-link:hover{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="logo">Word<span>Crack</span> Stats</div>
+    <a class="back-link" href="/">&larr; Back to WordCrack</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">☀️ Light</button>
+    <div class="last-update"><span class="dot"></span>Live · <span id="last-updated">loading...</span></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="total-card">
+    <div><div class="total-val" id="total-today">—</div><div class="total-lbl">Today</div></div>
+    <div><div class="total-val" id="total-week">—</div><div class="total-lbl">This week</div></div>
+    <div><div class="total-val" id="total-all">—</div><div class="total-lbl">All time</div></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Visits — last 30 days</div>
+    <div class="chart-wrap" id="chart-wrap"><div class="loading">Loading chart...</div></div>
+    <div class="chart-labels" id="chart-labels"></div>
+  </div>
+</div>
+
+<script>
+var SUPA_URL='https://mjnigheggxtythytsqle.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q';
+var TABLE='wordcrack_visits';
+
+function sfCount(path){
+  return fetch(SUPA_URL+'/rest/v1/'+path,{
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'count=exact','Range-Unit':'items','Range':'0-0'}
+  }).then(function(r){
+    var c=r.headers.get('content-range');
+    return c?parseInt(c.split('/')[1])||0:0;
+  });
+}
+
+function getISODaysAgo(days){
+  var d=new Date();d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-days);
+  return d.toISOString();
+}
+
+function loadTotals(){
+  Promise.all([
+    sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(0)+'&select=id'),
+    sfCount(TABLE+'?created_at=gte.'+getISODaysAgo(7)+'&select=id'),
+    sfCount(TABLE+'?select=id')
+  ]).then(function(d){
+    document.getElementById('total-today').textContent=d[0].toLocaleString();
+    document.getElementById('total-week').textContent=d[1].toLocaleString();
+    document.getElementById('total-all').textContent=d[2].toLocaleString();
+    document.getElementById('last-updated').textContent=new Date().toLocaleTimeString();
+  }).catch(function(){
+    document.getElementById('total-today').textContent='—';
+    document.getElementById('last-updated').textContent='error loading';
+  });
+}
+
+function load30DayChart(){
+  var days=[];
+  for(var i=29;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    days.push(d);
+  }
+  Promise.all(days.map(function(d){
+    var start=new Date(d);start.setHours(0,0,0,0);
+    var end=new Date(d);end.setHours(23,59,59,999);
+    return sfCount(TABLE+'?created_at=gte.'+start.toISOString()+'&created_at=lte.'+end.toISOString()+'&select=id');
+  })).then(function(counts){
+    renderChart(days, counts);
+  }).catch(function(){
+    document.getElementById('chart-wrap').innerHTML='<div class="loading">Unable to load chart</div>';
+  });
+}
+
+function renderChart(days, counts){
+  var maxVal=Math.max.apply(null,counts)||1;
+  var wrap=document.getElementById('chart-wrap');
+  var labels=document.getElementById('chart-labels');
+  wrap.innerHTML='';labels.innerHTML='';
+  days.forEach(function(d,i){
+    var bar=document.createElement('div');
+    bar.className='chart-bar';
+    var h=Math.round((counts[i]/maxVal)*130)+2;
+    bar.style.height=h+'px';
+    bar.title=d.toLocaleDateString()+': '+counts[i]+' visits';
+    wrap.appendChild(bar);
+
+    var lbl=document.createElement('div');
+    lbl.className='chart-label';
+    lbl.textContent=(i%5===0)?(d.getMonth()+1)+'/'+d.getDate():'';
+    labels.appendChild(lbl);
+  });
+}
+
+function loadAll(){ loadTotals(); load30DayChart(); }
+loadAll();
+setInterval(loadAll, 60000);
+
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent=isLight?'🌙 Dark':'☀️ Light';
+  try{localStorage.setItem('dash-theme',isLight?'light':'dark');}catch(e){}
+}
+try{if(localStorage.getItem('dash-theme')==='light'){document.body.classList.add('light');document.getElementById('theme-btn').textContent='🌙 Dark';}}catch(e){}
+</script>
+</body>
+</html>
