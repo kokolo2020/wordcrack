@@ -61,9 +61,9 @@
 
 /* ── DAY MODE (default) ── */
 :root {
-  --bg: #f5f3ff; --surface: #fff; --surface2: #eeeaff;
-  --accent: #5b4fcf; --accent2: #f0544f; --accent3: #7c6fe0;
-  --text: #1e1b4b; --muted: #7c75b0; --border: #e4e0f7;
+  --bg: #f6f6ff; --surface: #fff; --surface2: #f0eeff;
+  --accent: #5746d8; --accent2: #ff5c5c; --accent3: #8a7dff;
+  --text: #211d48; --muted: #756e9f; --border: #e5e2f6;
   --chip-bg: #eeeaff; --radius: 16px;
   --font: 'DM Sans', sans-serif; --display: 'Syne', sans-serif;
   --btn-text: #fff;
@@ -210,16 +210,16 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* ── PAGE WRAPPER ─────────────────────────────── */
-.page-wrapper{display:grid;grid-template-columns:170px 1fr;max-width:1100px;margin:0 auto;align-items:start;}
+.page-wrapper{display:grid;grid-template-columns:216px minmax(0,1fr);gap:18px;max-width:1180px;margin:0 auto;padding:18px 20px 100px;align-items:start;}
 @media(max-width:800px){
-  .page-wrapper{grid-template-columns:1fr;}
-  .left-panel{position:static!important;order:2;border-radius:var(--radius);margin:12px;max-height:none!important;height:auto!important;}
+  .page-wrapper{grid-template-columns:1fr;padding:12px 12px 90px;gap:0;}
+  .left-panel{position:static!important;order:2;border-radius:18px;margin:12px 0 0;max-height:none!important;height:auto!important;}
   .app{order:1;}
   .clock-strip{display:none!important;}
   .lp-footer{margin-top:16px;}
 }
 /* ── LEFT PANEL ───────────────────────────────── */
-.left-panel{background:#1a1728;padding:14px;position:sticky;top:0;max-height:100vh;display:flex;flex-direction:column;overflow-y:auto;}
+.left-panel{background:linear-gradient(165deg,#211d3f 0%,#17142d 100%);padding:16px;position:sticky;top:18px;max-height:calc(100vh - 36px);display:flex;flex-direction:column;overflow-y:auto;border-radius:20px;box-shadow:0 16px 40px rgba(37,29,91,.20);}
 .lp-logo-label{font-size:9px;font-weight:700;color:#6b6485;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;}
 .lp-badges{display:flex;flex-direction:column;gap:5px;margin-bottom:4px;}
 .lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;padding:4px 9px;border-radius:10px;}
@@ -261,7 +261,7 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 .earned-sub-lp{font-size:8px;color:#9d8ff0;}
 .lp-footer{margin-top:auto;padding-top:12px;border-top:1px solid #2d2a45;font-size:9px;color:#6b6485;text-align:center;line-height:1.6;}
 /* ── WORLD CLOCKS ─────────────────────────────── */
-.clock-strip{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;}
+.clock-strip{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;padding:4px 0 0;}
 .clock-card{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .analog-clock{width:42px;height:42px;border-radius:50%;background:var(--surface);border:2px solid var(--border);position:relative;box-shadow:0 2px 10px rgba(0,0,0,.08);}
 .clk-center{width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;}
@@ -280,7 +280,104 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 
 
 /* ── APP COLUMN ───────────────────────── */
-.app{min-width:0;width:100%;padding:24px 16px 20px;box-sizing:border-box;}
+.app{min-width:0;width:100%;padding:12px 0 20px;box-sizing:border-box;}
+
+/* ── HOME EXPERIENCE REFINEMENT ───────────────── */
+body{background:
+  radial-gradient(circle at 74% -12%,rgba(138,125,255,.17),transparent 31rem),
+  radial-gradient(circle at 100% 48%,rgba(87,70,216,.08),transparent 28rem),
+  var(--bg);}
+.header-row{align-items:center;margin:12px 0 2px;}
+.logo{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;margin-bottom:10px;}
+.title{font-size:clamp(46px,7.1vw,72px);line-height:.88;letter-spacing:-3.8px;margin-bottom:12px;}
+.title span{background:linear-gradient(110deg,var(--accent),#8a62f8);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.subtitle{font-size:16px;max-width:520px;margin-bottom:22px;color:#615a89;}
+.input-card{border-radius:20px;padding:22px;box-shadow:0 16px 36px rgba(59,45,145,.12);border-color:rgba(119,105,204,.18);}
+.input-card::before{height:4px;background:linear-gradient(90deg,var(--accent),#8b76ff 58%,var(--accent2));}
+.input-label{font-size:10px;letter-spacing:.16em;margin-bottom:14px;}
+.input-welcome{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 14px;}
+.input-hint{font-size:13px;line-height:1.45;color:var(--muted);}
+.example-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.example-label{font-size:11px;font-weight:700;color:var(--muted);}
+.example-chip{appearance:none;border:1px solid var(--border);background:var(--surface2);border-radius:999px;color:var(--accent);cursor:pointer;font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.08em;padding:5px 8px;transition:background .15s,border-color .15s,transform .15s;}
+.example-chip:hover{background:var(--surface);border-color:var(--accent);transform:translateY(-1px);}
+.letter-input{font-size:34px;min-height:42px;}
+.btn-primary{border-radius:11px;box-shadow:0 7px 18px rgba(87,70,216,.29);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(87,70,216,.35);}
+.btn-clear{border-radius:11px;}
+.empty{padding:54px 20px 48px;border:1px dashed rgba(119,105,204,.26);border-radius:20px;background:rgba(255,255,255,.34);}
+.empty-icon{font-size:46px;margin-bottom:12px;filter:drop-shadow(0 7px 8px rgba(87,70,216,.16));}
+.empty-title{font-size:20px;}
+.ad-banner{opacity:.72;min-height:72px;background:rgba(255,255,255,.5);}
+.clock-card{min-width:43px;}
+.analog-clock{width:38px;height:38px;}
+.clk-h{height:10px}.clk-m{height:13px}.clk-s{height:16px}
+@media(max-width:800px){
+  .app{padding:4px 0 18px;}
+  .header-row{margin:10px 4px 2px;}
+  .title{font-size:clamp(44px,13vw,58px);letter-spacing:-3px;}
+  .subtitle{margin:0 4px 18px;font-size:14px;}
+  .input-card{padding:18px;border-radius:18px;}
+  .input-welcome{display:block;margin:-2px 0 13px;}
+  .example-row{justify-content:flex-start;margin-top:9px;}
+  .letter-input{font-size:29px;}
+  .clock-strip{display:none;}
+  .left-panel{padding:16px;}
+}
+
+/* ── SEARCH-FIRST HOME ────────────────────────── */
+.page-wrapper{display:flex;flex-direction:column;max-width:820px;padding:0 20px 100px;gap:28px;}
+.app{order:1;padding:clamp(58px,12vh,128px) 0 0;}
+.left-panel{order:2;position:static;max-height:none;width:100%;border-radius:18px;padding:18px 20px;box-shadow:none;display:block;}
+.left-panel .lp-logo-label,.left-panel .lp-badges,.left-panel .lp-divider,.left-panel .lp-footer{display:none;}
+.left-panel .lp-section-label{margin:0 0 8px;}
+.left-panel .greeting-list{min-height:0;}
+.left-panel .crack-counter{margin:0;}
+.left-panel .badge-grid{margin:0;}
+.left-panel .earned-banner{margin:12px 0 0;}
+.header-row{display:block;text-align:center;margin:0;}
+.header-left{overflow:visible;}
+.logo{justify-content:center;margin:0 0 14px;font-size:11px;letter-spacing:.22em;}
+.title.playful-logo{display:flex;justify-content:center;align-items:flex-end;gap:clamp(0px,.35vw,4px);font-family:var(--display);font-size:clamp(54px,10vw,90px);font-weight:800;line-height:.9;letter-spacing:-.075em;margin:0 0 18px;color:var(--text);}
+.playful-logo .logo-letter{display:inline-block;transform-origin:50% 75%;text-shadow:0 5px 0 rgba(42,31,105,.07);}
+.playful-logo .logo-letter:nth-child(1){color:#5142d6;transform:rotate(-5deg) translateY(2px);}
+.playful-logo .logo-letter:nth-child(2){color:#ff755c;transform:rotate(2deg) translateY(-3px);}
+.playful-logo .logo-letter:nth-child(3){color:#6e5bf1;transform:rotate(-1deg);}
+.playful-logo .logo-letter:nth-child(4){color:#1f1b4a;transform:rotate(3deg) translateY(2px);}
+.playful-logo .logo-letter:nth-child(5){color:#1f1b4a;transform:rotate(-2deg);}
+.playful-logo .logo-letter:nth-child(6){color:#32aeb2;transform:rotate(3deg) translateY(-1px);}
+.playful-logo .logo-letter:nth-child(7){color:#f2a83b;transform:rotate(-3deg) translateY(2px);}
+.playful-logo .logo-letter:nth-child(8){color:#5142d6;transform:rotate(3deg) translateY(-2px);}
+.playful-logo .logo-letter:nth-child(9){color:#ff755c;transform:rotate(-3deg) translateY(1px);}
+.subtitle{margin:0 auto 28px;text-align:center;font-size:16px;max-width:440px;}
+.clock-strip{display:none;}
+.input-card{max-width:700px;margin:0 auto 18px;padding:8px 9px 8px 22px;border:1.5px solid rgba(93,76,211,.25);border-radius:999px;box-shadow:0 8px 26px rgba(53,39,134,.11);overflow:visible;display:flex;align-items:center;}
+.input-card::before,.input-card .input-label,.input-card .divider{display:none;}
+.input-welcome{position:absolute;width:100%;left:0;top:calc(100% + 14px);display:flex;flex-direction:column;gap:9px;margin:0;text-align:center;}
+.input-hint{font-size:13px;}
+.example-row{justify-content:center;}
+.letter-input{min-width:0;flex:1;font-family:var(--font);font-size:20px;font-weight:500;letter-spacing:3px;height:48px;min-height:0;}
+.input-actions{gap:6px;align-items:center;}
+.btn-primary{flex:0;padding:13px 19px;border-radius:999px;font-family:var(--font);font-size:14px;letter-spacing:0;box-shadow:none;}
+.btn-clear{padding:9px 10px;background:transparent;border-color:transparent;font-size:18px;}
+.empty{margin-top:102px;padding:36px 20px 28px;border:none;background:transparent;}
+.empty-icon{font-size:39px;margin-bottom:10px;}
+.empty-title{font-size:18px;}
+.ad-banner{margin-top:26px;}
+@media(max-width:700px){
+  .page-wrapper{padding:0 14px 88px;gap:20px;}
+  .app{padding-top:62px;}
+  .title.playful-logo{font-size:clamp(51px,15vw,70px);}
+  .subtitle{font-size:14px;margin-bottom:24px;}
+  .input-card{padding:7px 7px 7px 18px;}
+  .letter-input{font-size:17px;letter-spacing:2px;}
+  .btn-primary{padding:12px 15px;font-size:13px;}
+  .input-welcome{top:calc(100% + 12px);}
+  .input-hint{font-size:12px;}
+  .example-chip{font-size:10px;padding:4px 7px;}
+  .empty{margin-top:96px;}
+  .left-panel{padding:18px;}
+}
 </style>
 
 <link rel="canonical" href="https://wordcrack.club/"/>
@@ -391,7 +488,9 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   <div class="header-row">
     <div class="header-left">
       <div class="logo">Word Unscrambler <span id="version-badge" style="font-size:9px;background:var(--chip-bg);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--accent);letter-spacing:.05em;font-weight:700">v3.3</span></div>
-      <div class="title">Word<span>Crack</span></div>
+      <div class="title playful-logo" aria-label="WordCrack">
+        <span class="logo-letter">W</span><span class="logo-letter">o</span><span class="logo-letter">r</span><span class="logo-letter">d</span><span class="logo-letter">C</span><span class="logo-letter">r</span><span class="logo-letter">a</span><span class="logo-letter">c</span><span class="logo-letter">k</span>
+      </div>
     </div>
           <div class="clock-strip" id="clock-strip"></div>
     </div>
@@ -399,6 +498,15 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
 
   <div class="input-card">
     <div class="input-label" id="input-label">Your letters</div>
+    <div class="input-welcome">
+      <div class="input-hint">Start with any 2–15 letters. We’ll find every word that fits.</div>
+      <div class="example-row" aria-label="Try an example">
+        <span class="example-label">Try:</span>
+        <button class="example-chip" type="button" onclick="useExample('AELRST')">AELRST</button>
+        <button class="example-chip" type="button" onclick="useExample('TRAIN')">TRAIN</button>
+        <button class="example-chip" type="button" onclick="useExample('PUZZLE')">PUZZLE</button>
+      </div>
+    </div>
     <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <div class="divider"></div>
     <div class="input-actions">
@@ -436,8 +544,8 @@ body.night .affiliate-bar { background:linear-gradient(135deg,#1e1a0e,#2a2310); 
   <div id="results">
     <div class="empty">
       <div class="empty-icon">✏️</div>
-      <div class="empty-title">Type your letters above</div>
-      <div class="empty-sub" id="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div>
+      <div class="empty-title">Ready when you are</div>
+      <div class="empty-sub" id="empty-sub">Enter your letters, or try an example to get started.</div>
     </div>
   </div>
   <!-- Media.net ad — shown below results -->
@@ -565,6 +673,10 @@ function showFilterToggle(){
   document.getElementById('filter-toggle-row').style.display='flex';
 }
 function canMake(word,letters){const p={};for(const c of letters)p[c]=(p[c]||0)+1;for(const c of word){if(!p[c])return false;p[c]--;}return true;}
+function useExample(letters){
+  document.getElementById('letters').value=letters;
+  unscramble();
+}
 function unscramble(){
   const raw=document.getElementById('letters').value.toLowerCase().replace(/[^a-z]/g,'');
   if(raw.length<2){showToast('Enter at least 2 letters');return;}
@@ -629,7 +741,7 @@ function clearAll(){
   document.getElementById('filter-card').style.display='none';
   document.getElementById('filter-toggle-btn').classList.remove('open');
   document.getElementById('filter-active-badge').style.display='none';
-  document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div class="empty-title">Type your letters above</div><div class="empty-sub" id="empty-sub">168,000 word dictionary · Scrabble scores · AI definitions</div></div>';
+  document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div class="empty-title">Ready when you are</div><div class="empty-sub" id="empty-sub">Enter your letters, or try an example to get started.</div></div>';
   found=[];document.getElementById('letters').focus();
 }
 async function showWordDetail(word){if(typeof incrementCrackCount==="function")incrementCrackCount();
