@@ -378,6 +378,24 @@ body{background:
   .empty{margin-top:96px;}
   .left-panel{padding:18px;}
 }
+
+/* ── GARDEN MOTION LAYER ───────────────────────── */
+.garden-leaves{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.garden-leaf{position:absolute;width:30px;height:16px;border-radius:100% 0 100% 0;background:linear-gradient(135deg,#9acb68 0%,#5b9d58 55%,#317650 100%);box-shadow:inset 3px 2px 4px rgba(255,255,255,.28),0 8px 14px rgba(39,95,63,.12);opacity:.36;transform-origin:0 100%;animation:leafSway var(--leaf-duration,10s) ease-in-out infinite alternate;}
+.garden-leaf::after{content:'';position:absolute;width:1px;height:21px;left:45%;top:-2px;background:rgba(241,255,216,.58);transform:rotate(-41deg);transform-origin:bottom;}
+.leaf-1{left:2%;top:10%;--leaf-duration:9s;transform:rotate(36deg) scale(.7);}
+.leaf-2{left:7%;top:68%;--leaf-duration:13s;transform:rotate(-19deg) scale(.9);animation-delay:-3s;}
+.leaf-3{left:16%;top:88%;--leaf-duration:11s;transform:rotate(70deg) scale(.6);animation-delay:-7s;}
+.leaf-4{right:4%;top:15%;--leaf-duration:12s;transform:rotate(130deg) scale(.8);animation-delay:-5s;}
+.leaf-5{right:1%;top:47%;--leaf-duration:10s;transform:rotate(170deg) scale(.65);animation-delay:-2s;}
+.leaf-6{right:10%;top:81%;--leaf-duration:14s;transform:rotate(95deg) scale(.95);animation-delay:-8s;}
+.leaf-7{left:30%;top:4%;--leaf-duration:15s;transform:rotate(25deg) scale(.5);animation-delay:-4s;}
+.leaf-8{right:28%;top:7%;--leaf-duration:11s;transform:rotate(153deg) scale(.52);animation-delay:-6s;}
+@keyframes leafSway{0%{margin-left:0;margin-top:0;rotate:-7deg;}100%{margin-left:13px;margin-top:9px;rotate:9deg;}}
+.page-wrapper,#install-banner{position:relative;z-index:1;}
+.sticky-ad{z-index:100;}
+@media(prefers-reduced-motion:reduce){.garden-leaf{animation:none;}}
+@media(max-width:700px){.garden-leaf{opacity:.26;}.leaf-3,.leaf-7,.leaf-8{display:none;}}
 </style>
 
 <link rel="canonical" href="https://wordcrack.club/"/>
@@ -394,6 +412,13 @@ body{background:
 </script>
 </head>
 <body>
+
+<div class="garden-leaves" aria-hidden="true">
+  <span class="garden-leaf leaf-1"></span><span class="garden-leaf leaf-2"></span>
+  <span class="garden-leaf leaf-3"></span><span class="garden-leaf leaf-4"></span>
+  <span class="garden-leaf leaf-5"></span><span class="garden-leaf leaf-6"></span>
+  <span class="garden-leaf leaf-7"></span><span class="garden-leaf leaf-8"></span>
+</div>
 
 <div id="install-banner" style="display:none;background:var(--surface,#fff);border-bottom:1px solid var(--border,#e4e0f7);padding:10px 16px;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-family:'DM Sans',sans-serif;">
   <span style="font-size:14px;color:var(--text,#1e1b4b);">📲 <strong>Add WordCrack to your home screen</strong> for quick access next time</span>
