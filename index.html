@@ -442,6 +442,44 @@ body{background:
 .left-panel .earned-sub-lp{color:#b63a68;}
 .stat-card{border-color:#f2dce5;box-shadow:0 5px 14px rgba(125,43,83,.05);}
 .filter-btn.active{background:var(--accent);border-color:var(--accent);}
+
+/* ── FULL BOTANICAL SEARCH COMPOSITION ────────── */
+body{background:#fbf8ff url('/assets/illustrations/raspberry-garden-frame.png') center top / 760px auto no-repeat;background-attachment:fixed;}
+.garden-leaves{opacity:.13;}
+.page-wrapper{max-width:700px;padding-bottom:110px;}
+.app{padding-top:clamp(150px,20vh,250px);}
+.logo{margin-bottom:17px;color:#67406f;font-size:10px;}
+.title.playful-logo{font-size:clamp(58px,12.5vw,94px);margin-bottom:20px;}
+.subtitle{margin-bottom:58px;font-size:clamp(15px,2.6vw,18px);font-weight:500;color:#5d3d67;}
+.input-card{display:block;max-width:580px;padding:0;margin:0 auto 20px;background:transparent;border:0;box-shadow:none;}
+.input-card:focus-within{border-color:transparent;box-shadow:none;}
+.input-card .input-label{display:flex;align-items:center;gap:8px;margin:0 0 10px;color:#68416f;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;}
+.input-card .input-label::before{content:'❦';color:#69a059;font-size:20px;line-height:1;}
+.letter-input{display:block;width:100%;height:68px;padding:0 58px 0 24px;background:rgba(255,255,255,.91);border:2px solid #d7b9e8;border-radius:34px;box-shadow:0 6px 16px rgba(92,49,115,.13);font-size:20px;letter-spacing:1px;}
+.letter-input:focus{border-color:#bd77b3;box-shadow:0 8px 21px rgba(170,62,109,.18);}
+.input-actions{position:relative;display:flex;width:100%;margin-top:17px;gap:0;}
+.btn-primary{width:100%;padding:18px 24px;border-radius:32px;background:linear-gradient(135deg,#f44f82 0%,#d62361 100%);font-size:20px;font-weight:800;box-shadow:0 10px 20px rgba(197,34,91,.24);}
+.btn-primary::before{content:'⌕';display:inline-block;margin-right:10px;font-size:27px;line-height:.5;vertical-align:-2px;}
+.btn-clear{position:absolute;right:8px;top:-85px;width:50px;height:50px;padding:0;border-radius:50%;background:transparent;border:none;color:#b38eb2;z-index:2;}
+.input-welcome{position:static;display:flex;flex-direction:column;gap:13px;margin:22px 0 0;text-align:center;}
+.input-hint{display:none;}
+.example-row{justify-content:center;gap:8px;}
+.example-label::before{content:'🍓';margin-right:6px;font-size:17px;vertical-align:-2px;}
+.example-chip{padding:7px 15px;border:0;border-radius:999px;background:#eee5fb;color:#77527e;font-size:12px;letter-spacing:.12em;}
+.example-chip:hover{background:#e2d5f3;transform:translateY(-1px);}
+.empty{margin-top:36px;padding:36px 20px 24px;background:rgba(255,255,255,.22);}
+.left-panel{margin-top:22px;background:rgba(255,252,254,.78);backdrop-filter:blur(8px);}
+@media(max-width:700px){
+  body{background-size:100% auto;background-attachment:scroll;}
+  .app{padding-top:clamp(145px,22vh,210px);}
+  .title.playful-logo{font-size:clamp(52px,15vw,72px);margin-bottom:16px;}
+  .subtitle{margin-bottom:45px;font-size:15px;}
+  .input-card{max-width:100%;}
+  .letter-input{height:63px;font-size:18px;}
+  .btn-primary{padding:17px 20px;font-size:19px;}
+  .btn-clear{top:-80px;}
+  .example-chip{padding:7px 12px;font-size:11px;}
+}
 </style>
 
 <link rel="canonical" href="https://wordcrack.club/"/>
@@ -569,6 +607,12 @@ body{background:
 
   <div class="input-card">
     <div class="input-label" id="input-label">Your letters</div>
+    <input class="letter-input" id="letters" type="text" placeholder="Type or paste your letters here…" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
+    <div class="divider"></div>
+    <div class="input-actions">
+      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Find words</button>
+      <button class="btn-clear" onclick="clearAll()">✕</button>
+    </div>
     <div class="input-welcome">
       <div class="input-hint">Start with any 2–15 letters. We’ll find every word that fits.</div>
       <div class="example-row" aria-label="Try an example">
@@ -577,12 +621,6 @@ body{background:
         <button class="example-chip" type="button" onclick="useExample('TRAIN')">TRAIN</button>
         <button class="example-chip" type="button" onclick="useExample('PUZZLE')">PUZZLE</button>
       </div>
-    </div>
-    <input class="letter-input" id="letters" type="text" placeholder="e.g. AELRST" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
-    <div class="divider"></div>
-    <div class="input-actions">
-      <button class="btn-primary" id="btn-reveal" onclick="unscramble()">Reveal</button>
-      <button class="btn-clear" onclick="clearAll()">✕</button>
     </div>
     <!-- Filter toggle — only visible after letters typed -->
     <div class="filter-toggle-row" id="filter-toggle-row">
