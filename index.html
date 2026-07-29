@@ -505,7 +505,14 @@ body{background:#fbf8ff url('/assets/illustrations/raspberry-garden-frame.png') 
 .daily-play-btn{background:var(--accent);color:var(--btn-text,#fff);border:none;border-radius:999px;padding:9px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);}
 .daily-play-btn:hover{opacity:.92;}
 .daily-solved{display:none;text-align:center;color:var(--accent);font-weight:700;font-size:14px;margin-top:6px;}
-.daily-card.is-solved .daily-actions{display:none;}
+.daily-guess-input{flex:1;max-width:220px;padding:9px 14px;border:1.5px solid var(--border);border-radius:999px;font-size:14px;font-family:var(--font);text-transform:uppercase;letter-spacing:.05em;color:var(--text);background:var(--surface);}
+.daily-guess-input:focus{outline:none;border-color:var(--accent);}
+.daily-wrong{display:none;text-align:center;color:var(--accent2,#e04b6b);font-weight:600;font-size:13px;margin-top:8px;}
+.daily-wrong.show{display:block;}
+.daily-hint-row{text-align:center;margin-top:8px;}
+.daily-hint-btn{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;font-family:var(--font);padding:2px;}
+.daily-hint-btn:hover{color:var(--accent);}
+.daily-card.is-solved .daily-actions,.daily-card.is-solved .daily-hint-row,.daily-card.is-solved .daily-wrong{display:none;}
 .daily-card.is-solved .daily-solved{display:block;}
 </style>
 </head>
@@ -625,8 +632,11 @@ body{background:#fbf8ff url('/assets/illustrations/raspberry-garden-frame.png') 
     </div>
     <div class="daily-letters" id="daily-letters">– – – – – –</div>
     <div class="daily-actions">
-      <button class="daily-play-btn" id="daily-play-btn" onclick="playDailyChallenge()">Play Today's Challenge</button>
+      <input type="text" class="daily-guess-input" id="daily-guess-input" placeholder="Type your answer…" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')submitDailyGuess();"/>
+      <button class="daily-play-btn" id="daily-play-btn" onclick="submitDailyGuess()">Submit</button>
     </div>
+    <div class="daily-wrong" id="daily-wrong">Not quite — try again!</div>
+    <div class="daily-hint-row"><button class="daily-hint-btn" id="daily-hint-btn" onclick="revealDailyAnswer()">Stuck? Reveal answer</button></div>
     <div class="daily-solved" id="daily-solved">✅ Solved today's challenge — come back tomorrow!</div>
   </div>
 
@@ -1016,19 +1026,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var card=document.getElementById('daily-card');
     if(card)card.classList.toggle('is-solved', solvedToday);
   }
-  window.playDailyChallenge=function(){
-    var word=dailyWordForToday();
-    var input=document.getElementById('letters');
-    if(input){input.value=scrambleWord(word).toUpperCase();}
-    unscramble();
-  };
-  window.checkDailyChallenge=function(foundWords){
+  function markDailySolved(){
     try{
       var today=dailyDateStr();
       if(localStorage.getItem(DAILY_KEY_SOLVED)===today)return; // already solved today
-      var target=dailyWordForToday().toLowerCase();
-      if(foundWords.indexOf(target)===-1)return;
-      // Solved! Update streak.
       var yesterday=dailyDateStr(new Date(Date.now()-86400000));
       var lastDate=localStorage.getItem(DAILY_KEY_LAST);
       var streak=getStreak();
@@ -1039,6 +1040,32 @@ document.addEventListener('DOMContentLoaded', function() {
       renderDailyCard();
       showToast('🔥 Daily challenge solved! '+streak+'-day streak — come back tomorrow!');
     }catch(e){}
+  }
+  window.submitDailyGuess=function(){
+    var input=document.getElementById('daily-guess-input');
+    var wrongEl=document.getElementById('daily-wrong');
+    if(!input)return;
+    var guess=input.value.trim().toLowerCase();
+    if(!guess)return;
+    var target=dailyWordForToday().toLowerCase();
+    if(guess===target){
+      if(wrongEl)wrongEl.classList.remove('show');
+      markDailySolved();
+    } else {
+      if(wrongEl){wrongEl.classList.add('show');setTimeout(function(){wrongEl.classList.remove('show');},2000);}
+      input.value='';
+      input.focus();
+    }
+  };
+  window.checkDailyChallenge=function(foundWords){
+    // Bonus: if the main word search happens to include today's target, count it too.
+    try{
+      var target=dailyWordForToday().toLowerCase();
+      if(foundWords.indexOf(target)>-1)markDailySolved();
+    }catch(e){}
+  };
+  window.revealDailyAnswer=function(){
+    showToast('Today\'s word: '+dailyWordForToday().toUpperCase());
   };
   renderDailyCard();
 
