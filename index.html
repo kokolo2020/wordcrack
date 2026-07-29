@@ -494,6 +494,20 @@ body{background:#fbf8ff url('/assets/illustrations/raspberry-garden-frame.png') 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"WordCrack","url":"https://wordcrack.club/","description":"Free word unscrambler with 168,000 words. Find all possible words from your letters instantly.","applicationCategory":"GameApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
 </script>
+
+<style>
+.daily-card{max-width:580px;margin:0 auto 18px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius,16px);box-shadow:var(--shadow);padding:16px 20px;font-family:var(--font);}
+.daily-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+.daily-card-title{font-family:var(--display);font-weight:800;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px;}
+.daily-streak{font-size:13px;font-weight:700;color:var(--accent);background:var(--chip-bg);border-radius:999px;padding:4px 12px;white-space:nowrap;}
+.daily-letters{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.12em;color:var(--accent);text-align:center;margin:10px 0;}
+.daily-actions{display:flex;align-items:center;justify-content:center;gap:10px;}
+.daily-play-btn{background:var(--accent);color:var(--btn-text,#fff);border:none;border-radius:999px;padding:9px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);}
+.daily-play-btn:hover{opacity:.92;}
+.daily-solved{display:none;text-align:center;color:var(--accent);font-weight:700;font-size:14px;margin-top:6px;}
+.daily-card.is-solved .daily-actions{display:none;}
+.daily-card.is-solved .daily-solved{display:block;}
+</style>
 </head>
 <body>
 
@@ -604,6 +618,17 @@ body{background:#fbf8ff url('/assets/illustrations/raspberry-garden-frame.png') 
           <div class="clock-strip" id="clock-strip"></div>
     </div>
   <div class="subtitle" id="subtitle">Find every word hidden in your letters</div>
+  <div class="daily-card" id="daily-card">
+    <div class="daily-card-head">
+      <div class="daily-card-title">🗓️ Today's Challenge</div>
+      <div class="daily-streak" id="daily-streak">🔥 0 day streak</div>
+    </div>
+    <div class="daily-letters" id="daily-letters">– – – – – –</div>
+    <div class="daily-actions">
+      <button class="daily-play-btn" id="daily-play-btn" onclick="playDailyChallenge()">Play Today's Challenge</button>
+    </div>
+    <div class="daily-solved" id="daily-solved">✅ Solved today's challenge — come back tomorrow!</div>
+  </div>
 
   <div class="input-card">
     <div class="input-label" id="input-label">Your letters</div>
@@ -792,6 +817,7 @@ function unscramble(){
   if(!/[?&]notrack=1(&|$)/.test(window.location.search)) try{fetch('https://mjnigheggxtythytsqle.supabase.co/rest/v1/wordcrack_searches',{method:'POST',headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qbmlnaGVnZ3h0eXRoeXRzcWxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzYwMDcsImV4cCI6MjA5NTY1MjAwN30.mh1psePuKeQ8SH5uita7BsUKd6wd5IwHVVlDmJCMA0Q','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({})}).catch(function(){});}catch(e){}
   found=[];
   for(const w of getActiveWordSet()){if(w.length>=2&&w.length<=raw.length&&canMake(w,raw))found.push(w);}
+  if(typeof checkDailyChallenge==='function')checkDailyChallenge(found);
   if(!found.length){
     ['stats-row','filter-row','sort-bar','affiliate-bar'].forEach(id=>document.getElementById(id).style.display='none');
     document.getElementById('results').innerHTML='<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">No words found</div><div class="empty-sub">Try different letters</div></div>';
@@ -962,6 +988,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if(hiBtn){hiBtn.textContent='✅ Said hi!';hiBtn.disabled=true;setTimeout(function(){hiBtn.textContent='👋 Hi!';hiBtn.disabled=false;},3000);}
   };
   renderGreetings();
+
+  // DAILY CHALLENGE
+  var DAILY_WORDS=['garden','planet','forest','bridge','castle','dolphin','journey','freedom','kitchen','mystery','diamond','thunder','harvest','rainbow','whisper','trumpet','lantern','compass','falcon','glacier','volcano','sapphire','autumn','blossom','coconut','dragon','emerald','feather','gravity','horizon','iceberg','jasmine','kingdom','lagoon','meadow','nectar','oasis','panther','quartz','ribbon','sunrise','tundra','umbrella','velvet','wildlife','yonder','zephyr','anchor','breeze','cactus','desert','ember','fjord','glimmer','harbor','island','jungle','knight','lumber','marble','nomad','orchard','pebble'];
+  var DAILY_KEY_STREAK='wc-streak-count', DAILY_KEY_LAST='wc-streak-lastdate', DAILY_KEY_SOLVED='wc-daily-solved-date';
+
+  function dailyDateStr(d){ d=d||new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function dailyWordForToday(){
+    var days=Math.floor(Date.now()/86400000);
+    return DAILY_WORDS[days % DAILY_WORDS.length];
+  }
+  function scrambleWord(w){
+    var a=w.split('');
+    for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+    var s=a.join('');
+    return s===w ? scrambleWord(w) : s;
+  }
+  function getStreak(){try{return parseInt(localStorage.getItem(DAILY_KEY_STREAK))||0;}catch(e){return 0;}}
+  function renderDailyCard(){
+    var word=dailyWordForToday();
+    var letters=document.getElementById('daily-letters');
+    if(letters)letters.textContent=scrambleWord(word).toUpperCase().split('').join(' ');
+    var streakEl=document.getElementById('daily-streak');
+    if(streakEl)streakEl.textContent='🔥 '+getStreak()+' day streak';
+    var solvedToday=false;
+    try{solvedToday=localStorage.getItem(DAILY_KEY_SOLVED)===dailyDateStr();}catch(e){}
+    var card=document.getElementById('daily-card');
+    if(card)card.classList.toggle('is-solved', solvedToday);
+  }
+  window.playDailyChallenge=function(){
+    var word=dailyWordForToday();
+    var input=document.getElementById('letters');
+    if(input){input.value=scrambleWord(word).toUpperCase();}
+    unscramble();
+  };
+  window.checkDailyChallenge=function(foundWords){
+    try{
+      var today=dailyDateStr();
+      if(localStorage.getItem(DAILY_KEY_SOLVED)===today)return; // already solved today
+      var target=dailyWordForToday().toLowerCase();
+      if(foundWords.indexOf(target)===-1)return;
+      // Solved! Update streak.
+      var yesterday=dailyDateStr(new Date(Date.now()-86400000));
+      var lastDate=localStorage.getItem(DAILY_KEY_LAST);
+      var streak=getStreak();
+      streak = (lastDate===yesterday) ? streak+1 : 1;
+      localStorage.setItem(DAILY_KEY_STREAK,String(streak));
+      localStorage.setItem(DAILY_KEY_LAST,today);
+      localStorage.setItem(DAILY_KEY_SOLVED,today);
+      renderDailyCard();
+      showToast('🔥 Daily challenge solved! '+streak+'-day streak — come back tomorrow!');
+    }catch(e){}
+  };
+  renderDailyCard();
 
   // ACHIEVEMENTS
   var ACHIEVEMENTS=[
